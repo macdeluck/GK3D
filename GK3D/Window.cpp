@@ -17,11 +17,11 @@ namespace GK
 		if (pWindow == NULL)
 			throw new Exception(std::string("Window could not be created: ") + std::string(SDL_GetError()));
 
-		SDL_GLContext pContext = SDL_GL_CreateContext(pWindow);
-		if (pContext == NULL)
+		mGLContext = SDL_GL_CreateContext(pWindow);
+		if (mGLContext == NULL)
 			throw new Exception(std::string("OpenGL context could not be created: ") + std::string(SDL_GetError()));
 
-		if (SDL_GL_MakeCurrent(pWindow, pContext) < 0)
+		if (SDL_GL_MakeCurrent(pWindow, mGLContext) < 0)
 			throw new Exception(std::string("OpenGL context could not be switched: ") + std::string(SDL_GetError()));
 		
 		glewExperimental = GL_TRUE;
@@ -35,6 +35,8 @@ namespace GK
 		{
 			throw Exception(std::string("Warning: Unable to set VSync! SDL Error: " + std::string(SDL_GetError())));
 		}
+		glClearColor(0.f, 0.f, 0.f, 1.f);
+		glViewport(0, 0, width, height);
 
 		this->mWindow.reset(pWindow, [=](SDL_Window* pWindow)
 		{
@@ -57,19 +59,30 @@ namespace GK
 	{
 		this->mWindow = otherWindow.mWindow;
 		this->mWindowState = otherWindow.mWindowState;
+		this->mGLContext = otherWindow.mGLContext;
 	}
 
 	Window& Window::operator=(const Window& otherWindow)
 	{
 		this->mWindow = otherWindow.mWindow;
 		this->mWindowState = otherWindow.mWindowState;
+		this->mGLContext = otherWindow.mGLContext;
 		return *this;
 	}
 
 	Window::~Window()
 	{
 		if (mWindow.unique() && &parentApplication != NULL)
+		{
 			parentApplication.unregister_window(this->mWindowState->windowID);
+			SDL_GL_DeleteContext(mGLContext);
+		}
+	}
+
+	void Window::_gain_gl()
+	{
+		if (SDL_GL_MakeCurrent(&(*mWindow), mGLContext) < 0)
+			throw new Exception(std::string("OpenGL context could not be switched: ") + std::string(SDL_GetError()));
 	}
 
 	void Window::handleEvent(SDL_Event& e)
@@ -89,11 +102,12 @@ namespace GK
 			case SDL_WINDOWEVENT_SIZE_CHANGED:
 				mWindowState->width = e.window.data1;
 				mWindowState->height = e.window.data2;
-				//TODO refresh SDL_RenderPresent(mRenderer);
+				_resize();
+				_refresh();
 				break;
 
 			case SDL_WINDOWEVENT_EXPOSED:
-				//TODO refresh SDL_RenderPresent(mRenderer);
+				_refresh();
 				break;
 
 			case SDL_WINDOWEVENT_ENTER:
@@ -144,16 +158,29 @@ namespace GK
 		SDL_RaiseWindow(&(*mWindow));
 	}
 
-	void Window::render()
+	void Window::_update()
+	{
+		update();
+	}
+
+	void Window::_render()
 	{
 		if (!mWindowState->minimized)
 		{
-			//TODO refresh
+			_gain_gl();
+			render();
+			_refresh();
 		}
 	}
 
-	void Window::update()
+	void Window::_refresh()
 	{
+		glClear(GL_COLOR_BUFFER_BIT);
+	}
+
+	void Window::_resize()
+	{
+		glViewport(0, 0, mWindowState->width, mWindowState->height);
 	}
 
 	int Window::getWidth()
@@ -189,5 +216,13 @@ namespace GK
 	bool Window::isShown()
 	{
 		return mWindowState->shown;
+	}
+
+	void Window::update()
+	{
+	}
+
+	void Window::render()
+	{
 	}
 }

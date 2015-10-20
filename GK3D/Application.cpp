@@ -111,12 +111,12 @@ namespace GK
 
 			for (std::map<int, Window*>::iterator i = windows.begin(); i != windows.end(); ++i)
 			{
-				(*i).second->update();
+				(*i).second->_update();
 			}
 
 			for (std::map<int, Window*>::iterator i = windows.begin(); i != windows.end(); ++i)
 			{
-				(*i).second->render();
+				(*i).second->_render();
 			}
 
 			bool allWindowsClosed = true;

@@ -31,6 +31,9 @@ namespace GK
 	private:
 		void _render();
 		void _update();
+		void _refresh();
+		void _resize();
+		void _gain_gl();
 		class WindowState
 		{
 		public:
@@ -47,7 +50,7 @@ namespace GK
 
 		std::shared_ptr<WindowState> mWindowState;
 		std::shared_ptr<SDL_Window> mWindow;
-		std::shared_ptr<SDL_GLContext> mGLContext;
+		SDL_GLContext mGLContext;
 		Application& parentApplication;
 		friend class Application;
 	};
