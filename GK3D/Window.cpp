@@ -176,6 +176,7 @@ namespace GK
 	void Window::_refresh()
 	{
 		glClear(GL_COLOR_BUFFER_BIT);
+		SDL_GL_SwapWindow(&(*mWindow));
 	}
 
 	void Window::_resize()
