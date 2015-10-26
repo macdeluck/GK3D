@@ -12,22 +12,22 @@ namespace GK
 	public:
 		Window(Application& parentApplication, int width, int height, std::string title, bool shown = true, bool resizable = false);
 		Window(const Window& otherWindow);
-		Window& operator=(const Window& otherWindow);
+		virtual Window& operator=(const Window& otherWindow);
 		virtual ~Window();
 
-		void handleEvent(SDL_Event& e);
-		void focus();
-		int getWidth();
-		int getHeight();
-		bool hasMouseFocus();
-		bool hasKeyboardFocus();
-		bool isMinimized();
-		bool isMaximized();
-		bool isShown();
-		Application& getApplication();
+		virtual void handleEvent(SDL_Event& e);
+		virtual void focus();
+		virtual int getWidth();
+		virtual int getHeight();
+		virtual bool hasMouseFocus();
+		virtual bool hasKeyboardFocus();
+		virtual bool isMinimized();
+		virtual bool isMaximized();
+		virtual bool isShown();
+		virtual Application& getApplication();
 	protected:
-		void render();
-		void update();
+		virtual void render();
+		virtual void update();
 	private:
 		void _render();
 		void _update();

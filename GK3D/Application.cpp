@@ -44,7 +44,7 @@ namespace GK
 		{
 			throw Exception(std::string("SDL could not initialize! SDL Error: ") + std::string(SDL_GetError()));
 		}
-		if (SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 1) < 0)
+		if (SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 2) < 0)
 		{
 			throw Exception(std::string("SDL could not initialize! SDL Error: ") + std::string(SDL_GetError()));
 		}

@@ -35,7 +35,7 @@ namespace GK
 		{
 			throw Exception(std::string("Warning: Unable to set VSync! SDL Error: " + std::string(SDL_GetError())));
 		}
-		glClearColor(0.f, 0.f, 0.f, 1.f);
+		glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
 		glViewport(0, 0, width, height);
 
 		this->mWindow.reset(pWindow, [=](SDL_Window* pWindow)
@@ -217,6 +217,11 @@ namespace GK
 	bool Window::isShown()
 	{
 		return mWindowState->shown;
+	}
+
+	Application& Window::getApplication()
+	{
+		return parentApplication;
 	}
 
 	void Window::update()
