@@ -2,7 +2,8 @@
 #define _GK_APPLICATION
 
 #include "Window.h"
-#include <map>
+#include <set>
+#include <functional>
 
 namespace GK
 {
@@ -11,16 +12,19 @@ namespace GK
 	public:
 		Application(int argc, char* argv[]);
 		Application(const Application& otherApplication);
-		Application& operator=(const Application& otherApplication);
+		virtual Application& operator=(const Application& otherApplication);
 		virtual ~Application();
 
 		int run();
 		std::vector<std::string> getArguments();
+	protected:
+		virtual void started();
+		virtual void terminated();
+		void register_window(std::weak_ptr<Window> window);
+		void unregister_window(std::weak_ptr<Window> window);
+		bool is_window_registered(std::weak_ptr<Window> window);
 	private:
-		bool Application::is_window_registered(int windowID);
-		void Application::register_window(int windowID, Window* window);
-		void Application::unregister_window(int windowID);
-		std::map<int,Window*> windows;
+		std::set<std::weak_ptr<Window>, std::function<bool(std::weak_ptr<Window>, std::weak_ptr<Window>)> > windows;
 		std::vector<std::string> arguments;
 		void _storeArguments(int argc, char* argv[]);
 		void _init();

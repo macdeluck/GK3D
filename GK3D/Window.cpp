@@ -3,7 +3,7 @@
 
 namespace GK
 {
-	Window::Window(Application& parentApplication, int width, int height, std::string title, bool shown, bool resizable) : parentApplication(parentApplication)
+	Window::Window(int width, int height, std::string title, bool shown, bool resizable)
 	{
 		Uint32 flags = SDL_WINDOW_OPENGL;
 		if (shown)
@@ -51,11 +51,9 @@ namespace GK
 		this->mWindowState->fullScreen = false;
 		this->mWindowState->minimized = false;
 		this->mWindowState->shown = false;
-
-		this->parentApplication.register_window(this->mWindowState->windowID, this);
 	}
 
-	Window::Window(const Window& otherWindow) : parentApplication(parentApplication)
+	Window::Window(const Window& otherWindow)
 	{
 		this->mWindow = otherWindow.mWindow;
 		this->mWindowState = otherWindow.mWindowState;
@@ -69,12 +67,21 @@ namespace GK
 		this->mGLContext = otherWindow.mGLContext;
 		return *this;
 	}
+	
+	bool Window::operator==(const Window& otherWindow)
+	{
+		return otherWindow.mWindowState->windowID == mWindowState->windowID;
+	}
+
+	int Window::getHashCode()
+	{
+		return mWindowState->windowID;
+	}
 
 	Window::~Window()
 	{
-		if (mWindow.unique() && &parentApplication != NULL)
+		if (mWindow.unique())
 		{
-			parentApplication.unregister_window(this->mWindowState->windowID);
 			SDL_GL_DeleteContext(mGLContext);
 		}
 	}
@@ -158,17 +165,17 @@ namespace GK
 		SDL_RaiseWindow(&(*mWindow));
 	}
 
-	void Window::_update()
+	void Window::update()
 	{
-		update();
+		on_update();
 	}
 
-	void Window::_render()
+	void Window::render()
 	{
 		if (!mWindowState->minimized)
 		{
 			_gain_gl();
-			render();
+			on_render();
 			_refresh();
 		}
 	}
@@ -219,16 +226,11 @@ namespace GK
 		return mWindowState->shown;
 	}
 
-	Application& Window::getApplication()
-	{
-		return parentApplication;
-	}
-
-	void Window::update()
+	void Window::on_update()
 	{
 	}
 
-	void Window::render()
+	void Window::on_render()
 	{
 	}
 }

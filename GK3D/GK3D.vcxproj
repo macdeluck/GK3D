@@ -73,6 +73,7 @@
   <ItemGroup>
     <ClCompile Include="Application.cpp" />
     <ClCompile Include="Common.cpp" />
+    <ClCompile Include="GK3DApplication.cpp" />
     <ClCompile Include="GK3DWindow.cpp" />
     <ClCompile Include="Window.cpp" />
     <ClCompile Include="program.cpp" />
@@ -80,6 +81,8 @@
   <ItemGroup>
     <ClInclude Include="Application.h" />
     <ClInclude Include="Common.h" />
+    <ClInclude Include="Drawable.h" />
+    <ClInclude Include="GK3DApplication.h" />
     <ClInclude Include="GK3DWindow.h" />
     <ClInclude Include="Window.h" />
   </ItemGroup>

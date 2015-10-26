@@ -3,6 +3,10 @@
 namespace GK
 {
 	Application::Application(int argc, char* argv[])
+		: windows([](std::weak_ptr<Window> p, std::weak_ptr<Window> n)
+		{ 
+			return p.lock()->getHashCode() < n.lock()->getHashCode();
+		})
 	{
 		_storeArguments(argc, argv);
 		_init();
@@ -59,19 +63,21 @@ namespace GK
 		SDL_Quit();
 	}
 
-	bool Application::is_window_registered(int windowID)
+	bool Application::is_window_registered(std::weak_ptr<Window> window)
 	{
-		return (this->windows.find(windowID) != this->windows.end());
+		return (this->windows.find(window) != this->windows.end());
 	}
 
-	void Application::register_window(int windowID, Window* window)
+	void Application::register_window(std::weak_ptr<Window> window)
 	{
-		this->windows[windowID] = window;
+		if (is_window_registered(window))
+			throw new Exception("Window registered multiple times");
+		this->windows.insert(window);
 	}
 
-	void Application::unregister_window(int windowID)
+	void Application::unregister_window(std::weak_ptr<Window> window)
 	{
-		this->windows.erase(windowID);
+		this->windows.erase(window);
 	}
 
 	int Application::run()
@@ -79,7 +85,9 @@ namespace GK
 		int result = 0;
 		try
 		{
+			this->started();
 			_main();
+			this->terminated();
 		}
 		catch (std::exception& exc)
 		{
@@ -103,26 +111,26 @@ namespace GK
 					quit = true;
 				}
 
-				for (std::map<int, Window*>::iterator i = windows.begin(); i != windows.end(); ++i)
+				for (std::set<std::weak_ptr<Window> >::iterator i = windows.begin(); i != windows.end(); ++i)
 				{
-					(*i).second->handleEvent(e);
+					(*i).lock()->handleEvent(e);
 				}
 			}
 
-			for (std::map<int, Window*>::iterator i = windows.begin(); i != windows.end(); ++i)
+			for (std::set<std::weak_ptr<Window> >::iterator i = windows.begin(); i != windows.end(); ++i)
 			{
-				(*i).second->_update();
+				(*i).lock()->update();
 			}
 
-			for (std::map<int, Window*>::iterator i = windows.begin(); i != windows.end(); ++i)
+			for (std::set<std::weak_ptr<Window> >::iterator i = windows.begin(); i != windows.end(); ++i)
 			{
-				(*i).second->_render();
+				(*i).lock()->render();
 			}
 
 			bool allWindowsClosed = true;
-			for (std::map<int, Window*>::iterator i = windows.begin(); i != windows.end(); ++i)
+			for (std::set<std::weak_ptr<Window> >::iterator i = windows.begin(); i != windows.end(); ++i)
 			{
-				if ((*i).second->isShown())
+				if ((*i).lock()->isShown())
 				{
 					allWindowsClosed = false;
 					break;
@@ -135,4 +143,7 @@ namespace GK
 			}
 		}
 	}
+
+	void Application::started() {}
+	void Application::terminated() {}
 }
