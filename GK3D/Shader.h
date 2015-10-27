@@ -22,6 +22,7 @@ namespace GK
 		virtual ~Shader();
 
 		virtual ShaderType type();
+		static Shader FromFile(std::string path, ShaderType type);
 	private:
 		std::shared_ptr<GLuint> shaderId;
 		ShaderType shaderType;

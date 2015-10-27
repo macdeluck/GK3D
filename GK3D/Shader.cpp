@@ -1,7 +1,28 @@
 #include "Shader.h"
+#include <fstream>
+#include <sstream>
 
 namespace GK
 {
+	Shader Shader::FromFile(std::string path, ShaderType type)
+	{
+		std::ifstream inputStream = std::ifstream(path);
+		std::stringstream stringBuilder = std::stringstream("");
+		if (!inputStream.good())
+		{
+			inputStream.close();
+			throw Exception("Error occured while reading shader file");
+		}
+		while (!inputStream.eof())
+		{
+			std::string tmp;
+			inputStream >> tmp;
+			stringBuilder << tmp;
+		}
+		inputStream.close();
+		return Shader(stringBuilder.str(), type);
+	}
+
 	Shader::Shader(std::string source, ShaderType shaderType) : shaderId(new GLuint(0)), shaderType(shaderType)
 	{
 		GLint success;
