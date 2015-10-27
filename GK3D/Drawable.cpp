@@ -2,8 +2,8 @@
 
 namespace GK
 {
-	Drawable::Drawable(std::vector<GLfloat> vertices, std::vector<GLuint> indices, int stride)
-		: vertices(vertices), indices(indices), vao(new GLuint(0)), vbo(new GLuint(0)), ebo(new GLuint(0))
+	Drawable::Drawable(std::vector<GLfloat> vertices, std::vector<GLuint> indices, int stride, std::shared_ptr<ShaderProgram> shaderProgram)
+		: vertices(vertices), indices(indices), vao(new GLuint(0)), vbo(new GLuint(0)), ebo(new GLuint(0)), shaderProgram(shaderProgram)
 	{
 		{
 			GLuint l_vao, l_vbo, l_ebo;
@@ -36,5 +36,13 @@ namespace GK
 			glDeleteBuffers(1, &(*vbo));
 		if (ebo.unique())
 			glDeleteBuffers(1, &(*ebo));
+	}
+
+	void Drawable::render()
+	{
+		shaderProgram->use();
+		glBindVertexArray(*vao);
+		glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, 0);
+		glBindVertexArray(0);
 	}
 }
