@@ -174,9 +174,10 @@ namespace GK
 	{
 		if (!mWindowState->minimized)
 		{
+			glClear(GL_COLOR_BUFFER_BIT);
 			_gain_gl();
 			on_render();
-			_refresh();
+			SDL_GL_SwapWindow(&(*mWindow));
 		}
 	}
 

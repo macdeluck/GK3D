@@ -13,11 +13,11 @@ namespace GK
 			inputStream.close();
 			throw Exception("Error occured while reading shader file");
 		}
-		while (!inputStream.eof())
+		std::string tmp;
+		while (std::getline(inputStream, tmp))
 		{
-			std::string tmp;
-			inputStream >> tmp;
 			stringBuilder << tmp;
+			stringBuilder << "\n";
 		}
 		inputStream.close();
 		return Shader(stringBuilder.str(), type);

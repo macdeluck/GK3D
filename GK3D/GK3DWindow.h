@@ -2,6 +2,7 @@
 #define _GK3D_WINDOW
 
 #include "Window.h"
+#include "Drawable.h"
 
 namespace GK
 {
@@ -12,6 +13,11 @@ namespace GK
 		GK3DWindow(const GK3DWindow& otherWindow);
 		virtual GK3DWindow& operator=(const GK3DWindow& otherWindow);
 		virtual ~GK3DWindow();
+	protected:
+		virtual void on_render() override;
+		virtual void on_update() override;
+	private:
+		std::shared_ptr<Drawable> box;
 	};
 }
 
