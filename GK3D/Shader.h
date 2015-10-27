@@ -5,6 +5,9 @@
 
 namespace GK
 {
+	class ShaderProgram;
+	class Drawable;
+
 	enum ShaderType
 	{
 		Unknown = 0,
@@ -22,6 +25,19 @@ namespace GK
 	private:
 		std::shared_ptr<GLuint> shaderId;
 		ShaderType shaderType;
+		friend class ShaderProgram;
+	};
+
+	class ShaderProgram
+	{
+	public:
+		ShaderProgram(std::shared_ptr<Shader> vertexShader, std::shared_ptr<Shader> fragmentShader);
+		virtual ~ShaderProgram();
+
+	private:
+		std::shared_ptr<GLuint> programId;
+		void use();
+		friend class Drawable;
 	};
 }
 
