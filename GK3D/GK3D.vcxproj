@@ -76,6 +76,7 @@
     <ClCompile Include="Drawable.cpp" />
     <ClCompile Include="GK3DApplication.cpp" />
     <ClCompile Include="GK3DWindow.cpp" />
+    <ClCompile Include="Shader.cpp" />
     <ClCompile Include="Window.cpp" />
     <ClCompile Include="program.cpp" />
   </ItemGroup>
@@ -85,7 +86,11 @@
     <ClInclude Include="Drawable.h" />
     <ClInclude Include="GK3DApplication.h" />
     <ClInclude Include="GK3DWindow.h" />
+    <ClInclude Include="Shader.h" />
     <ClInclude Include="Window.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="vertex_shader.glsl" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
