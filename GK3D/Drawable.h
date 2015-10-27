@@ -8,12 +8,15 @@ namespace GK
 	class Drawable
 	{
 	public:
-		Drawable(std::vector<GLfloat> vertices);
+		Drawable(std::vector<GLfloat> vertices, std::vector<GLuint> indices, int stride);
 		virtual ~Drawable();
 
 	private:
-		GLuint vbo;
+		std::shared_ptr<GLuint> vbo;
+		std::shared_ptr<GLuint> ebo;
+		std::shared_ptr<GLuint> vao;
 		std::vector<GLfloat> vertices;
+		std::vector<GLuint> indices;
 	};
 }
 
