@@ -5,12 +5,29 @@
 
 namespace GK
 {
+	struct Vertex
+	{
+	public:
+		static const int VERTEX_SIZE = 6;
+
+		Vertex();
+		Vertex(GLfloat x, GLfloat y, GLfloat z, GLfloat r, GLfloat g, GLfloat b);
+		Vertex(GLfloat vertexData[VERTEX_SIZE]);
+		GLfloat x;
+		GLfloat y;
+		GLfloat z;
+		GLfloat r;
+		GLfloat g;
+		GLfloat b;
+
+		std::vector<GLfloat> toVector();
+	};
+
 	class Drawable
 	{
 	public:
-		Drawable(std::vector<GLfloat> vertices,
+		Drawable(std::vector<Vertex> vertices,
 			std::vector<GLuint> indices,
-			int stride,
 			std::shared_ptr<ShaderProgram> shaderProgram);
 		virtual ~Drawable();
 		void render();
@@ -19,9 +36,10 @@ namespace GK
 		std::shared_ptr<GLuint> vbo;
 		std::shared_ptr<GLuint> ebo;
 		std::shared_ptr<GLuint> vao;
-		std::vector<GLfloat> vertices;
+		std::vector<Vertex> vertices;
 		std::vector<GLuint> indices;
 		std::shared_ptr<ShaderProgram> shaderProgram;
+		std::vector<GLfloat> getVertexData();
 	};
 }
 

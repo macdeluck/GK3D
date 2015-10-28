@@ -1,11 +1,12 @@
 #version 150 core
   
 in vec3 position;
-out vec4 vertexColor;
+in vec3 color;
 
-uniform vec4 timeColor;
+out vec3 vertexColor;
+
 void main()
 {
-    gl_Position = vec4(position, 1.0);
-	vertexColor = timeColor;
+    gl_Position = vec4(position, 1.0f);
+    vertexColor = color;
 }

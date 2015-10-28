@@ -10,8 +10,8 @@ namespace GK
 	enum ShaderType
 	{
 		Unknown = 0,
-		Vertex = GL_VERTEX_SHADER,
-		Fragment = GL_FRAGMENT_SHADER
+		VertexShader = GL_VERTEX_SHADER,
+		FragmentShader = GL_FRAGMENT_SHADER
 	};
 
 	class Shader
@@ -37,11 +37,14 @@ namespace GK
 		virtual ~ShaderProgram();
 		std::shared_ptr<Shader> getVertexShader();
 		std::shared_ptr<Shader> getFragmentShader();
+		void compile();
 		void use();
+		virtual void before_link();
 		virtual void update();
 	protected:
 		GLuint getProgramId();
 	private:
+		bool compiled;
 		std::shared_ptr<GLuint> programId;
 		std::shared_ptr<Shader> vertexShader;
 		std::shared_ptr<Shader> fragmentShader;

@@ -56,15 +56,20 @@ namespace GK
 	}
 
 	ShaderProgram::ShaderProgram(std::shared_ptr<Shader> vertexShader, std::shared_ptr<Shader> fragmentShader)
-		: programId(new GLuint(0)), vertexShader(vertexShader), fragmentShader(fragmentShader)
+		: programId(new GLuint(0)), vertexShader(vertexShader), fragmentShader(fragmentShader), compiled(false)
 	{
-		if (vertexShader->type() != ShaderType::Vertex)
+		if (vertexShader->type() != ShaderType::VertexShader)
 			throw Exception("Passed vertex shader type is not really vertex shader");
-		if (fragmentShader->type() != ShaderType::Fragment)
+		if (fragmentShader->type() != ShaderType::FragmentShader)
 			throw Exception("Passed fragment shader type is not really fragment shader");
 		*programId = glCreateProgram();
+	}
+
+	void ShaderProgram::compile()
+	{
 		glAttachShader(*programId, *(vertexShader->shaderId));
 		glAttachShader(*programId, *(fragmentShader->shaderId));
+		before_link();
 		glLinkProgram(*programId);
 
 		GLint success;
@@ -74,6 +79,7 @@ namespace GK
 			glGetProgramInfoLog(*programId, 512, NULL, infoLog);
 			throw Exception(std::string("Shader linking failed: ") + std::string(infoLog));
 		}
+		compiled = true;
 	}
 
 	ShaderProgram::~ShaderProgram()
@@ -84,6 +90,8 @@ namespace GK
 
 	void ShaderProgram::use()
 	{
+		if (!compiled)
+			throw Exception("Cannot use shader which was not compiled");
 		glUseProgram(*programId);
 	}
 
@@ -103,5 +111,9 @@ namespace GK
 	GLuint ShaderProgram::getProgramId()
 	{
 		return *programId;
+	}
+
+	void ShaderProgram::before_link()
+	{
 	}
 }
