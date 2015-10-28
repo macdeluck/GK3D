@@ -35,7 +35,7 @@ namespace GK
 			glm::mat4 model;
 			glm::mat4 view;
 			glm::mat4 projection;
-			model = glm::rotate(model, -55.0f, glm::vec3(1.0f, 0.0f, 0.0f));
+			model = glm::rotate(model, glm::radians(-55.0f), glm::vec3(1.0f, 0.0f, 0.0f));
 			view = glm::translate(view, glm::vec3(0.0f, 0.0f, -3.0f));
 			projection = glm::perspective(45.0f, ((float)screenWidth) / screenHeight, 0.1f, 100.0f);
 			glUniformMatrix4fv(getUniformLocation("model"), 1, GL_FALSE, glm::value_ptr(model));
