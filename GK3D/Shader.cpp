@@ -50,8 +50,9 @@ namespace GK
 		return shaderType;
 	}
 
-	void Shader::update()
+	GLuint Shader::getShaderId()
 	{
+		return *shaderId;
 	}
 
 	ShaderProgram::ShaderProgram(std::shared_ptr<Shader> vertexShader, std::shared_ptr<Shader> fragmentShader)
@@ -93,5 +94,14 @@ namespace GK
 	std::shared_ptr<Shader> ShaderProgram::getFragmentShader()
 	{
 		return fragmentShader;
+	}
+
+	void ShaderProgram::update()
+	{
+	}
+
+	GLuint ShaderProgram::getProgramId()
+	{
+		return *programId;
 	}
 }

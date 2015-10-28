@@ -21,8 +21,9 @@ namespace GK
 		virtual ~Shader();
 
 		virtual ShaderType type();
-		virtual void update();
 		static std::string FromFile(std::string path);
+	protected:
+		GLuint getShaderId();
 	private:
 		std::shared_ptr<GLuint> shaderId;
 		ShaderType shaderType;
@@ -37,6 +38,9 @@ namespace GK
 		std::shared_ptr<Shader> getVertexShader();
 		std::shared_ptr<Shader> getFragmentShader();
 		void use();
+		virtual void update();
+	protected:
+		GLuint getProgramId();
 	private:
 		std::shared_ptr<GLuint> programId;
 		std::shared_ptr<Shader> vertexShader;

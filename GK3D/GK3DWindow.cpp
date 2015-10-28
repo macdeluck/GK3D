@@ -1,4 +1,5 @@
 #include "GK3DWindow.h"
+#include <cmath>
 
 namespace GK
 {
@@ -7,10 +8,6 @@ namespace GK
 	public:
 		GK3DVertexShader() : Shader(Shader::FromFile("vertex_shader.glsl"), ShaderType::Vertex) {}
 		virtual ~GK3DVertexShader() {}
-		virtual void update() override
-		{
-
-		}
 	};
 	class GK3DFragmentShader : public Shader
 	{
@@ -19,12 +16,29 @@ namespace GK
 		virtual ~GK3DFragmentShader() {}
 	};
 
+	class GK3DShaderProgram : public ShaderProgram
+	{
+	public:
+		GK3DShaderProgram()
+			: ShaderProgram(std::shared_ptr<GK3DVertexShader>(new GK3DVertexShader()),
+			std::shared_ptr<GK3DFragmentShader>(new GK3DFragmentShader())) {}
+		virtual ~GK3DShaderProgram() {}
+		virtual void update() override
+		{
+			GLfloat timeValue = ((float)SDL_GetTicks())/1000;
+			GLfloat greenValue = (sin(timeValue) / 2) + 0.5;
+			GLuint shaderId = getProgramId();
+			GLint vertexColorLocation = glGetUniformLocation(shaderId, "timeColor");
+			if (vertexColorLocation == 0xffffffff)
+				throw Exception("Uniform location was not found");
+			glUniform4f(vertexColorLocation, 0.0f, greenValue, 0.0f, 1.0f);
+		}
+	};
+
 	GK3DWindow::GK3DWindow(int width, int height, std::string title, bool shown, bool resizable)
 		: Window(width, height, title, shown, resizable) 
 	{
-		std::shared_ptr<GK3DVertexShader> vertexShader = std::shared_ptr<GK3DVertexShader>(new GK3DVertexShader());
-		std::shared_ptr<GK3DFragmentShader> fragmentShader = std::shared_ptr<GK3DFragmentShader>(new GK3DFragmentShader());
-		std::shared_ptr<ShaderProgram> shaderProgram(new ShaderProgram(vertexShader, fragmentShader));
+		std::shared_ptr<GK3DShaderProgram> shaderProgram(new GK3DShaderProgram());
 	
 		std::vector<GLfloat> vertices = {
 			0.5f, -0.5f, 0.0f,  // Bottom Right
@@ -52,7 +66,6 @@ namespace GK
 	void GK3DWindow::on_update()
 	{
 		box->getShader()->use();
-		box->getShader()->getVertexShader()->update();
-		box->getShader()->getFragmentShader()->update();
+		box->getShader()->update();
 	}
 }
