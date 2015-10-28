@@ -58,16 +58,53 @@ namespace GK
 		shaderProgram->screenHeight = height;
 		std::vector<Vertex> vertices = {
 			// Positions         // Colors
-			Vertex(0.5f, -0.5f, 0.0f, 1.0f, 0.0f, 0.0f),  // Bottom Right R
-			Vertex(-0.5f, -0.5f, 0.0f, 0.0f, 1.0f, 0.0f),  // Bottom Left G
-			Vertex(0.5f, 0.5f, 0.0f, 1.0f, 1.0f, 0.0f),  // Top Right R
-			Vertex(-0.5f, 0.5f, 0.0f, 1.0f, 1.0f, 0.0f),  // Top Left G
-		};
+			Vertex(-0.5f, -0.5f, -0.5f, 0.0f, 0.0f, 0.0f),
+			Vertex(0.5f, -0.5f, -0.5f, 1.0f, 0.0f, 0.0f),
+			Vertex(0.5f, 0.5f, -0.5f, 1.0f, 1.0f, 0.0f),
+			Vertex(0.5f, 0.5f, -0.5f, 1.0f, 1.0f, 0.0f),
+			Vertex(-0.5f, 0.5f, -0.5f, 0.0f, 1.0f, 0.0f),
+			Vertex(-0.5f, -0.5f, -0.5f, 0.0f, 0.0f, 0.0f),
+
+			Vertex(-0.5f, -0.5f, 0.5f, 0.0f, 0.0f, 0.0f),
+			Vertex(0.5f, -0.5f, 0.5f, 1.0f, 0.0f, 0.0f),
+			Vertex(0.5f, 0.5f, 0.5f, 1.0f, 1.0f, 0.0f),
+			Vertex(0.5f, 0.5f, 0.5f, 1.0f, 1.0f, 0.0f),
+			Vertex(-0.5f, 0.5f, 0.5f, 0.0f, 1.0f, 0.0f),
+			Vertex(-0.5f, -0.5f, 0.5f, 0.0f, 0.0f, 0.0f),
+
+			Vertex(-0.5f, 0.5f, 0.5f, 1.0f, 0.0f, 0.0f),
+			Vertex(-0.5f, 0.5f, -0.5f, 1.0f, 1.0f, 0.0f),
+			Vertex(-0.5f, -0.5f, -0.5f, 0.0f, 1.0f, 0.0f),
+			Vertex(-0.5f, -0.5f, -0.5f, 0.0f, 1.0f, 0.0f),
+			Vertex(-0.5f, -0.5f, 0.5f, 0.0f, 0.0f, 0.0f),
+			Vertex(-0.5f, 0.5f, 0.5f, 1.0f, 0.0f, 0.0f),
+
+			Vertex(0.5f, 0.5f, 0.5f, 1.0f, 0.0f, 0.0f),
+			Vertex(0.5f, 0.5f, -0.5f, 1.0f, 1.0f, 0.0f),
+			Vertex(0.5f, -0.5f, -0.5f, 0.0f, 1.0f, 0.0f),
+			Vertex(0.5f, -0.5f, -0.5f, 0.0f, 1.0f, 0.0f),
+			Vertex(0.5f, -0.5f, 0.5f, 0.0f, 0.0f, 0.0f),
+			Vertex(0.5f, 0.5f, 0.5f, 1.0f, 0.0f, 0.0f),
+
+			Vertex(-0.5f, -0.5f, -0.5f, 0.0f, 1.0f, 0.0f),
+			Vertex(0.5f, -0.5f, -0.5f, 1.0f, 1.0f, 0.0f),
+			Vertex(0.5f, -0.5f, 0.5f, 1.0f, 0.0f, 0.0f),
+			Vertex(0.5f, -0.5f, 0.5f, 1.0f, 0.0f, 0.0f),
+			Vertex(-0.5f, -0.5f, 0.5f, 0.0f, 0.0f, 0.0f),
+			Vertex(-0.5f, -0.5f, -0.5f, 0.0f, 1.0f, 0.0f),
+
+			Vertex(-0.5f, 0.5f, -0.5f, 0.0f, 1.0f, 0.0f),
+			Vertex(0.5f, 0.5f, -0.5f, 1.0f, 1.0f, 0.0f),
+			Vertex(0.5f, 0.5f, 0.5f, 1.0f, 0.0f, 0.0f),
+			Vertex(0.5f, 0.5f, 0.5f, 1.0f, 0.0f, 0.0f),
+			Vertex(-0.5f, 0.5f, 0.5f, 0.0f, 0.0f, 0.0f),
+			Vertex(-0.5f, 0.5f, -0.5f, 0.0f, 1.0f, 0.0f)  // Top Left G
+		};/*
 		std::vector<GLuint> indices = {
 			0, 1, 3,
 			3, 2, 0
-		};
-		box.reset(new Drawable(vertices, indices, shaderProgram));
+		};*/
+		box.reset(new Drawable(vertices, shaderProgram));
 	}
 	GK3DWindow::GK3DWindow(const GK3DWindow& otherWindow) : Window(otherWindow) {}
 	GK3DWindow& GK3DWindow::operator=(const GK3DWindow& otherWindow)

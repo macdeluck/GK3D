@@ -37,6 +37,7 @@ namespace GK
 		}
 		glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
 		glViewport(0, 0, width, height);
+		glEnable(GL_DEPTH_TEST);
 
 		this->mWindow.reset(pWindow, [=](SDL_Window* pWindow)
 		{
@@ -174,7 +175,7 @@ namespace GK
 	{
 		if (!mWindowState->minimized)
 		{
-			glClear(GL_COLOR_BUFFER_BIT);
+			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 			_gain_gl();
 			on_render();
 			SDL_GL_SwapWindow(&(*mWindow));
@@ -183,7 +184,7 @@ namespace GK
 
 	void Window::_refresh()
 	{
-		glClear(GL_COLOR_BUFFER_BIT);
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		SDL_GL_SwapWindow(&(*mWindow));
 	}
 

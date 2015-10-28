@@ -27,12 +27,16 @@ namespace GK
 	{
 	public:
 		Drawable(std::vector<Vertex> vertices,
+			std::shared_ptr<ShaderProgram> shaderProgram);
+		Drawable(std::vector<Vertex> vertices,
 			std::vector<GLuint> indices,
 			std::shared_ptr<ShaderProgram> shaderProgram);
 		virtual ~Drawable();
 		void render();
 		std::shared_ptr<ShaderProgram> getShader();
 	private:
+		void init();
+
 		std::shared_ptr<GLuint> vbo;
 		std::shared_ptr<GLuint> ebo;
 		std::shared_ptr<GLuint> vao;
