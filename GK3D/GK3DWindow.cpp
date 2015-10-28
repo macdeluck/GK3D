@@ -22,22 +22,25 @@ namespace GK
 	class GK3DShaderProgram : public ShaderProgram
 	{
 	public:
+		int screenWidth, screenHeight;
+
 		GK3DShaderProgram()
 			: ShaderProgram(std::shared_ptr<GK3DVertexShader>(new GK3DVertexShader()),
-			std::shared_ptr<GK3DFragmentShader>(new GK3DFragmentShader())) 
+			std::shared_ptr<GK3DFragmentShader>(new GK3DFragmentShader()))
 		{
 		}
 		virtual ~GK3DShaderProgram() {}
 		virtual void update() override
 		{
-			GLfloat timeValue = (float)(SDL_GetTicks() % 10000) / 10000;
-			glm::mat4 trans;
-			//trans = glm::translate(trans, glm::vec3(0.5f, -0.5f, 0.0f));
-			trans = glm::rotate(trans, timeValue * 50.0f, glm::vec3(0.0f, 0.0f, 1.0f));
-			GLint transformLoc = glGetUniformLocation(getProgramId(), "transform");
-			if (transformLoc == 0xffffffff)
-				throw Exception("Uniform location was not found");
-			glUniformMatrix4fv(transformLoc, 1, GL_FALSE, glm::value_ptr(trans));
+			glm::mat4 model;
+			glm::mat4 view;
+			glm::mat4 projection;
+			model = glm::rotate(model, -55.0f, glm::vec3(1.0f, 0.0f, 0.0f));
+			view = glm::translate(view, glm::vec3(0.0f, 0.0f, -3.0f));
+			projection = glm::perspective(45.0f, ((float)screenWidth) / screenHeight, 0.1f, 100.0f);
+			glUniformMatrix4fv(getUniformLocation("model"), 1, GL_FALSE, glm::value_ptr(model));
+			glUniformMatrix4fv(getUniformLocation("view"), 1, GL_FALSE, glm::value_ptr(view));
+			glUniformMatrix4fv(getUniformLocation("projection"), 1, GL_FALSE, glm::value_ptr(projection));
 		}
 		virtual void before_link() override
 		{
@@ -51,14 +54,18 @@ namespace GK
 	{
 		std::shared_ptr<GK3DShaderProgram> shaderProgram(new GK3DShaderProgram());
 		shaderProgram->compile();
+		shaderProgram->screenWidth = width;
+		shaderProgram->screenHeight = height;
 		std::vector<Vertex> vertices = {
 			// Positions         // Colors
 			Vertex(0.5f, -0.5f, 0.0f, 1.0f, 0.0f, 0.0f),  // Bottom Right R
 			Vertex(-0.5f, -0.5f, 0.0f, 0.0f, 1.0f, 0.0f),  // Bottom Left G
-			Vertex(0.0f, 0.5f, 0.0f, 0.0f, 0.0f, 1.0f) // Top B
+			Vertex(0.5f, 0.5f, 0.0f, 1.0f, 1.0f, 0.0f),  // Top Right R
+			Vertex(-0.5f, 0.5f, 0.0f, 1.0f, 1.0f, 0.0f),  // Top Left G
 		};
 		std::vector<GLuint> indices = {
-			0, 1, 2
+			0, 1, 3,
+			3, 2, 0
 		};
 		box.reset(new Drawable(vertices, indices, shaderProgram));
 	}
@@ -70,6 +77,13 @@ namespace GK
 	}
 	GK3DWindow::~GK3DWindow() {}
 
+	void GK3DWindow::handleEvent(SDL_Event& event)
+	{
+		Window::handleEvent(event);
+		std::shared_ptr<GK3DShaderProgram> shader = std::dynamic_pointer_cast<GK3DShaderProgram>(box->getShader());
+		shader->screenWidth = getWidth();
+		shader->screenHeight = getHeight();
+	}
 
 	void GK3DWindow::on_render()
 	{

@@ -43,6 +43,7 @@ namespace GK
 		virtual void update();
 	protected:
 		GLuint getProgramId();
+		GLuint getUniformLocation(std::string uniformName);
 	private:
 		bool compiled;
 		std::shared_ptr<GLuint> programId;

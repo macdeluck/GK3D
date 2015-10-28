@@ -113,6 +113,14 @@ namespace GK
 		return *programId;
 	}
 
+	GLuint ShaderProgram::getUniformLocation(std::string uniformName)
+	{
+		GLint uniformLoc = glGetUniformLocation(getProgramId(), uniformName.c_str());
+		if (uniformLoc == 0xffffffff)
+			throw Exception(std::string("Uniform '") + uniformName + std::string("' location was not found"));
+		return uniformLoc;
+	}
+
 	void ShaderProgram::before_link()
 	{
 	}
