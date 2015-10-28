@@ -14,6 +14,7 @@ namespace GK
 			std::shared_ptr<ShaderProgram> shaderProgram);
 		virtual ~Drawable();
 		void render();
+		std::shared_ptr<ShaderProgram> getShader();
 	private:
 		std::shared_ptr<GLuint> vbo;
 		std::shared_ptr<GLuint> ebo;

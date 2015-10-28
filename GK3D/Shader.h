@@ -6,7 +6,6 @@
 namespace GK
 {
 	class ShaderProgram;
-	class Drawable;
 
 	enum ShaderType
 	{
@@ -22,7 +21,8 @@ namespace GK
 		virtual ~Shader();
 
 		virtual ShaderType type();
-		static Shader FromFile(std::string path, ShaderType type);
+		virtual void update();
+		static std::string FromFile(std::string path);
 	private:
 		std::shared_ptr<GLuint> shaderId;
 		ShaderType shaderType;
@@ -34,11 +34,13 @@ namespace GK
 	public:
 		ShaderProgram(std::shared_ptr<Shader> vertexShader, std::shared_ptr<Shader> fragmentShader);
 		virtual ~ShaderProgram();
-
+		std::shared_ptr<Shader> getVertexShader();
+		std::shared_ptr<Shader> getFragmentShader();
+		void use();
 	private:
 		std::shared_ptr<GLuint> programId;
-		void use();
-		friend class Drawable;
+		std::shared_ptr<Shader> vertexShader;
+		std::shared_ptr<Shader> fragmentShader;
 	};
 }
 

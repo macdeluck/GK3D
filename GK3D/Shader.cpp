@@ -4,7 +4,7 @@
 
 namespace GK
 {
-	Shader Shader::FromFile(std::string path, ShaderType type)
+	std::string Shader::FromFile(std::string path)
 	{
 		std::ifstream inputStream = std::ifstream(path);
 		std::stringstream stringBuilder = std::stringstream("");
@@ -20,7 +20,7 @@ namespace GK
 			stringBuilder << "\n";
 		}
 		inputStream.close();
-		return Shader(stringBuilder.str(), type);
+		return stringBuilder.str();
 	}
 
 	Shader::Shader(std::string source, ShaderType shaderType) : shaderId(new GLuint(0)), shaderType(shaderType)
@@ -50,8 +50,12 @@ namespace GK
 		return shaderType;
 	}
 
+	void Shader::update()
+	{
+	}
+
 	ShaderProgram::ShaderProgram(std::shared_ptr<Shader> vertexShader, std::shared_ptr<Shader> fragmentShader)
-		: programId(new GLuint(0))
+		: programId(new GLuint(0)), vertexShader(vertexShader), fragmentShader(fragmentShader)
 	{
 		if (vertexShader->type() != ShaderType::Vertex)
 			throw Exception("Passed vertex shader type is not really vertex shader");
@@ -80,5 +84,14 @@ namespace GK
 	void ShaderProgram::use()
 	{
 		glUseProgram(*programId);
+	}
+
+	std::shared_ptr<Shader> ShaderProgram::getVertexShader()
+	{
+		return vertexShader;
+	}
+	std::shared_ptr<Shader> ShaderProgram::getFragmentShader()
+	{
+		return fragmentShader;
 	}
 }

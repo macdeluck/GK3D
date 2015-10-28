@@ -45,4 +45,9 @@ namespace GK
 		glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, 0);
 		glBindVertexArray(0);
 	}
+
+	std::shared_ptr<ShaderProgram> Drawable::getShader()
+	{
+		return shaderProgram;
+	}
 }
