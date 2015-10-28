@@ -1,5 +1,8 @@
 #include "GK3DWindow.h"
 #include <cmath>
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/type_ptr.hpp>
 
 namespace GK
 {
@@ -27,13 +30,14 @@ namespace GK
 		virtual ~GK3DShaderProgram() {}
 		virtual void update() override
 		{
-			/*GLfloat timeValue = ((float)SDL_GetTicks())/1000;
-			GLfloat greenValue = (sin(timeValue) / 2) + 0.5;
-			GLuint shaderId = getProgramId();
-			GLint vertexColorLocation = glGetUniformLocation(shaderId, "timeColor");
-			if (vertexColorLocation == 0xffffffff)
+			GLfloat timeValue = (float)(SDL_GetTicks() % 10000) / 10000;
+			glm::mat4 trans;
+			//trans = glm::translate(trans, glm::vec3(0.5f, -0.5f, 0.0f));
+			trans = glm::rotate(trans, timeValue * 50.0f, glm::vec3(0.0f, 0.0f, 1.0f));
+			GLint transformLoc = glGetUniformLocation(getProgramId(), "transform");
+			if (transformLoc == 0xffffffff)
 				throw Exception("Uniform location was not found");
-			glUniform4f(vertexColorLocation, 0.0f, greenValue, 0.0f, 1.0f);*/
+			glUniformMatrix4fv(transformLoc, 1, GL_FALSE, glm::value_ptr(trans));
 		}
 		virtual void before_link() override
 		{
