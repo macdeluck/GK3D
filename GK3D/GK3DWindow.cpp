@@ -98,12 +98,8 @@ namespace GK
 			Vertex(0.5f, 0.5f, 0.5f, 1.0f, 0.0f, 0.0f),
 			Vertex(0.5f, 0.5f, 0.5f, 1.0f, 0.0f, 0.0f),
 			Vertex(-0.5f, 0.5f, 0.5f, 0.0f, 0.0f, 0.0f),
-			Vertex(-0.5f, 0.5f, -0.5f, 0.0f, 1.0f, 0.0f)  // Top Left G
-		};/*
-		std::vector<GLuint> indices = {
-			0, 1, 3,
-			3, 2, 0
-		};*/
+			Vertex(-0.5f, 0.5f, -0.5f, 0.0f, 1.0f, 0.0f)
+		};
 		box.reset(new Drawable(vertices, shaderProgram));
 	}
 	GK3DWindow::GK3DWindow(const GK3DWindow& otherWindow) : Window(otherWindow) {}
