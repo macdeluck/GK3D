@@ -235,4 +235,9 @@ namespace GK
 	void Window::on_render()
 	{
 	}
+
+	std::weak_ptr<SDL_Window> Window::getWindowHandle()
+	{
+		return mWindow;
+	}
 }

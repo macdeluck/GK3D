@@ -31,6 +31,7 @@ namespace GK
 	protected:
 		virtual void on_render();
 		virtual void on_update();
+		std::weak_ptr<SDL_Window> getWindowHandle();
 	private:
 		void _refresh();
 		void _resize();

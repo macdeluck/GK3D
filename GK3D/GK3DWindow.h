@@ -4,6 +4,9 @@
 #include "Window.h"
 #include "Shader.h"
 #include "Drawable.h"
+#include "Camera.h"
+#include "Timer.h"
+#include <set>
 
 namespace GK
 {
@@ -19,7 +22,14 @@ namespace GK
 		virtual void on_render() override;
 		virtual void on_update() override;
 	private:
+		void postFrame();
+		void handleKey(Uint32 state, SDL_Keycode key);
+		Timer fpsTimer;
+		Timer capTimer;
+		int countedFrames;
+		std::set<CameraMovementDirection> cameraMoves;
 		std::shared_ptr<Drawable> box;
+		std::shared_ptr<Camera> camera;
 	};
 }
 
