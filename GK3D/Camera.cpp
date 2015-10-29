@@ -43,6 +43,10 @@ namespace GK
 			this->position -= this->right * velocity;
 		if (direction == RIGHT)
 			this->position += this->right * velocity;
+		if (direction == DOWN)
+			this->position -= this->up * velocity;
+		if (direction == UP)
+			this->position += this->up * velocity;
 	}
 
 	void Camera::Rotate(GLfloat xoffset, GLfloat yoffset, GLboolean constrainpitch)

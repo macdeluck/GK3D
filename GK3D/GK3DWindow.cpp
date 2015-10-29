@@ -8,6 +8,7 @@ namespace GK
 {
 	const int SCREEN_FPS = 60;
 	const int SCREEN_TICK_PER_FRAME = 1000 / SCREEN_FPS;
+	const glm::vec3 startPosition = glm::vec3(0, 0, 0);
 
 	class GK3DVertexShader : public Shader
 	{
@@ -54,7 +55,7 @@ namespace GK
 
 	GK3DWindow::GK3DWindow(int width, int height, std::string title, bool shown, bool resizable)
 		: Window(width, height, title, shown, resizable),
-		camera(new Camera()), cameraMoves(), countedFrames(0)
+		camera(new Camera(startPosition)), cameraMoves(), countedFrames(0)
 	{
 		SDL_SetRelativeMouseMode(SDL_TRUE);
 		std::shared_ptr<GK3DShaderProgram> shaderProgram(new GK3DShaderProgram());
@@ -182,6 +183,12 @@ namespace GK
 			break;
 		case SDLK_d:
 			direction = CameraMovementDirection::RIGHT;
+			break;
+		case SDLK_SPACE:
+			direction = CameraMovementDirection::UP;
+			break;
+		case SDLK_LCTRL:
+			direction = CameraMovementDirection::DOWN;
 			break;
 		case SDLK_ESCAPE:
 			if (type == SDL_KEYUP)
