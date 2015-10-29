@@ -33,7 +33,11 @@ namespace GK
 		virtual void update() override
 		{
 			glm::mat4 model;
+			GLfloat radius = 10.0f;
+			GLfloat camX = sin(SDL_GetTicks() / 1000.0f) * radius;
+			GLfloat camZ = cos(SDL_GetTicks() / 1000.0f) * radius;
 			glm::mat4 view;
+			view = glm::lookAt(glm::vec3(camX, 0.0, camZ), glm::vec3(0.0, 0.0, 0.0), glm::vec3(0.0, 1.0, 0.0));
 			glm::mat4 projection;
 			model = glm::rotate(model, glm::radians(-55.0f), glm::vec3(1.0f, 0.0f, 0.0f));
 			view = glm::translate(view, glm::vec3(0.0f, 0.0f, -3.0f));
