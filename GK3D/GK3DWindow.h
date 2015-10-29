@@ -24,6 +24,7 @@ namespace GK
 	private:
 		void postFrame();
 		void handleKey(Uint32 state, SDL_Keycode key);
+		void handleMouseMotion();
 		Timer fpsTimer;
 		Timer capTimer;
 		int countedFrames;

@@ -53,8 +53,10 @@ namespace GK
 	};
 
 	GK3DWindow::GK3DWindow(int width, int height, std::string title, bool shown, bool resizable)
-		: Window(width, height, title, shown, resizable), camera(new Camera()), cameraMoves(), countedFrames(0)
+		: Window(width, height, title, shown, resizable),
+		camera(new Camera()), cameraMoves(), countedFrames(0)
 	{
+		SDL_SetRelativeMouseMode(SDL_TRUE);
 		std::shared_ptr<GK3DShaderProgram> shaderProgram(new GK3DShaderProgram());
 		shaderProgram->compile();
 		shaderProgram->screenWidth = width;
@@ -120,7 +122,8 @@ namespace GK
 		Window::handleEvent(event);
 		if ((event.type == SDL_KEYDOWN) || (event.type == SDL_KEYUP))
 			handleKey(event.type, event.key.keysym.sym);
-
+		if (event.type == SDL_MOUSEMOTION)
+			handleMouseMotion();
 		std::shared_ptr<GK3DShaderProgram> shader = std::dynamic_pointer_cast<GK3DShaderProgram>(box->getShader());
 		shader->screenWidth = getWidth();
 		shader->screenHeight = getHeight();
@@ -180,9 +183,20 @@ namespace GK
 		case SDLK_d:
 			direction = CameraMovementDirection::RIGHT;
 			break;
+		case SDLK_ESCAPE:
+			if (type == SDL_KEYUP)
+				this->close();
+			break;
 		}
 		if (add)
 			cameraMoves.insert(direction);
 		else cameraMoves.erase(direction);
+	}
+
+	void GK3DWindow::handleMouseMotion()
+	{
+		int x, y;
+		SDL_GetRelativeMouseState(&x, &y);
+		camera->Rotate(x, -y);
 	}
 }

@@ -240,4 +240,9 @@ namespace GK
 	{
 		return mWindow;
 	}
+
+	void Window::close()
+	{
+		SDL_HideWindow(&(*mWindow));
+	}
 }

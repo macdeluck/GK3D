@@ -28,6 +28,7 @@ namespace GK
 		virtual int getHashCode();
 		void render();
 		void update();
+		void close();
 	protected:
 		virtual void on_render();
 		virtual void on_update();
