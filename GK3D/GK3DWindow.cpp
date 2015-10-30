@@ -1,117 +1,33 @@
 #include "GK3DWindow.h"
+#include "ObjectShader.h"
+#include "LightShader.h"
 #include <cmath>
 #include <glm/glm.hpp>
-#include <glm/gtc/matrix_transform.hpp>
-#include <glm/gtc/type_ptr.hpp>
 
 namespace GK
 {
 	const int SCREEN_FPS = 60;
 	const int SCREEN_TICK_PER_FRAME = 1000 / SCREEN_FPS;
-	const glm::vec3 startPosition = glm::vec3(0, 0, 5);
+	const glm::vec3 startPosition = glm::vec3(0, 0, -5);
 
-	class ObjectVertexShader : public Shader
-	{
-	public:
-		ObjectVertexShader() : Shader(Shader::FromFile("object_vertex_shader.glsl"), ShaderType::VertexShader) {}
-		virtual ~ObjectVertexShader() {}
-	};
-	class ObjectFragmentShader : public Shader
-	{
-	public:
-		ObjectFragmentShader() : Shader(Shader::FromFile("object_fragment_shader.glsl"), ShaderType::FragmentShader) {}
-		virtual ~ObjectFragmentShader() {}
-	};
-
-	class ObjectShader : public ShaderProgram
-	{
-	public:
-		glm::mat4 viewMatrix;
-		GLfloat zoom;
-		int screenWidth, screenHeight;
-
-		ObjectShader()
-			: ShaderProgram(std::shared_ptr<ObjectVertexShader>(new ObjectVertexShader()),
-			std::shared_ptr<ObjectFragmentShader>(new ObjectFragmentShader())),
-			viewMatrix(), zoom(45.0f)
-		{
-		}
-		virtual ~ObjectShader() {}
-		virtual void update() override
-		{
-			glm::mat4 model;
-			glm::mat4 projection;
-			projection = glm::perspective(zoom, ((float)screenWidth) / screenHeight, 0.1f, 100.0f);
-			glUniformMatrix4fv(getUniformLocation("model"), 1, GL_FALSE, glm::value_ptr(model));
-			glUniformMatrix4fv(getUniformLocation("view"), 1, GL_FALSE, glm::value_ptr(viewMatrix));
-			glUniformMatrix4fv(getUniformLocation("projection"), 1, GL_FALSE, glm::value_ptr(projection));
-		}
-		virtual void before_link() override
-		{
-			glBindAttribLocation(getProgramId(), 0, "position");
-			glBindAttribLocation(getProgramId(), 1, "color");
-		}
-		virtual void beforeRender(Drawable& drawable) override
-		{
-			glm::vec3 color = drawable.getObjectColor();
-			glUniform3f(getUniformLocation("objectColor"), color.r, color.g, color.b);
-		}
-	};
+	std::vector<Vertex> getVertices();
 
 	GK3DWindow::GK3DWindow(int width, int height, std::string title, bool shown, bool resizable)
 		: Window(width, height, title, shown, resizable),
 		camera(new Camera(startPosition)), cameraMoves(), countedFrames(0)
 	{
 		SDL_SetRelativeMouseMode(SDL_TRUE);
-		std::shared_ptr<ObjectShader> shaderProgram(new ObjectShader());
-		shaderProgram->compile();
-		shaderProgram->screenWidth = width;
-		shaderProgram->screenHeight = height;
-		std::vector<Vertex> vertices = {
-			// Positions         // Colors
-			Vertex(-0.5f, -0.5f, -0.5f),
-			Vertex(0.5f, -0.5f, -0.5f),
-			Vertex(0.5f, 0.5f, -0.5f),
-			Vertex(0.5f, 0.5f, -0.5f),
-			Vertex(-0.5f, 0.5f, -0.5f),
-			Vertex(-0.5f, -0.5f, -0.5f),
-
-			Vertex(-0.5f, -0.5f, 0.5f),
-			Vertex(0.5f, -0.5f, 0.5f),
-			Vertex(0.5f, 0.5f, 0.5f),
-			Vertex(0.5f, 0.5f, 0.5f),
-			Vertex(-0.5f, 0.5f, 0.5f),
-			Vertex(-0.5f, -0.5f, 0.5f),
-
-			Vertex(-0.5f, 0.5f, 0.5f),
-			Vertex(-0.5f, 0.5f, -0.5f),
-			Vertex(-0.5f, -0.5f, -0.5f),
-			Vertex(-0.5f, -0.5f, -0.5f),
-			Vertex(-0.5f, -0.5f, 0.5f),
-			Vertex(-0.5f, 0.5f, 0.5f),
-
-			Vertex(0.5f, 0.5f, 0.5f),
-			Vertex(0.5f, 0.5f, -0.5f),
-			Vertex(0.5f, -0.5f, -0.5f),
-			Vertex(0.5f, -0.5f, -0.5f),
-			Vertex(0.5f, -0.5f, 0.5f),
-			Vertex(0.5f, 0.5f, 0.5f),
-
-			Vertex(-0.5f, -0.5f, -0.5f),
-			Vertex(0.5f, -0.5f, -0.5f),
-			Vertex(0.5f, -0.5f, 0.5f),
-			Vertex(0.5f, -0.5f, 0.5f),
-			Vertex(-0.5f, -0.5f, 0.5f),
-			Vertex(-0.5f, -0.5f, -0.5f),
-
-			Vertex(-0.5f, 0.5f, -0.5f),
-			Vertex(0.5f, 0.5f, -0.5f),
-			Vertex(0.5f, 0.5f, 0.5f),
-			Vertex(0.5f, 0.5f, 0.5f),
-			Vertex(-0.5f, 0.5f, 0.5f),
-			Vertex(-0.5f, 0.5f, -0.5f)
-		};
-		box.reset(new Drawable(vertices, glm::vec3(1.0f, 0.5f, 0.31f), shaderProgram));
+		std::shared_ptr<ObjectShader> objectShader(new ObjectShader());
+		objectShader->compile();
+		objectShader->screenWidth = width;
+		objectShader->screenHeight = height;
+		std::vector<Vertex> vertices = getVertices();
+		std::vector<DrawableInstance> instances = { 
+			DrawableInstance(
+				glm::vec3(1.0f, 0.5f, 0.31f),
+				glm::vec3(1.0f, 0, 0),
+				glm::vec3(0.5f, 0.5f, 0.5f))};
+		box.reset(new Drawable(vertices, instances, objectShader));
 		fpsTimer.start();
 		capTimer.start();
 	}
@@ -218,5 +134,54 @@ namespace GK
 	void GK3DWindow::handleMouseWheel(SDL_MouseWheelEvent event)
 	{
 		camera->Zoom(event.y);
+	}
+
+	std::vector<Vertex> getVertices()
+	{
+		std::vector<Vertex> result = {
+			// Positions         // Colors
+			Vertex(-0.5f, -0.5f, -0.5f),
+				Vertex(0.5f, -0.5f, -0.5f),
+				Vertex(0.5f, 0.5f, -0.5f),
+				Vertex(0.5f, 0.5f, -0.5f),
+				Vertex(-0.5f, 0.5f, -0.5f),
+				Vertex(-0.5f, -0.5f, -0.5f),
+
+				Vertex(-0.5f, -0.5f, 0.5f),
+				Vertex(0.5f, -0.5f, 0.5f),
+				Vertex(0.5f, 0.5f, 0.5f),
+				Vertex(0.5f, 0.5f, 0.5f),
+				Vertex(-0.5f, 0.5f, 0.5f),
+				Vertex(-0.5f, -0.5f, 0.5f),
+
+				Vertex(-0.5f, 0.5f, 0.5f),
+				Vertex(-0.5f, 0.5f, -0.5f),
+				Vertex(-0.5f, -0.5f, -0.5f),
+				Vertex(-0.5f, -0.5f, -0.5f),
+				Vertex(-0.5f, -0.5f, 0.5f),
+				Vertex(-0.5f, 0.5f, 0.5f),
+
+				Vertex(0.5f, 0.5f, 0.5f),
+				Vertex(0.5f, 0.5f, -0.5f),
+				Vertex(0.5f, -0.5f, -0.5f),
+				Vertex(0.5f, -0.5f, -0.5f),
+				Vertex(0.5f, -0.5f, 0.5f),
+				Vertex(0.5f, 0.5f, 0.5f),
+
+				Vertex(-0.5f, -0.5f, -0.5f),
+				Vertex(0.5f, -0.5f, -0.5f),
+				Vertex(0.5f, -0.5f, 0.5f),
+				Vertex(0.5f, -0.5f, 0.5f),
+				Vertex(-0.5f, -0.5f, 0.5f),
+				Vertex(-0.5f, -0.5f, -0.5f),
+
+				Vertex(-0.5f, 0.5f, -0.5f),
+				Vertex(0.5f, 0.5f, -0.5f),
+				Vertex(0.5f, 0.5f, 0.5f),
+				Vertex(0.5f, 0.5f, 0.5f),
+				Vertex(-0.5f, 0.5f, 0.5f),
+				Vertex(-0.5f, 0.5f, -0.5f)
+		};
+		return result;
 	}
 }

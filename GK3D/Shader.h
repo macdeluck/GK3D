@@ -6,7 +6,7 @@
 namespace GK
 {
 	class ShaderProgram;
-	class Drawable;
+	struct DrawableInstance;
 
 	enum ShaderType
 	{
@@ -42,7 +42,7 @@ namespace GK
 		void use();
 		virtual void before_link();
 		virtual void update();
-		virtual void beforeRender(Drawable& drawable);
+		virtual void beforeRender(DrawableInstance drawable);
 	protected:
 		GLuint getUniformLocation(std::string uniformName);
 		GLuint getProgramId();

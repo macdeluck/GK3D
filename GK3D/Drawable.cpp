@@ -3,16 +3,25 @@
 
 namespace GK
 {
+	DrawableInstance::DrawableInstance(
+		glm::vec3 color,
+		glm::vec3 position,
+		glm::vec3 scale,
+		GLfloat angleX, GLfloat angleY, GLfloat angleZ)
+		: color(color), position(position), scale(scale), angleX(angleX), angleY(angleY), angleZ(angleZ)
+	{
+	}
+
 	Drawable::Drawable(std::vector<Vertex> vertices, std::vector<GLuint> indices,
-		glm::vec3 objectColor, std::shared_ptr<ShaderProgram> shaderProgram)
-		: vertices(vertices), objectColor(objectColor), indices(indices), vao(new GLuint(0)), vbo(new GLuint(0)), ebo(new GLuint(0)), shaderProgram(shaderProgram)
+		std::vector<DrawableInstance> instances, std::shared_ptr<ShaderProgram> shaderProgram)
+		: vertices(vertices), instances(instances), indices(indices), vao(new GLuint(0)), vbo(new GLuint(0)), ebo(new GLuint(0)), shaderProgram(shaderProgram)
 	{
 		init();
 	}
 
 	Drawable::Drawable(std::vector<Vertex> vertices,
-		glm::vec3 objectColor, std::shared_ptr<ShaderProgram> shaderProgram)
-		: vertices(vertices), objectColor(objectColor), indices(0), vao(new GLuint(0)), vbo(new GLuint(0)), ebo(new GLuint(0)), shaderProgram(shaderProgram)
+		std::vector<DrawableInstance> instances, std::shared_ptr<ShaderProgram> shaderProgram)
+		: vertices(vertices), instances(instances), indices(0), vao(new GLuint(0)), vbo(new GLuint(0)), ebo(new GLuint(0)), shaderProgram(shaderProgram)
 	{
 		init();
 	}
@@ -69,17 +78,20 @@ namespace GK
 	void Drawable::render()
 	{
 		shaderProgram->use();
-		shaderProgram->beforeRender(*this);
 		glBindVertexArray(*vao);
-		if (indices.size() > 0)
-			glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, 0);
-		else glDrawArrays(GL_TRIANGLES, 0, vertices.size());
+		for (size_t i = 0; i < instances.size(); i++)
+		{
+			shaderProgram->beforeRender(instances[i]);
+			if (indices.size() > 0)
+				glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, 0);
+			else glDrawArrays(GL_TRIANGLES, 0, vertices.size());
+		}
 		glBindVertexArray(0);
 	}
 
-	glm::vec3 Drawable::getObjectColor()
+	std::vector<DrawableInstance> Drawable::getInstances()
 	{
-		return objectColor;
+		return instances;
 	}
 
 	std::shared_ptr<ShaderProgram> Drawable::getShader()

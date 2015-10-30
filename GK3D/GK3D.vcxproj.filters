@@ -45,6 +45,12 @@
     <ClCompile Include="Timer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="ObjectShader.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="LightShader.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Common.h">
@@ -74,12 +80,21 @@
     <ClInclude Include="Timer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="ObjectShader.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="LightShader.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="object_fragment_shader.glsl">
       <Filter>Resource Files</Filter>
     </None>
     <None Include="object_vertex_shader.glsl">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="light_fragment_shader.glsl">
       <Filter>Resource Files</Filter>
     </None>
   </ItemGroup>

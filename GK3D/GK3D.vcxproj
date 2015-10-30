@@ -77,6 +77,8 @@
     <ClCompile Include="Drawable.cpp" />
     <ClCompile Include="GK3DApplication.cpp" />
     <ClCompile Include="GK3DWindow.cpp" />
+    <ClCompile Include="LightShader.cpp" />
+    <ClCompile Include="ObjectShader.cpp" />
     <ClCompile Include="Shader.cpp" />
     <ClCompile Include="Timer.cpp" />
     <ClCompile Include="Window.cpp" />
@@ -89,11 +91,14 @@
     <ClInclude Include="Drawable.h" />
     <ClInclude Include="GK3DApplication.h" />
     <ClInclude Include="GK3DWindow.h" />
+    <ClInclude Include="LightShader.h" />
+    <ClInclude Include="ObjectShader.h" />
     <ClInclude Include="Shader.h" />
     <ClInclude Include="Timer.h" />
     <ClInclude Include="Window.h" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="light_fragment_shader.glsl" />
     <None Include="object_fragment_shader.glsl" />
     <None Include="object_vertex_shader.glsl" />
   </ItemGroup>

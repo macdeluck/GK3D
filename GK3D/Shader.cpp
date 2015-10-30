@@ -1,4 +1,5 @@
 #include "Shader.h"
+#include "Drawable.h"
 #include <fstream>
 #include <sstream>
 
@@ -125,7 +126,7 @@ namespace GK
 	{
 	}
 
-	void ShaderProgram::beforeRender(Drawable& drawable)
+	void ShaderProgram::beforeRender(DrawableInstance drawableInstance)
 	{
 	}
 }

@@ -21,18 +21,34 @@ namespace GK
 		std::vector<GLfloat> toVector();
 	};
 
+	struct DrawableInstance
+	{
+		glm::vec3 color;
+		glm::vec3 position;
+		glm::vec3 scale;
+		GLfloat angleX;
+		GLfloat angleY;
+		GLfloat angleZ;
+
+		DrawableInstance(
+			glm::vec3 color = glm::vec3(0, 0, 0),
+			glm::vec3 position = glm::vec3(0, 0, 0),
+			glm::vec3 scale = glm::vec3(1, 1, 1),
+			GLfloat angleX = 0, GLfloat angleY = 0, GLfloat angleZ = 0);
+	};
+
 	class Drawable
 	{
 	public:
 		Drawable(std::vector<Vertex> vertices,
-			glm::vec3 objectColor,
+			std::vector<DrawableInstance> instances,
 			std::shared_ptr<ShaderProgram> shaderProgram);
 		Drawable(std::vector<Vertex> vertices,
 			std::vector<GLuint> indices,
-			glm::vec3 objectColor,
+			std::vector<DrawableInstance> instances,
 			std::shared_ptr<ShaderProgram> shaderProgram);
 		virtual ~Drawable();
-		glm::vec3 getObjectColor();
+		std::vector<DrawableInstance> getInstances();
 		void render();
 		std::shared_ptr<ShaderProgram> getShader();
 	private:
@@ -41,7 +57,7 @@ namespace GK
 		std::shared_ptr<GLuint> vbo;
 		std::shared_ptr<GLuint> ebo;
 		std::shared_ptr<GLuint> vao;
-		glm::vec3 objectColor;
+		std::vector<DrawableInstance> instances;
 		std::vector<Vertex> vertices;
 		std::vector<GLuint> indices;
 		std::shared_ptr<ShaderProgram> shaderProgram;

@@ -4,7 +4,7 @@ namespace GK
 {
 	const GLfloat Camera::MINFOV = 44.0f;
 	const GLfloat Camera::MAXFOV = 45.0f;
-	const GLfloat Camera::YAW = -90.0f;
+	const GLfloat Camera::YAW = 90.0f;
 	const GLfloat Camera::PITCH = 0.0f;
 	const GLfloat Camera::SPEED = 0.001f;
 	const GLfloat Camera::SENSITIVTY = 0.25f;
