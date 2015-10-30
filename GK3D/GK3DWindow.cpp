@@ -2,7 +2,6 @@
 #include "ObjectShader.h"
 #include "LightShader.h"
 #include <cmath>
-#include <glm/glm.hpp>
 
 namespace GK
 {

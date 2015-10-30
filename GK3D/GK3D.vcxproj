@@ -93,6 +93,7 @@
     <ClInclude Include="GK3DWindow.h" />
     <ClInclude Include="LightShader.h" />
     <ClInclude Include="ObjectShader.h" />
+    <ClInclude Include="Scene.h" />
     <ClInclude Include="Shader.h" />
     <ClInclude Include="Timer.h" />
     <ClInclude Include="Window.h" />

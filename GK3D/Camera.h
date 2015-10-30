@@ -2,9 +2,7 @@
 #define _GK_CAMERA
 
 #include "Common.h"
-#include <vector>
-#include <glm/glm.hpp>
-#include <glm/gtc/matrix_transform.hpp>
+
 namespace GK
 {
 	enum CameraMovementDirection {
