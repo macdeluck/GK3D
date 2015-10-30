@@ -24,6 +24,7 @@ namespace GK
 		virtual void on_render() override;
 		virtual void on_update() override;
 	private:
+		int currentPolygonMode;
 		void postFrame();
 		void handleKey(Uint32 state, SDL_Keycode key);
 		void handleMouseMotion();

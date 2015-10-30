@@ -11,7 +11,8 @@ namespace GK
 
 	GK3DWindow::GK3DWindow(int width, int height, std::string title, bool shown, bool resizable)
 		: Window(width, height, title, shown, resizable),
-		cameraMoves(), countedFrames(0), scene(new GK3DScene(width, height))
+		cameraMoves(), countedFrames(0), scene(new GK3DScene(width, height)),
+		currentPolygonMode(0)
 	{
 		SDL_SetRelativeMouseMode(SDL_TRUE);
 		fpsTimer.start();
@@ -98,6 +99,14 @@ namespace GK
 		case SDLK_ESCAPE:
 			if (type == SDL_KEYUP)
 				this->close();
+			break;
+		case SDLK_f:
+			if (type == SDL_KEYUP)
+			{
+				GLint polygonModes[] = { GL_FILL, GL_LINE };
+				glPolygonMode(GL_FRONT_AND_BACK, polygonModes[currentPolygonMode]);
+				currentPolygonMode = 1 - currentPolygonMode;
+			}
 			break;
 		}
 		if (add)
