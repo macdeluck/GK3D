@@ -43,7 +43,8 @@ namespace GK
 		glUniformMatrix4fv(getUniformLocation("model"), 1, GL_FALSE, glm::value_ptr(model));
 		glm::vec3 color = drawableInstance.color;
 		glUniform3f(getUniformLocation("objectColor"), color.r, color.g, color.b);
-		glm::vec3 lightColor = (*scene.lock()->getDrawables().lock()->begin())->getInstances().begin()->color;
-		glUniform3f(getUniformLocation("lightColor"), lightColor.r, lightColor.g, lightColor.b);
+		DrawableInstance lightSource = (*(*scene.lock()->getDrawables().lock()->begin())->getInstances().begin());
+		glUniform3f(getUniformLocation("lightColor"), lightSource.color.r, lightSource.color.g, lightSource.color.b);
+		glUniform3f(getUniformLocation("lightPos"), lightSource.position.x, lightSource.position.y, lightSource.position.z);
 	}
 }

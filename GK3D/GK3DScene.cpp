@@ -20,7 +20,7 @@ namespace GK
 		{
 			DrawableInstance(lightShader,
 			glm::vec3(1.0f, 1.0f, 1.0f),
-			glm::vec3(1.0f, 0, 0),
+			glm::vec3(1.3f, 0.7f, -1.0f),
 			glm::vec3(0.5f, 0.5f, 0.5f)),
 			DrawableInstance(objectShader, glm::vec3(1.0f, 0.5f, 0.31f))
 		};
