@@ -8,40 +8,39 @@ namespace GK
 {
 	const int SCREEN_FPS = 60;
 	const int SCREEN_TICK_PER_FRAME = 1000 / SCREEN_FPS;
-	const glm::vec3 startPosition = glm::vec3(0, 0, 0);
+	const glm::vec3 startPosition = glm::vec3(0, 0, 5);
 
-	class GK3DVertexShader : public Shader
+	class ObjectVertexShader : public Shader
 	{
 	public:
-		GK3DVertexShader() : Shader(Shader::FromFile("vertex_shader.glsl"), ShaderType::VertexShader) {}
-		virtual ~GK3DVertexShader() {}
+		ObjectVertexShader() : Shader(Shader::FromFile("object_vertex_shader.glsl"), ShaderType::VertexShader) {}
+		virtual ~ObjectVertexShader() {}
 	};
-	class GK3DFragmentShader : public Shader
+	class ObjectFragmentShader : public Shader
 	{
 	public:
-		GK3DFragmentShader() : Shader(Shader::FromFile("fragment_shader.glsl"), ShaderType::FragmentShader) {}
-		virtual ~GK3DFragmentShader() {}
+		ObjectFragmentShader() : Shader(Shader::FromFile("object_fragment_shader.glsl"), ShaderType::FragmentShader) {}
+		virtual ~ObjectFragmentShader() {}
 	};
 
-	class GK3DShaderProgram : public ShaderProgram
+	class ObjectShader : public ShaderProgram
 	{
 	public:
 		glm::mat4 viewMatrix;
 		GLfloat zoom;
 		int screenWidth, screenHeight;
 
-		GK3DShaderProgram()
-			: ShaderProgram(std::shared_ptr<GK3DVertexShader>(new GK3DVertexShader()),
-			std::shared_ptr<GK3DFragmentShader>(new GK3DFragmentShader())),
+		ObjectShader()
+			: ShaderProgram(std::shared_ptr<ObjectVertexShader>(new ObjectVertexShader()),
+			std::shared_ptr<ObjectFragmentShader>(new ObjectFragmentShader())),
 			viewMatrix(), zoom(45.0f)
 		{
 		}
-		virtual ~GK3DShaderProgram() {}
+		virtual ~ObjectShader() {}
 		virtual void update() override
 		{
 			glm::mat4 model;
 			glm::mat4 projection;
-			model = glm::rotate(model, glm::radians(-55.0f), glm::vec3(1.0f, 0.0f, 0.0f));
 			projection = glm::perspective(zoom, ((float)screenWidth) / screenHeight, 0.1f, 100.0f);
 			glUniformMatrix4fv(getUniformLocation("model"), 1, GL_FALSE, glm::value_ptr(model));
 			glUniformMatrix4fv(getUniformLocation("view"), 1, GL_FALSE, glm::value_ptr(viewMatrix));
@@ -64,7 +63,7 @@ namespace GK
 		camera(new Camera(startPosition)), cameraMoves(), countedFrames(0)
 	{
 		SDL_SetRelativeMouseMode(SDL_TRUE);
-		std::shared_ptr<GK3DShaderProgram> shaderProgram(new GK3DShaderProgram());
+		std::shared_ptr<ObjectShader> shaderProgram(new ObjectShader());
 		shaderProgram->compile();
 		shaderProgram->screenWidth = width;
 		shaderProgram->screenHeight = height;
@@ -133,7 +132,7 @@ namespace GK
 			handleMouseMotion();
 		if (event.type == SDL_MOUSEWHEEL)
 			handleMouseWheel(event.wheel);
-		std::shared_ptr<GK3DShaderProgram> shader = std::dynamic_pointer_cast<GK3DShaderProgram>(box->getShader());
+		std::shared_ptr<ObjectShader> shader = std::dynamic_pointer_cast<ObjectShader>(box->getShader());
 		shader->screenWidth = getWidth();
 		shader->screenHeight = getHeight();
 	}
@@ -149,8 +148,8 @@ namespace GK
 		{
 			camera->Move(*it, capTimer.getTicks());
 		}
-		std::dynamic_pointer_cast<GK3DShaderProgram>(box->getShader())->viewMatrix = camera->GetViewMatrix();
-		std::dynamic_pointer_cast<GK3DShaderProgram>(box->getShader())->zoom = camera->GetZoom();
+		std::dynamic_pointer_cast<ObjectShader>(box->getShader())->viewMatrix = camera->GetViewMatrix();
+		std::dynamic_pointer_cast<ObjectShader>(box->getShader())->zoom = camera->GetZoom();
 		box->getShader()->use();
 		box->getShader()->update();
 		postFrame();
