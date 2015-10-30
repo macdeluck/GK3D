@@ -1,11 +1,13 @@
 #ifndef _GK_DRAWABLE
 #define _GK_DRAWABLE
 
-#include "Shader.h"
-#include <glm/glm.hpp>
+#include "Common.h"
 
 namespace GK
 {
+	class ShaderProgram;
+	class Scene;
+
 	struct Vertex
 	{
 	public:
@@ -49,7 +51,7 @@ namespace GK
 			std::shared_ptr<ShaderProgram> shaderProgram);
 		virtual ~Drawable();
 		std::vector<DrawableInstance> getInstances();
-		void render();
+		void render(std::weak_ptr<Scene> scene);
 		std::shared_ptr<ShaderProgram> getShader();
 	private:
 		void init();

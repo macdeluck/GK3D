@@ -70,7 +70,7 @@ namespace GK
 	{
 		glAttachShader(*programId, *(vertexShader->shaderId));
 		glAttachShader(*programId, *(fragmentShader->shaderId));
-		before_link();
+		beforeLink();
 		glLinkProgram(*programId);
 
 		GLint success;
@@ -105,10 +105,6 @@ namespace GK
 		return fragmentShader;
 	}
 
-	void ShaderProgram::update()
-	{
-	}
-
 	GLuint ShaderProgram::getProgramId()
 	{
 		return *programId;
@@ -122,11 +118,11 @@ namespace GK
 		return uniformLoc;
 	}
 
-	void ShaderProgram::before_link()
+	void ShaderProgram::beforeLink()
 	{
 	}
 
-	void ShaderProgram::beforeRender(DrawableInstance drawableInstance)
+	void ShaderProgram::prepareForRender(DrawableInstance drawableInstance, std::weak_ptr<Scene> scene)
 	{
 	}
 }

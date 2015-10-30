@@ -23,15 +23,10 @@ namespace GK
 	class ObjectShader : public ShaderProgram
 	{
 	public:
-		glm::mat4 viewMatrix;
-		GLfloat zoom;
-		int screenWidth, screenHeight;
-
 		ObjectShader();
 		virtual ~ObjectShader();
-		virtual void update() override;
-		virtual void before_link() override;
-		virtual void beforeRender(DrawableInstance drawableInstance) override;
+		virtual void beforeLink() override;
+		virtual void prepareForRender(DrawableInstance drawableInstance, std::weak_ptr<Scene> scene) override;
 	};
 }
 

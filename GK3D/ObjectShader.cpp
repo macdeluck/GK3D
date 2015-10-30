@@ -1,4 +1,6 @@
 #include "ObjectShader.h"
+#include "Scene.h"
+#include "Camera.h"
 
 namespace GK
 {
@@ -11,28 +13,26 @@ namespace GK
 
 	ObjectShader::ObjectShader()
 		: ShaderProgram(std::shared_ptr<ObjectVertexShader>(new ObjectVertexShader()),
-		std::shared_ptr<ObjectFragmentShader>(new ObjectFragmentShader())),
-		viewMatrix(), zoom(45.0f)
+		std::shared_ptr<ObjectFragmentShader>(new ObjectFragmentShader()))
 		{
 		}
 
 	ObjectShader::~ObjectShader() {}
 
-	void ObjectShader::update()
-	{
-		glm::mat4 projection;
-		projection = glm::perspective(zoom, ((float)screenWidth) / screenHeight, 0.1f, 100.0f);
-		glUniformMatrix4fv(getUniformLocation("view"), 1, GL_FALSE, glm::value_ptr(viewMatrix));
-		glUniformMatrix4fv(getUniformLocation("projection"), 1, GL_FALSE, glm::value_ptr(projection));
-	}
-
-	void ObjectShader::before_link()
+	void ObjectShader::beforeLink()
 	{
 		glBindAttribLocation(getProgramId(), 0, "position");
 	}
 
-	void ObjectShader::beforeRender(DrawableInstance drawableInstance)
+	void ObjectShader::prepareForRender(DrawableInstance drawableInstance, std::weak_ptr<Scene> scene)
 	{
+		glm::mat4 projection;
+		std::shared_ptr<Camera> camera = scene.lock()->getCamera().lock();
+		projection = glm::perspective(camera->getZoom(),
+			((float)camera->getScreenWidth()) / camera->getScreenHeight(), 0.1f, 100.0f);
+		glUniformMatrix4fv(getUniformLocation("view"), 1, GL_FALSE,
+			glm::value_ptr(camera->getViewMatrix()));
+		glUniformMatrix4fv(getUniformLocation("projection"), 1, GL_FALSE, glm::value_ptr(projection));
 		glm::mat4 model;
 		model = glm::translate(model, drawableInstance.position);
 		model = glm::rotate(model, drawableInstance.angleX, glm::vec3(1.0f, 0, 0));

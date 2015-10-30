@@ -1,4 +1,6 @@
 #include "Drawable.h"
+#include "Scene.h"
+#include "Shader.h"
 #include <algorithm>
 
 namespace GK
@@ -75,13 +77,13 @@ namespace GK
 		}
 	}
 
-	void Drawable::render()
+	void Drawable::render(std::weak_ptr<Scene> scene)
 	{
 		shaderProgram->use();
 		glBindVertexArray(*vao);
 		for (size_t i = 0; i < instances.size(); i++)
 		{
-			shaderProgram->beforeRender(instances[i]);
+			shaderProgram->prepareForRender(instances[i], scene);
 			if (indices.size() > 0)
 				glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, 0);
 			else glDrawArrays(GL_TRIANGLES, 0, vertices.size());

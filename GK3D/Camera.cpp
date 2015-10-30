@@ -11,9 +11,9 @@ namespace GK
 	const GLfloat Camera::WHEELSENSITIVTY = 0.1f;
 	const GLfloat Camera::ZOOM = 45.0f;
 
-	Camera::Camera(glm::vec3 position, glm::vec3 up, GLfloat yaw, GLfloat pitch)
-		: front(glm::vec3(0.0f, 0.0f, -1.0f)),
-		movementSpeed(SPEED), mouseSensitivity(SENSITIVTY), wheelSensitivity(WHEELSENSITIVTY), zoom(ZOOM)
+	Camera::Camera(int screenWidth, int screenHeight, glm::vec3 position, glm::vec3 up, GLfloat yaw, GLfloat pitch)
+		: screenWidth(screenWidth), screenHeight(screenHeight), front(glm::vec3(0.0f, 0.0f, -1.0f)),
+		movementSpeed(SPEED), mouseSensitivity(SENSITIVTY), wheelSensitivity(WHEELSENSITIVTY), _zoom(ZOOM)
 	{
 		this->position = position;
 		this->worldUp = up;
@@ -22,7 +22,9 @@ namespace GK
 		this->updateCameraVectors();
 	}
 
-	Camera::Camera(GLfloat posX, GLfloat posY, GLfloat posZ, GLfloat upX, GLfloat upY, GLfloat upZ, GLfloat yaw, GLfloat pitch) : front(glm::vec3(0.0f, 0.0f, -1.0f)), movementSpeed(SPEED), mouseSensitivity(SENSITIVTY), zoom(ZOOM)
+	Camera::Camera(int screenWidth, int screenHeight, GLfloat posX, GLfloat posY, GLfloat posZ, GLfloat upX, GLfloat upY, GLfloat upZ, GLfloat yaw, GLfloat pitch)
+		: screenWidth(screenWidth), screenHeight(screenHeight),
+		front(glm::vec3(0.0f, 0.0f, -1.0f)), movementSpeed(SPEED), mouseSensitivity(SENSITIVTY), _zoom(ZOOM)
 	{
 		this->position = glm::vec3(posX, posY, posZ);
 		this->worldUp = glm::vec3(upX, upY, upZ);
@@ -31,17 +33,17 @@ namespace GK
 		this->updateCameraVectors();
 	}
 
-	glm::mat4 Camera::GetViewMatrix()
+	glm::mat4 Camera::getViewMatrix()
 	{
 		return glm::lookAt(this->position, this->position + this->front, this->up);
 	}
 
-	GLfloat Camera::GetZoom()
+	GLfloat Camera::getZoom()
 	{
-		return this->zoom;
+		return this->_zoom;
 	}
 
-	void Camera::Move(CameraMovementDirection direction, GLfloat deltaTime)
+	void Camera::move(CameraMovementDirection direction, GLfloat deltaTime)
 	{
 		GLfloat velocity = this->movementSpeed * deltaTime;
 		if (direction == FORWARD)
@@ -58,7 +60,7 @@ namespace GK
 			this->position += this->up * velocity;
 	}
 
-	void Camera::Rotate(GLfloat xoffset, GLfloat yoffset, GLboolean constrainpitch)
+	void Camera::rotate(GLfloat xoffset, GLfloat yoffset, GLboolean constrainpitch)
 	{
 		xoffset *= this->mouseSensitivity;
 		yoffset *= this->mouseSensitivity;
@@ -79,15 +81,15 @@ namespace GK
 		this->updateCameraVectors();
 	}
 
-	void Camera::Zoom(GLfloat yoffset)
+	void Camera::zoom(GLfloat yoffset)
 	{
 		yoffset *= this->wheelSensitivity;
-		if (this->zoom >= MINFOV && this->zoom <= MAXFOV)
-			this->zoom -= yoffset;
-		if (this->zoom <= MINFOV)
-			this->zoom = MINFOV;
-		if (this->zoom >= MAXFOV)
-			this->zoom = MAXFOV;
+		if (this->_zoom >= MINFOV && this->_zoom <= MAXFOV)
+			this->_zoom -= yoffset;
+		if (this->_zoom <= MINFOV)
+			this->_zoom = MINFOV;
+		if (this->_zoom >= MAXFOV)
+			this->_zoom = MAXFOV;
 	}
 
 	void Camera::updateCameraVectors()
@@ -99,5 +101,22 @@ namespace GK
 		this->front = glm::normalize(front);
 		this->right = glm::normalize(glm::cross(this->front, this->worldUp));
 		this->up = glm::normalize(glm::cross(this->right, this->front));
+	}
+
+	int Camera::getScreenWidth()
+	{
+		return screenWidth;
+	}
+	void Camera::setScreenWidth(int screenWidth)
+	{
+		this->screenWidth = screenWidth;
+	}
+	int Camera::getScreenHeight()
+	{
+		return screenHeight;
+	}
+	void Camera::setScreenHeight(int screenHeight)
+	{
+		this->screenHeight = screenHeight;
 	}
 }

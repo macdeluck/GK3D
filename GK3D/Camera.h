@@ -17,15 +17,19 @@ namespace GK
 	class Camera
 	{
 	public:
-		Camera(glm::vec3 position = glm::vec3(0.0f, 0.0f, 0.0f), 
+		Camera(int screenWidth, int screenHeight, glm::vec3 position = glm::vec3(0.0f, 0.0f, 0.0f),
 			glm::vec3 up = glm::vec3(0.0f, 1.0f, 0.0f), GLfloat yaw = YAW, GLfloat pitch = PITCH);
-		Camera(GLfloat posX, GLfloat posY, GLfloat posZ, GLfloat upX, GLfloat upY, GLfloat upZ, GLfloat yaw, GLfloat pitch);
+		Camera(int screenWidth, int screenHeight, GLfloat posX, GLfloat posY, GLfloat posZ, GLfloat upX, GLfloat upY, GLfloat upZ, GLfloat yaw, GLfloat pitch);
 
-		glm::mat4 GetViewMatrix();
-		GLfloat GetZoom();
-		void Move(CameraMovementDirection direction, GLfloat deltaTime);
-		void Rotate(GLfloat xoffset, GLfloat yoffset, GLboolean constrainPitch = true);
-		void Zoom(GLfloat yoffset);
+		glm::mat4 getViewMatrix();
+		GLfloat getZoom();
+		void move(CameraMovementDirection direction, GLfloat deltaTime);
+		void rotate(GLfloat xoffset, GLfloat yoffset, GLboolean constrainPitch = true);
+		void zoom(GLfloat yoffset);
+		int getScreenWidth();
+		void setScreenWidth(int screenWidth);
+		int getScreenHeight();
+		void setScreenHeight(int screenHeight);
 
 	private:
 		glm::vec3 position;
@@ -40,7 +44,9 @@ namespace GK
 		GLfloat movementSpeed;
 		GLfloat mouseSensitivity;
 		GLfloat wheelSensitivity;
-		GLfloat zoom;
+		GLfloat _zoom;
+		int screenWidth;
+		int screenHeight;
 		static const GLfloat YAW;
 		static const GLfloat PITCH;
 		static const GLfloat SPEED;

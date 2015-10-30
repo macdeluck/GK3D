@@ -1,4 +1,5 @@
 #include "GK3DWindow.h"
+#include "GK3DScene.h"
 #include "ObjectShader.h"
 #include "LightShader.h"
 #include <cmath>
@@ -7,26 +8,12 @@ namespace GK
 {
 	const int SCREEN_FPS = 60;
 	const int SCREEN_TICK_PER_FRAME = 1000 / SCREEN_FPS;
-	const glm::vec3 startPosition = glm::vec3(0, 0, -5);
-
-	std::vector<Vertex> getVertices();
 
 	GK3DWindow::GK3DWindow(int width, int height, std::string title, bool shown, bool resizable)
 		: Window(width, height, title, shown, resizable),
-		camera(new Camera(startPosition)), cameraMoves(), countedFrames(0)
+		cameraMoves(), countedFrames(0), scene(new GK3DScene(width, height))
 	{
 		SDL_SetRelativeMouseMode(SDL_TRUE);
-		std::shared_ptr<ObjectShader> objectShader(new ObjectShader());
-		objectShader->compile();
-		objectShader->screenWidth = width;
-		objectShader->screenHeight = height;
-		std::vector<Vertex> vertices = getVertices();
-		std::vector<DrawableInstance> instances = { 
-			DrawableInstance(
-				glm::vec3(1.0f, 0.5f, 0.31f),
-				glm::vec3(1.0f, 0, 0),
-				glm::vec3(0.5f, 0.5f, 0.5f))};
-		box.reset(new Drawable(vertices, instances, objectShader));
 		fpsTimer.start();
 		capTimer.start();
 	}
@@ -47,26 +34,21 @@ namespace GK
 			handleMouseMotion();
 		if (event.type == SDL_MOUSEWHEEL)
 			handleMouseWheel(event.wheel);
-		std::shared_ptr<ObjectShader> shader = std::dynamic_pointer_cast<ObjectShader>(box->getShader());
-		shader->screenWidth = getWidth();
-		shader->screenHeight = getHeight();
 	}
 
 	void GK3DWindow::on_render()
 	{
-		box->render();
+		scene->render();
 	}
 	void GK3DWindow::on_update()
 	{
 		for (std::set<CameraMovementDirection>::iterator it = cameraMoves.begin();
 			it != cameraMoves.end(); it++)
 		{
-			camera->Move(*it, capTimer.getTicks());
+			scene->getCamera().lock()->move(*it, capTimer.getTicks());
 		}
-		std::dynamic_pointer_cast<ObjectShader>(box->getShader())->viewMatrix = camera->GetViewMatrix();
-		std::dynamic_pointer_cast<ObjectShader>(box->getShader())->zoom = camera->GetZoom();
-		box->getShader()->use();
-		box->getShader()->update();
+		scene->getCamera().lock()->setScreenWidth(getWidth());
+		scene->getCamera().lock()->setScreenHeight(getHeight());
 		postFrame();
 	}
 
@@ -127,60 +109,11 @@ namespace GK
 	{
 		int x, y;
 		SDL_GetRelativeMouseState(&x, &y);
-		camera->Rotate(x, -y);
+		scene->getCamera().lock()->rotate(x, -y);
 	}
 
 	void GK3DWindow::handleMouseWheel(SDL_MouseWheelEvent event)
 	{
-		camera->Zoom(event.y);
-	}
-
-	std::vector<Vertex> getVertices()
-	{
-		std::vector<Vertex> result = {
-			// Positions         // Colors
-			Vertex(-0.5f, -0.5f, -0.5f),
-				Vertex(0.5f, -0.5f, -0.5f),
-				Vertex(0.5f, 0.5f, -0.5f),
-				Vertex(0.5f, 0.5f, -0.5f),
-				Vertex(-0.5f, 0.5f, -0.5f),
-				Vertex(-0.5f, -0.5f, -0.5f),
-
-				Vertex(-0.5f, -0.5f, 0.5f),
-				Vertex(0.5f, -0.5f, 0.5f),
-				Vertex(0.5f, 0.5f, 0.5f),
-				Vertex(0.5f, 0.5f, 0.5f),
-				Vertex(-0.5f, 0.5f, 0.5f),
-				Vertex(-0.5f, -0.5f, 0.5f),
-
-				Vertex(-0.5f, 0.5f, 0.5f),
-				Vertex(-0.5f, 0.5f, -0.5f),
-				Vertex(-0.5f, -0.5f, -0.5f),
-				Vertex(-0.5f, -0.5f, -0.5f),
-				Vertex(-0.5f, -0.5f, 0.5f),
-				Vertex(-0.5f, 0.5f, 0.5f),
-
-				Vertex(0.5f, 0.5f, 0.5f),
-				Vertex(0.5f, 0.5f, -0.5f),
-				Vertex(0.5f, -0.5f, -0.5f),
-				Vertex(0.5f, -0.5f, -0.5f),
-				Vertex(0.5f, -0.5f, 0.5f),
-				Vertex(0.5f, 0.5f, 0.5f),
-
-				Vertex(-0.5f, -0.5f, -0.5f),
-				Vertex(0.5f, -0.5f, -0.5f),
-				Vertex(0.5f, -0.5f, 0.5f),
-				Vertex(0.5f, -0.5f, 0.5f),
-				Vertex(-0.5f, -0.5f, 0.5f),
-				Vertex(-0.5f, -0.5f, -0.5f),
-
-				Vertex(-0.5f, 0.5f, -0.5f),
-				Vertex(0.5f, 0.5f, -0.5f),
-				Vertex(0.5f, 0.5f, 0.5f),
-				Vertex(0.5f, 0.5f, 0.5f),
-				Vertex(-0.5f, 0.5f, 0.5f),
-				Vertex(-0.5f, 0.5f, -0.5f)
-		};
-		return result;
+		scene->getCamera().lock()->zoom(event.y);
 	}
 }

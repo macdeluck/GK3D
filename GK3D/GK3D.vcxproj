@@ -76,9 +76,11 @@
     <ClCompile Include="Common.cpp" />
     <ClCompile Include="Drawable.cpp" />
     <ClCompile Include="GK3DApplication.cpp" />
+    <ClCompile Include="GK3DScene.cpp" />
     <ClCompile Include="GK3DWindow.cpp" />
     <ClCompile Include="LightShader.cpp" />
     <ClCompile Include="ObjectShader.cpp" />
+    <ClCompile Include="Scene.cpp" />
     <ClCompile Include="Shader.cpp" />
     <ClCompile Include="Timer.cpp" />
     <ClCompile Include="Window.cpp" />
@@ -90,6 +92,7 @@
     <ClInclude Include="Common.h" />
     <ClInclude Include="Drawable.h" />
     <ClInclude Include="GK3DApplication.h" />
+    <ClInclude Include="GK3DScene.h" />
     <ClInclude Include="GK3DWindow.h" />
     <ClInclude Include="LightShader.h" />
     <ClInclude Include="ObjectShader.h" />

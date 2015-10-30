@@ -10,6 +10,8 @@
 
 namespace GK
 {
+	class GK3DScene;
+
 	class GK3DWindow : public Window
 	{
 	public:
@@ -30,8 +32,7 @@ namespace GK
 		Timer capTimer;
 		int countedFrames;
 		std::set<CameraMovementDirection> cameraMoves;
-		std::shared_ptr<Drawable> box;
-		std::shared_ptr<Camera> camera;
+		std::shared_ptr<GK3DScene> scene;
 	};
 }
 

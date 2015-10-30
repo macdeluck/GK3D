@@ -15,7 +15,12 @@ namespace GK
 
 	LightShader::~LightShader() {}
 
-	void LightShader::update()
+	void LightShader::beforeLink()
+	{
+		glBindAttribLocation(getProgramId(), 0, "position");
+	}
+
+	void LightShader::prepareForRender(DrawableInstance drawableInstance, std::weak_ptr<Scene> scene)
 	{
 		glm::mat4 model;
 		glm::mat4 projection;
@@ -23,14 +28,5 @@ namespace GK
 		glUniformMatrix4fv(getUniformLocation("model"), 1, GL_FALSE, glm::value_ptr(model));
 		glUniformMatrix4fv(getUniformLocation("view"), 1, GL_FALSE, glm::value_ptr(viewMatrix));
 		glUniformMatrix4fv(getUniformLocation("projection"), 1, GL_FALSE, glm::value_ptr(projection));
-	}
-
-	void LightShader::before_link()
-	{
-		glBindAttribLocation(getProgramId(), 0, "position");
-	}
-
-	void LightShader::beforeRender(DrawableInstance drawableInstance)
-	{
 	}
 }

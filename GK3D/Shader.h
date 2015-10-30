@@ -6,6 +6,7 @@
 namespace GK
 {
 	class ShaderProgram;
+	class Scene;
 	struct DrawableInstance;
 
 	enum ShaderType
@@ -40,9 +41,8 @@ namespace GK
 		std::shared_ptr<Shader> getFragmentShader();
 		void compile();
 		void use();
-		virtual void before_link();
-		virtual void update();
-		virtual void beforeRender(DrawableInstance drawable);
+		virtual void beforeLink();
+		virtual void prepareForRender(DrawableInstance drawable, std::weak_ptr<Scene> scene);
 	protected:
 		GLuint getUniformLocation(std::string uniformName);
 		GLuint getProgramId();
