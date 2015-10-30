@@ -14,7 +14,7 @@ namespace GK
 		cameraMoves(), countedFrames(0), scene(new GK3DScene(width, height)),
 		currentPolygonMode(0)
 	{
-		glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
+		glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
 		SDL_SetRelativeMouseMode(SDL_TRUE);
 		fpsTimer.start();
 		capTimer.start();
