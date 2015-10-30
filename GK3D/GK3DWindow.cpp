@@ -27,12 +27,13 @@ namespace GK
 	{
 	public:
 		glm::mat4 viewMatrix;
+		GLfloat zoom;
 		int screenWidth, screenHeight;
 
 		GK3DShaderProgram()
 			: ShaderProgram(std::shared_ptr<GK3DVertexShader>(new GK3DVertexShader()),
 			std::shared_ptr<GK3DFragmentShader>(new GK3DFragmentShader())),
-			viewMatrix()
+			viewMatrix(), zoom(45.0f)
 		{
 		}
 		virtual ~GK3DShaderProgram() {}
@@ -41,7 +42,7 @@ namespace GK
 			glm::mat4 model;
 			glm::mat4 projection;
 			model = glm::rotate(model, glm::radians(-55.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-			projection = glm::perspective(45.0f, ((float)screenWidth) / screenHeight, 0.1f, 100.0f);
+			projection = glm::perspective(zoom, ((float)screenWidth) / screenHeight, 0.1f, 100.0f);
 			glUniformMatrix4fv(getUniformLocation("model"), 1, GL_FALSE, glm::value_ptr(model));
 			glUniformMatrix4fv(getUniformLocation("view"), 1, GL_FALSE, glm::value_ptr(viewMatrix));
 			glUniformMatrix4fv(getUniformLocation("projection"), 1, GL_FALSE, glm::value_ptr(projection));
@@ -125,6 +126,8 @@ namespace GK
 			handleKey(event.type, event.key.keysym.sym);
 		if (event.type == SDL_MOUSEMOTION)
 			handleMouseMotion();
+		if (event.type == SDL_MOUSEWHEEL)
+			handleMouseWheel(event.wheel);
 		std::shared_ptr<GK3DShaderProgram> shader = std::dynamic_pointer_cast<GK3DShaderProgram>(box->getShader());
 		shader->screenWidth = getWidth();
 		shader->screenHeight = getHeight();
@@ -142,6 +145,7 @@ namespace GK
 			camera->Move(*it, capTimer.getTicks());
 		}
 		std::dynamic_pointer_cast<GK3DShaderProgram>(box->getShader())->viewMatrix = camera->GetViewMatrix();
+		std::dynamic_pointer_cast<GK3DShaderProgram>(box->getShader())->zoom = camera->GetZoom();
 		box->getShader()->use();
 		box->getShader()->update();
 		postFrame();
@@ -162,7 +166,7 @@ namespace GK
 			avgFPS = 0;
 		}
 		std::stringstream ss = std::stringstream("");
-		ss << "GK Window (" << avgFPS << ") ";
+		ss << "GK Window (FPS: " << avgFPS << ") ";
 		SDL_SetWindowTitle(&(*(this->getWindowHandle().lock())), ss.str().c_str());
 	}
 
@@ -205,5 +209,10 @@ namespace GK
 		int x, y;
 		SDL_GetRelativeMouseState(&x, &y);
 		camera->Rotate(x, -y);
+	}
+
+	void GK3DWindow::handleMouseWheel(SDL_MouseWheelEvent event)
+	{
+		camera->Zoom(event.y);
 	}
 }

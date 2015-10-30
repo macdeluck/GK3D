@@ -2,14 +2,18 @@
 
 namespace GK
 {
-
+	const GLfloat Camera::MINFOV = 44.0f;
+	const GLfloat Camera::MAXFOV = 45.0f;
 	const GLfloat Camera::YAW = -90.0f;
 	const GLfloat Camera::PITCH = 0.0f;
 	const GLfloat Camera::SPEED = 0.001f;
 	const GLfloat Camera::SENSITIVTY = 0.25f;
+	const GLfloat Camera::WHEELSENSITIVTY = 0.1f;
 	const GLfloat Camera::ZOOM = 45.0f;
 
-	Camera::Camera(glm::vec3 position, glm::vec3 up, GLfloat yaw, GLfloat pitch) : front(glm::vec3(0.0f, 0.0f, -1.0f)), movementSpeed(SPEED), mouseSensitivity(SENSITIVTY), zoom(ZOOM)
+	Camera::Camera(glm::vec3 position, glm::vec3 up, GLfloat yaw, GLfloat pitch)
+		: front(glm::vec3(0.0f, 0.0f, -1.0f)),
+		movementSpeed(SPEED), mouseSensitivity(SENSITIVTY), wheelSensitivity(WHEELSENSITIVTY), zoom(ZOOM)
 	{
 		this->position = position;
 		this->worldUp = up;
@@ -30,6 +34,11 @@ namespace GK
 	glm::mat4 Camera::GetViewMatrix()
 	{
 		return glm::lookAt(this->position, this->position + this->front, this->up);
+	}
+
+	GLfloat Camera::GetZoom()
+	{
+		return this->zoom;
 	}
 
 	void Camera::Move(CameraMovementDirection direction, GLfloat deltaTime)
@@ -72,12 +81,13 @@ namespace GK
 
 	void Camera::Zoom(GLfloat yoffset)
 	{
-		if (this->zoom >= 1.0f && this->zoom <= 45.0f)
+		yoffset *= this->wheelSensitivity;
+		if (this->zoom >= MINFOV && this->zoom <= MAXFOV)
 			this->zoom -= yoffset;
-		if (this->zoom <= 1.0f)
-			this->zoom = 1.0f;
-		if (this->zoom >= 45.0f)
-			this->zoom = 45.0f;
+		if (this->zoom <= MINFOV)
+			this->zoom = MINFOV;
+		if (this->zoom >= MAXFOV)
+			this->zoom = MAXFOV;
 	}
 
 	void Camera::updateCameraVectors()

@@ -25,6 +25,7 @@ namespace GK
 		void postFrame();
 		void handleKey(Uint32 state, SDL_Keycode key);
 		void handleMouseMotion();
+		void handleMouseWheel(SDL_MouseWheelEvent event);
 		Timer fpsTimer;
 		Timer capTimer;
 		int countedFrames;

@@ -24,6 +24,7 @@ namespace GK
 		Camera(GLfloat posX, GLfloat posY, GLfloat posZ, GLfloat upX, GLfloat upY, GLfloat upZ, GLfloat yaw, GLfloat pitch);
 
 		glm::mat4 GetViewMatrix();
+		GLfloat GetZoom();
 		void Move(CameraMovementDirection direction, GLfloat deltaTime);
 		void Rotate(GLfloat xoffset, GLfloat yoffset, GLboolean constrainPitch = true);
 		void Zoom(GLfloat yoffset);
@@ -40,12 +41,16 @@ namespace GK
 		// Camera options
 		GLfloat movementSpeed;
 		GLfloat mouseSensitivity;
+		GLfloat wheelSensitivity;
 		GLfloat zoom;
 		static const GLfloat YAW;
 		static const GLfloat PITCH;
 		static const GLfloat SPEED;
 		static const GLfloat SENSITIVTY;
+		static const GLfloat WHEELSENSITIVTY;
 		static const GLfloat ZOOM;
+		static const GLfloat MINFOV;
+		static const GLfloat MAXFOV;
 
 		void updateCameraVectors();
 	};
