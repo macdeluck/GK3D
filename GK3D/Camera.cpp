@@ -119,4 +119,9 @@ namespace GK
 	{
 		this->screenHeight = screenHeight;
 	}
+
+	glm::vec3 Camera::getPosition()
+	{
+		return position;
+	}
 }

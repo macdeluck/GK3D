@@ -27,8 +27,9 @@ namespace GK
 
 	void ObjectShader::prepareForRender(DrawableInstance drawableInstance, std::weak_ptr<Scene> scene)
 	{
-		glm::mat4 projection;
 		std::shared_ptr<Camera> camera = scene.lock()->getCamera().lock();
+
+		glm::mat4 projection;
 		projection = glm::perspective(camera->getZoom(),
 			((float)camera->getScreenWidth()) / camera->getScreenHeight(), 0.1f, 100.0f);
 		glUniformMatrix4fv(getUniformLocation("view"), 1, GL_FALSE,
@@ -46,5 +47,7 @@ namespace GK
 		DrawableInstance lightSource = (*(*scene.lock()->getDrawables().lock()->begin())->getInstances().begin());
 		glUniform3f(getUniformLocation("lightColor"), lightSource.color.r, lightSource.color.g, lightSource.color.b);
 		glUniform3f(getUniformLocation("lightPos"), lightSource.position.x, lightSource.position.y, lightSource.position.z);
+		glm::vec3 cameraPosition = camera->getPosition();
+		glUniform3f(getUniformLocation("viewPos"), cameraPosition.x, cameraPosition.y, cameraPosition.z);
 	}
 }
