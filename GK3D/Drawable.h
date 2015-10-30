@@ -2,6 +2,7 @@
 #define _GK_DRAWABLE
 
 #include "Common.h"
+#include <array>
 
 namespace GK
 {
@@ -11,16 +12,15 @@ namespace GK
 	struct Vertex
 	{
 	public:
-		static const int VERTEX_SIZE = 3;
+		static const int VERTEX_SIZE = 6;
 
 		Vertex();
-		Vertex(GLfloat x, GLfloat y, GLfloat z);
 		Vertex(GLfloat vertexData[VERTEX_SIZE]);
-		GLfloat x;
-		GLfloat y;
-		GLfloat z;
+		Vertex(std::initializer_list<GLfloat> initializer);
 
 		std::vector<GLfloat> toVector();
+	private:
+		GLfloat vertexData[VERTEX_SIZE];
 	};
 
 	struct DrawableInstance

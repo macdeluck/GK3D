@@ -22,6 +22,7 @@ namespace GK
 	void ObjectShader::beforeLink()
 	{
 		glBindAttribLocation(getProgramId(), 0, "position");
+		glBindAttribLocation(getProgramId(), 1, "normal");
 	}
 
 	void ObjectShader::prepareForRender(DrawableInstance drawableInstance, std::weak_ptr<Scene> scene)

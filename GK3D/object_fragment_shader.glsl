@@ -1,5 +1,7 @@
 #version 150 core
 
+in vec3 vertexNormal;
+
 uniform vec3 objectColor;
 uniform vec3 lightColor;
 out vec4 color;

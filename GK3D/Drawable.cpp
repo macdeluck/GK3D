@@ -106,14 +106,33 @@ namespace GK
 		return result;
 	}
 
-	Vertex::Vertex() : x(0), y(0), z(0) {}
-	Vertex::Vertex(GLfloat x, GLfloat y, GLfloat z)
-		: x(x), y(y), z(z) {}
+	Vertex::Vertex() 
+	{
+		for (size_t i = 0; i < VERTEX_SIZE; i++)
+		{
+			vertexData[i] = 0;
+		}
+	}
 	Vertex::Vertex(GLfloat vertexData[VERTEX_SIZE])
-		: x(vertexData[0]), y(vertexData[1]), z(vertexData[2]) {}
+	{
+		for (size_t i = 0; i < VERTEX_SIZE; i++)
+		{
+			this->vertexData[i] = vertexData[i];
+		}
+	}
+	Vertex::Vertex(std::initializer_list<GLfloat> initializer)
+	{
+		assert(initializer.size() == VERTEX_SIZE);
+		size_t i = 0;
+		for (std::initializer_list<GLfloat>::const_iterator it = initializer.begin();
+			it != initializer.end(); ++it)
+		{
+			this->vertexData[i++] = *it;
+		}
+	}
 
 	std::vector<GLfloat> Vertex::toVector()
 	{
-		return std::vector < GLfloat > { x, y, z };
+		return std::vector<GLfloat>(std::begin(vertexData), std::end(vertexData));
 	}
 }
