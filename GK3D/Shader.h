@@ -40,13 +40,14 @@ namespace GK
 		std::shared_ptr<Shader> getVertexShader();
 		std::shared_ptr<Shader> getFragmentShader();
 		void compile();
-		void use();
 		virtual void beforeLink();
-		virtual void prepareForRender(DrawableInstance drawable, std::weak_ptr<Scene> scene);
+		void render(DrawableInstance drawable, std::weak_ptr<Scene> scene);
 	protected:
+		virtual void prepareForRender(DrawableInstance drawable, std::weak_ptr<Scene> scene);
 		GLuint getUniformLocation(std::string uniformName);
 		GLuint getProgramId();
 	private:
+		void use();
 		bool compiled;
 		std::shared_ptr<GLuint> programId;
 		std::shared_ptr<Shader> vertexShader;

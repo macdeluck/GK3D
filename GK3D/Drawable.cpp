@@ -5,25 +5,26 @@
 
 namespace GK
 {
-	DrawableInstance::DrawableInstance(
+	DrawableInstance::DrawableInstance(std::shared_ptr<ShaderProgram> shaderProgram,
 		glm::vec3 color,
 		glm::vec3 position,
 		glm::vec3 scale,
 		GLfloat angleX, GLfloat angleY, GLfloat angleZ)
-		: color(color), position(position), scale(scale), angleX(angleX), angleY(angleY), angleZ(angleZ)
+		: shaderProgram(shaderProgram),
+		color(color), position(position), scale(scale), angleX(angleX), angleY(angleY), angleZ(angleZ)
 	{
 	}
 
 	Drawable::Drawable(std::vector<Vertex> vertices, std::vector<GLuint> indices,
-		std::vector<DrawableInstance> instances, std::shared_ptr<ShaderProgram> shaderProgram)
-		: vertices(vertices), instances(instances), indices(indices), vao(new GLuint(0)), vbo(new GLuint(0)), ebo(new GLuint(0)), shaderProgram(shaderProgram)
+		std::vector<DrawableInstance> instances)
+		: vertices(vertices), instances(instances), indices(indices), vao(new GLuint(0)), vbo(new GLuint(0)), ebo(new GLuint(0))
 	{
 		init();
 	}
 
 	Drawable::Drawable(std::vector<Vertex> vertices,
-		std::vector<DrawableInstance> instances, std::shared_ptr<ShaderProgram> shaderProgram)
-		: vertices(vertices), instances(instances), indices(0), vao(new GLuint(0)), vbo(new GLuint(0)), ebo(new GLuint(0)), shaderProgram(shaderProgram)
+		std::vector<DrawableInstance> instances)
+		: vertices(vertices), instances(instances), indices(0), vao(new GLuint(0)), vbo(new GLuint(0)), ebo(new GLuint(0))
 	{
 		init();
 	}
@@ -79,11 +80,10 @@ namespace GK
 
 	void Drawable::render(std::weak_ptr<Scene> scene)
 	{
-		shaderProgram->use();
 		glBindVertexArray(*vao);
 		for (size_t i = 0; i < instances.size(); i++)
 		{
-			shaderProgram->prepareForRender(instances[i], scene);
+			instances[i].shaderProgram->render(instances[i], scene);
 			if (indices.size() > 0)
 				glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, 0);
 			else glDrawArrays(GL_TRIANGLES, 0, vertices.size());
@@ -94,11 +94,6 @@ namespace GK
 	std::vector<DrawableInstance> Drawable::getInstances()
 	{
 		return instances;
-	}
-
-	std::shared_ptr<ShaderProgram> Drawable::getShader()
-	{
-		return shaderProgram;
 	}
 
 	std::vector<GLfloat> Drawable::getVertexData()

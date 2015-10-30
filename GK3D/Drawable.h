@@ -31,8 +31,9 @@ namespace GK
 		GLfloat angleX;
 		GLfloat angleY;
 		GLfloat angleZ;
+		std::shared_ptr<ShaderProgram> shaderProgram;
 
-		DrawableInstance(
+		DrawableInstance(std::shared_ptr<ShaderProgram> shaderProgram,
 			glm::vec3 color = glm::vec3(0, 0, 0),
 			glm::vec3 position = glm::vec3(0, 0, 0),
 			glm::vec3 scale = glm::vec3(1, 1, 1),
@@ -43,16 +44,13 @@ namespace GK
 	{
 	public:
 		Drawable(std::vector<Vertex> vertices,
-			std::vector<DrawableInstance> instances,
-			std::shared_ptr<ShaderProgram> shaderProgram);
+			std::vector<DrawableInstance> instances);
 		Drawable(std::vector<Vertex> vertices,
 			std::vector<GLuint> indices,
-			std::vector<DrawableInstance> instances,
-			std::shared_ptr<ShaderProgram> shaderProgram);
+			std::vector<DrawableInstance> instances);
 		virtual ~Drawable();
 		std::vector<DrawableInstance> getInstances();
 		void render(std::weak_ptr<Scene> scene);
-		std::shared_ptr<ShaderProgram> getShader();
 	private:
 		void init();
 
@@ -62,7 +60,6 @@ namespace GK
 		std::vector<DrawableInstance> instances;
 		std::vector<Vertex> vertices;
 		std::vector<GLuint> indices;
-		std::shared_ptr<ShaderProgram> shaderProgram;
 		std::vector<GLfloat> getVertexData();
 	};
 }

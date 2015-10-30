@@ -1,6 +1,7 @@
 #include "GK3DScene.h"
 #include "Drawable.h"
 #include "ObjectShader.h"
+#include "LightShader.h"
 #include "Camera.h"
 
 namespace GK
@@ -12,20 +13,21 @@ namespace GK
 	{
 		std::shared_ptr<ShaderProgram> objectShader = std::shared_ptr<ShaderProgram>(new ObjectShader());
 		objectShader->compile();
+		std::shared_ptr<ShaderProgram> lightShader = std::shared_ptr<ShaderProgram>(new LightShader());
+		lightShader->compile();
 		std::shared_ptr<Drawable> box;
 		std::vector<DrawableInstance> boxInstances = 
 		{
-			DrawableInstance(
+			DrawableInstance(lightShader,
 			glm::vec3(1.0f, 1.0f, 1.0f),
 			glm::vec3(1.0f, 0, 0),
 			glm::vec3(0.5f, 0.5f, 0.5f)),
-			DrawableInstance(glm::vec3(1.0f, 0.5f, 0.31f))
+			DrawableInstance(objectShader, glm::vec3(1.0f, 0.5f, 0.31f))
 		};
 		box.reset(
 			new Drawable(
 			getBoxVertices(),
-			boxInstances,
-			objectShader));
+			boxInstances));
 		getDrawables().lock()->push_back(box);
 	}
 

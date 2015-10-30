@@ -16,10 +16,6 @@ namespace GK
 	class LightShader : public ShaderProgram
 	{
 	public:
-		glm::mat4 viewMatrix;
-		GLfloat zoom;
-		int screenWidth, screenHeight;
-
 		LightShader();
 		virtual ~LightShader();
 		virtual void beforeLink() override;
