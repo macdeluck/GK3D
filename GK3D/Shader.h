@@ -6,6 +6,7 @@
 namespace GK
 {
 	class ShaderProgram;
+	class Drawable;
 
 	enum ShaderType
 	{
@@ -41,9 +42,10 @@ namespace GK
 		void use();
 		virtual void before_link();
 		virtual void update();
+		virtual void beforeRender(Drawable& drawable);
 	protected:
-		GLuint getProgramId();
 		GLuint getUniformLocation(std::string uniformName);
+		GLuint getProgramId();
 	private:
 		bool compiled;
 		std::shared_ptr<GLuint> programId;

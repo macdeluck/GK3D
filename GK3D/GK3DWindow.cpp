@@ -52,6 +52,11 @@ namespace GK
 			glBindAttribLocation(getProgramId(), 0, "position");
 			glBindAttribLocation(getProgramId(), 1, "color");
 		}
+		virtual void beforeRender(Drawable& drawable) override
+		{
+			glm::vec3 color = drawable.getObjectColor();
+			glUniform3f(getUniformLocation("objectColor"), color.r, color.g, color.b);
+		}
 	};
 
 	GK3DWindow::GK3DWindow(int width, int height, std::string title, bool shown, bool resizable)
@@ -65,49 +70,49 @@ namespace GK
 		shaderProgram->screenHeight = height;
 		std::vector<Vertex> vertices = {
 			// Positions         // Colors
-			Vertex(-0.5f, -0.5f, -0.5f, 0.0f, 0.0f, 0.0f),
-			Vertex(0.5f, -0.5f, -0.5f, 1.0f, 0.0f, 0.0f),
-			Vertex(0.5f, 0.5f, -0.5f, 1.0f, 1.0f, 0.0f),
-			Vertex(0.5f, 0.5f, -0.5f, 1.0f, 1.0f, 0.0f),
-			Vertex(-0.5f, 0.5f, -0.5f, 0.0f, 1.0f, 0.0f),
-			Vertex(-0.5f, -0.5f, -0.5f, 0.0f, 0.0f, 0.0f),
+			Vertex(-0.5f, -0.5f, -0.5f),
+			Vertex(0.5f, -0.5f, -0.5f),
+			Vertex(0.5f, 0.5f, -0.5f),
+			Vertex(0.5f, 0.5f, -0.5f),
+			Vertex(-0.5f, 0.5f, -0.5f),
+			Vertex(-0.5f, -0.5f, -0.5f),
 
-			Vertex(-0.5f, -0.5f, 0.5f, 0.0f, 0.0f, 0.0f),
-			Vertex(0.5f, -0.5f, 0.5f, 1.0f, 0.0f, 0.0f),
-			Vertex(0.5f, 0.5f, 0.5f, 1.0f, 1.0f, 0.0f),
-			Vertex(0.5f, 0.5f, 0.5f, 1.0f, 1.0f, 0.0f),
-			Vertex(-0.5f, 0.5f, 0.5f, 0.0f, 1.0f, 0.0f),
-			Vertex(-0.5f, -0.5f, 0.5f, 0.0f, 0.0f, 0.0f),
+			Vertex(-0.5f, -0.5f, 0.5f),
+			Vertex(0.5f, -0.5f, 0.5f),
+			Vertex(0.5f, 0.5f, 0.5f),
+			Vertex(0.5f, 0.5f, 0.5f),
+			Vertex(-0.5f, 0.5f, 0.5f),
+			Vertex(-0.5f, -0.5f, 0.5f),
 
-			Vertex(-0.5f, 0.5f, 0.5f, 1.0f, 0.0f, 0.0f),
-			Vertex(-0.5f, 0.5f, -0.5f, 1.0f, 1.0f, 0.0f),
-			Vertex(-0.5f, -0.5f, -0.5f, 0.0f, 1.0f, 0.0f),
-			Vertex(-0.5f, -0.5f, -0.5f, 0.0f, 1.0f, 0.0f),
-			Vertex(-0.5f, -0.5f, 0.5f, 0.0f, 0.0f, 0.0f),
-			Vertex(-0.5f, 0.5f, 0.5f, 1.0f, 0.0f, 0.0f),
+			Vertex(-0.5f, 0.5f, 0.5f),
+			Vertex(-0.5f, 0.5f, -0.5f),
+			Vertex(-0.5f, -0.5f, -0.5f),
+			Vertex(-0.5f, -0.5f, -0.5f),
+			Vertex(-0.5f, -0.5f, 0.5f),
+			Vertex(-0.5f, 0.5f, 0.5f),
 
-			Vertex(0.5f, 0.5f, 0.5f, 1.0f, 0.0f, 0.0f),
-			Vertex(0.5f, 0.5f, -0.5f, 1.0f, 1.0f, 0.0f),
-			Vertex(0.5f, -0.5f, -0.5f, 0.0f, 1.0f, 0.0f),
-			Vertex(0.5f, -0.5f, -0.5f, 0.0f, 1.0f, 0.0f),
-			Vertex(0.5f, -0.5f, 0.5f, 0.0f, 0.0f, 0.0f),
-			Vertex(0.5f, 0.5f, 0.5f, 1.0f, 0.0f, 0.0f),
+			Vertex(0.5f, 0.5f, 0.5f),
+			Vertex(0.5f, 0.5f, -0.5f),
+			Vertex(0.5f, -0.5f, -0.5f),
+			Vertex(0.5f, -0.5f, -0.5f),
+			Vertex(0.5f, -0.5f, 0.5f),
+			Vertex(0.5f, 0.5f, 0.5f),
 
-			Vertex(-0.5f, -0.5f, -0.5f, 0.0f, 1.0f, 0.0f),
-			Vertex(0.5f, -0.5f, -0.5f, 1.0f, 1.0f, 0.0f),
-			Vertex(0.5f, -0.5f, 0.5f, 1.0f, 0.0f, 0.0f),
-			Vertex(0.5f, -0.5f, 0.5f, 1.0f, 0.0f, 0.0f),
-			Vertex(-0.5f, -0.5f, 0.5f, 0.0f, 0.0f, 0.0f),
-			Vertex(-0.5f, -0.5f, -0.5f, 0.0f, 1.0f, 0.0f),
+			Vertex(-0.5f, -0.5f, -0.5f),
+			Vertex(0.5f, -0.5f, -0.5f),
+			Vertex(0.5f, -0.5f, 0.5f),
+			Vertex(0.5f, -0.5f, 0.5f),
+			Vertex(-0.5f, -0.5f, 0.5f),
+			Vertex(-0.5f, -0.5f, -0.5f),
 
-			Vertex(-0.5f, 0.5f, -0.5f, 0.0f, 1.0f, 0.0f),
-			Vertex(0.5f, 0.5f, -0.5f, 1.0f, 1.0f, 0.0f),
-			Vertex(0.5f, 0.5f, 0.5f, 1.0f, 0.0f, 0.0f),
-			Vertex(0.5f, 0.5f, 0.5f, 1.0f, 0.0f, 0.0f),
-			Vertex(-0.5f, 0.5f, 0.5f, 0.0f, 0.0f, 0.0f),
-			Vertex(-0.5f, 0.5f, -0.5f, 0.0f, 1.0f, 0.0f)
+			Vertex(-0.5f, 0.5f, -0.5f),
+			Vertex(0.5f, 0.5f, -0.5f),
+			Vertex(0.5f, 0.5f, 0.5f),
+			Vertex(0.5f, 0.5f, 0.5f),
+			Vertex(-0.5f, 0.5f, 0.5f),
+			Vertex(-0.5f, 0.5f, -0.5f)
 		};
-		box.reset(new Drawable(vertices, shaderProgram));
+		box.reset(new Drawable(vertices, glm::vec3(1.0f, 0.5f, 0.31f), shaderProgram));
 		fpsTimer.start();
 		capTimer.start();
 	}

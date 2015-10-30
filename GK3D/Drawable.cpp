@@ -3,14 +3,16 @@
 
 namespace GK
 {
-	Drawable::Drawable(std::vector<Vertex> vertices, std::vector<GLuint> indices, std::shared_ptr<ShaderProgram> shaderProgram)
-		: vertices(vertices), indices(indices), vao(new GLuint(0)), vbo(new GLuint(0)), ebo(new GLuint(0)), shaderProgram(shaderProgram)
+	Drawable::Drawable(std::vector<Vertex> vertices, std::vector<GLuint> indices,
+		glm::vec3 objectColor, std::shared_ptr<ShaderProgram> shaderProgram)
+		: vertices(vertices), objectColor(objectColor), indices(indices), vao(new GLuint(0)), vbo(new GLuint(0)), ebo(new GLuint(0)), shaderProgram(shaderProgram)
 	{
 		init();
 	}
 
-	Drawable::Drawable(std::vector<Vertex> vertices, std::shared_ptr<ShaderProgram> shaderProgram)
-		: vertices(vertices), indices(0), vao(new GLuint(0)), vbo(new GLuint(0)), ebo(new GLuint(0)), shaderProgram(shaderProgram)
+	Drawable::Drawable(std::vector<Vertex> vertices,
+		glm::vec3 objectColor, std::shared_ptr<ShaderProgram> shaderProgram)
+		: vertices(vertices), objectColor(objectColor), indices(0), vao(new GLuint(0)), vbo(new GLuint(0)), ebo(new GLuint(0)), shaderProgram(shaderProgram)
 	{
 		init();
 	}
@@ -67,11 +69,17 @@ namespace GK
 	void Drawable::render()
 	{
 		shaderProgram->use();
+		shaderProgram->beforeRender(*this);
 		glBindVertexArray(*vao);
 		if (indices.size() > 0)
 			glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, 0);
 		else glDrawArrays(GL_TRIANGLES, 0, vertices.size());
 		glBindVertexArray(0);
+	}
+
+	glm::vec3 Drawable::getObjectColor()
+	{
+		return objectColor;
 	}
 
 	std::shared_ptr<ShaderProgram> Drawable::getShader()
@@ -89,14 +97,14 @@ namespace GK
 		return result;
 	}
 
-	Vertex::Vertex() : x(0), y(0), z(0), r(0), g(0), b(0) {}
-	Vertex::Vertex(GLfloat x, GLfloat y, GLfloat z, GLfloat r, GLfloat g, GLfloat b)
-		: x(x), y(y), z(z), r(r), g(g), b(b) {}
+	Vertex::Vertex() : x(0), y(0), z(0) {}
+	Vertex::Vertex(GLfloat x, GLfloat y, GLfloat z)
+		: x(x), y(y), z(z) {}
 	Vertex::Vertex(GLfloat vertexData[VERTEX_SIZE])
-		: x(vertexData[0]), y(vertexData[1]), z(vertexData[2]), r(vertexData[3]), g(vertexData[4]), b(vertexData[5]) {}
+		: x(vertexData[0]), y(vertexData[1]), z(vertexData[2]) {}
 
 	std::vector<GLfloat> Vertex::toVector()
 	{
-		return std::vector < GLfloat > { x, y, z, r, g, b };
+		return std::vector < GLfloat > { x, y, z };
 	}
 }

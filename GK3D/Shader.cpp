@@ -124,4 +124,8 @@ namespace GK
 	void ShaderProgram::before_link()
 	{
 	}
+
+	void ShaderProgram::beforeRender(Drawable& drawable)
+	{
+	}
 }
