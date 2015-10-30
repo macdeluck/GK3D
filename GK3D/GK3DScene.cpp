@@ -16,9 +16,10 @@ namespace GK
 		std::vector<DrawableInstance> boxInstances = 
 		{
 			DrawableInstance(
-			glm::vec3(1.0f, 0.5f, 0.31f),
+			glm::vec3(1.0f, 1.0f, 1.0f),
 			glm::vec3(1.0f, 0, 0),
-			glm::vec3(0.5f, 0.5f, 0.5f))
+			glm::vec3(0.5f, 0.5f, 0.5f)),
+			DrawableInstance(glm::vec3(1.0f, 0.5f, 0.31f))
 		};
 		box.reset(
 			new Drawable(
