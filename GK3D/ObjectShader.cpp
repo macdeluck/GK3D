@@ -1,5 +1,5 @@
 #include "ObjectShader.h"
-#include "LightSourceInstance.h"
+#include "PointLightInstance.h"
 #include "SpotLightInstance.h"
 #include "Scene.h"
 #include "Camera.h"
@@ -55,41 +55,45 @@ namespace GK
 		glUniform3f(getUniformLocation("material.specular"), material->specular.r, material->specular.g, material->specular.b);
 		glUniform1f(getUniformLocation("material.shininess"), material->shininess);
 
-		std::shared_ptr<LightsArray> lightSources = scene->getLightSources();
+		std::shared_ptr<PointLightsArray> lightSources = scene->getLightSources();
 		for (size_t i = 0; i < lightSources->size(); i++)
 		{
-			glUniform3f(getUniformLocation("light.ambient"),
+			std::stringstream sb = std::stringstream("");
+			sb << "pointLights[" << i << "].";
+			glUniform3f(getUniformLocation(sb.str() + std::string("ambient")),
 				(*lightSources)[i]->material->ambient.r, (*lightSources)[i]->material->ambient.g, (*lightSources)[i]->material->ambient.b);
-			glUniform3f(getUniformLocation("light.diffuse"),
+			glUniform3f(getUniformLocation(sb.str() + std::string("diffuse")),
 				(*lightSources)[i]->material->diffuse.r, (*lightSources)[i]->material->diffuse.g, (*lightSources)[i]->material->diffuse.b);
-			glUniform3f(getUniformLocation("light.specular"),
+			glUniform3f(getUniformLocation(sb.str() + std::string("specular")),
 				(*lightSources)[i]->material->specular.r, (*lightSources)[i]->material->specular.g, (*lightSources)[i]->material->specular.b);
-			glUniform3f(getUniformLocation("light.position"),
+			glUniform3f(getUniformLocation(sb.str() + std::string("position")),
 				(*lightSources)[i]->position.x, (*lightSources)[i]->position.y, (*lightSources)[i]->position.z);
-			glUniform1f(getUniformLocation("light.constant"), (*lightSources)[i]->constantTerm);
-			glUniform1f(getUniformLocation("light.linear"), (*lightSources)[i]->linearTerm);
-			glUniform1f(getUniformLocation("light.quadratic"), (*lightSources)[i]->quadraticTerm);
+			glUniform1f(getUniformLocation(sb.str() + std::string("constant")), (*lightSources)[i]->constantTerm);
+			glUniform1f(getUniformLocation(sb.str() + std::string("linear")), (*lightSources)[i]->linearTerm);
+			glUniform1f(getUniformLocation(sb.str() + std::string("quadratic")), (*lightSources)[i]->quadraticTerm);
 		}
 
 		std::shared_ptr<SpotLightsArray> spotLights = scene->getSpotLights();
 		for (size_t i = 0; i < spotLights->size(); i++)
 		{
-			glUniform3f(getUniformLocation("spotLight.ambient"),
+			std::stringstream sb = std::stringstream("");
+			sb << "spotLights[" << i << "].";
+			glUniform3f(getUniformLocation(sb.str() + std::string("ambient")),
 				(*spotLights)[i]->material->ambient.r, (*spotLights)[i]->material->ambient.g, (*spotLights)[i]->material->ambient.b);
-			glUniform3f(getUniformLocation("spotLight.diffuse"),
+			glUniform3f(getUniformLocation(sb.str() + std::string("diffuse")),
 				(*spotLights)[i]->material->diffuse.r, (*spotLights)[i]->material->diffuse.g, (*spotLights)[i]->material->diffuse.b);
-			glUniform3f(getUniformLocation("spotLight.specular"),
+			glUniform3f(getUniformLocation(sb.str() + std::string("specular")),
 				(*spotLights)[i]->material->specular.r, (*spotLights)[i]->material->specular.g, (*spotLights)[i]->material->specular.b);
-			glUniform1f(getUniformLocation("spotLight.constant"), (*spotLights)[i]->constantTerm);
-			glUniform1f(getUniformLocation("spotLight.linear"), (*spotLights)[i]->linearTerm);
-			glUniform1f(getUniformLocation("spotLight.quadratic"), (*spotLights)[i]->quadraticTerm);
+			glUniform1f(getUniformLocation(sb.str() + std::string("constant")), (*spotLights)[i]->constantTerm);
+			glUniform1f(getUniformLocation(sb.str() + std::string("linear")), (*spotLights)[i]->linearTerm);
+			glUniform1f(getUniformLocation(sb.str() + std::string("quadratic")), (*spotLights)[i]->quadraticTerm);
 
-			glUniform3f(getUniformLocation("spotLight.position"),
+			glUniform3f(getUniformLocation(sb.str() + std::string("position")),
 				(*spotLights)[i]->position.x, (*spotLights)[i]->position.y, (*spotLights)[i]->position.z);
-			glUniform3f(getUniformLocation("spotLight.direction"),
+			glUniform3f(getUniformLocation(sb.str() + std::string("direction")),
 				(*spotLights)[i]->direction.x, (*spotLights)[i]->direction.y, (*spotLights)[i]->direction.z);
-			glUniform1f(getUniformLocation("spotLight.cutOff"), glm::cos(glm::radians((*spotLights)[i]->cutOff)));
-			glUniform1f(getUniformLocation("spotLight.outerCutOff"), glm::cos(glm::radians((*spotLights)[i]->outerCutOff)));
+			glUniform1f(getUniformLocation(sb.str() + std::string("cutOff")), glm::cos(glm::radians((*spotLights)[i]->cutOff)));
+			glUniform1f(getUniformLocation(sb.str() + std::string("outerCutOff")), glm::cos(glm::radians((*spotLights)[i]->outerCutOff)));
 		}
 	}
 }

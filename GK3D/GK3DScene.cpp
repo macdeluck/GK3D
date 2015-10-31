@@ -2,7 +2,7 @@
 #include "Drawable.h"
 #include "ObjectShader.h"
 #include "LightShader.h"
-#include "LightSourceInstance.h"
+#include "PointLightInstance.h"
 #include "SpotLightInstance.h"
 #include "Camera.h"
 #include "Scene.h"
@@ -35,8 +35,8 @@ namespace GK
 		(*this->getSpotLights())[0] = spotLight;
 		spotLightOn = true;
 
-		std::shared_ptr<LightSourceInstance> lightSource;
-		lightSource.reset(new LightSourceInstance(lightShader, lightMaterial,
+		std::shared_ptr<PointLightInstance> lightSource;
+		lightSource.reset(new PointLightInstance(lightShader, lightMaterial,
 			1.0f, 0.09f, 0.032f,
 			glm::vec3(1.2f, 1.0f, 2.0f),
 			glm::vec3(0.5f, 0.5f, 0.5f)));

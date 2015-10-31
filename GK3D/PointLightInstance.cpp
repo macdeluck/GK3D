@@ -1,8 +1,8 @@
-#include "LightSourceInstance.h"
+#include "PointLightInstance.h"
 
 namespace GK
 {
-	LightSourceInstance::LightSourceInstance(std::shared_ptr<ShaderProgram> shaderProgram,
+	PointLightInstance::PointLightInstance(std::shared_ptr<ShaderProgram> shaderProgram,
 		std::shared_ptr<Material> material,
 		GLfloat constantTerm,
 		GLfloat linearTerm,

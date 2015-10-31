@@ -13,7 +13,7 @@ namespace GK
 		glm::vec3 position,
 		glm::vec3 scale,
 		GLfloat angleX, GLfloat angleY, GLfloat angleZ)
-		: LightSourceInstance(shaderProgram, material,
+		: PointLightInstance(shaderProgram, material,
 		constantTerm, linearTerm, quadraticTerm, position, scale, angleX, angleY, angleZ),
 		direction(direction), cutOff(cutOff), outerCutOff(outerCutOff)
 	{

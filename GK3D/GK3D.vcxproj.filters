@@ -57,10 +57,10 @@
     <ClCompile Include="GK3DScene.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="LightSourceInstance.cpp">
+    <ClCompile Include="SpotLightInstance.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="SpotLightInstance.cpp">
+    <ClCompile Include="PointLightInstance.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -104,10 +104,10 @@
     <ClInclude Include="GK3DScene.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="LightSourceInstance.h">
+    <ClInclude Include="SpotLightInstance.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="SpotLightInstance.h">
+    <ClInclude Include="PointLightInstance.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

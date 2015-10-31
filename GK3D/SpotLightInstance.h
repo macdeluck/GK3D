@@ -1,11 +1,11 @@
 #ifndef _GK_SPOTLIGHTINSTANCE
 #define _GK_SPOTLIGHTINSTANCE
 
-#include "LightSourceInstance.h"
+#include "PointLightInstance.h"
 
 namespace GK
 {
-	struct SpotLightInstance : public LightSourceInstance
+	struct SpotLightInstance : public PointLightInstance
 	{
 	public:
 		glm::vec3 direction;

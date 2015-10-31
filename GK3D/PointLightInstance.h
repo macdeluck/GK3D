@@ -6,14 +6,14 @@
 
 namespace GK
 {
-	struct LightSourceInstance : public DrawableInstance
+	struct PointLightInstance : public DrawableInstance
 	{
 	public:
 		GLfloat constantTerm;
 		GLfloat linearTerm;
 		GLfloat quadraticTerm;
 
-		LightSourceInstance(std::shared_ptr<ShaderProgram> shaderProgram,
+		PointLightInstance(std::shared_ptr<ShaderProgram> shaderProgram,
 			std::shared_ptr<Material> material,
 			GLfloat constantTerm = 1.0f,
 			GLfloat linearTerm = 0.09f,
