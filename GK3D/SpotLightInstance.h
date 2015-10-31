@@ -10,11 +10,13 @@ namespace GK
 	public:
 		glm::vec3 direction;
 		GLfloat cutOff;
+		GLfloat outerCutOff;
 
 		SpotLightInstance(std::shared_ptr<ShaderProgram> shaderProgram,
 			std::shared_ptr<Material> material,
 			glm::vec3 direction = glm::vec3(0.0f, 0.0f, 1.0f),
 			GLfloat cutOff = 12.5f,
+			GLfloat outerCutOff = 17.5f,
 			GLfloat constantTerm = 1.0f,
 			GLfloat linearTerm = 0.09f,
 			GLfloat quadraticTerm = 0.032f,

@@ -6,6 +6,7 @@ namespace GK
 		std::shared_ptr<Material> material,
 		glm::vec3 direction,
 		GLfloat cutOff,
+		GLfloat outerCutOff,
 		GLfloat constantTerm,
 		GLfloat linearTerm,
 		GLfloat quadraticTerm,
@@ -14,7 +15,7 @@ namespace GK
 		GLfloat angleX, GLfloat angleY, GLfloat angleZ)
 		: LightSourceInstance(shaderProgram, material,
 		constantTerm, linearTerm, quadraticTerm, position, scale, angleX, angleY, angleZ),
-		direction(direction), cutOff(cutOff)
+		direction(direction), cutOff(cutOff), outerCutOff(outerCutOff)
 	{
 	}
 }

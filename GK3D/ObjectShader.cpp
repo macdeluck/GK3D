@@ -89,6 +89,7 @@ namespace GK
 			glUniform3f(getUniformLocation("spotLight.direction"),
 				(*spotLights)[i]->direction.x, (*spotLights)[i]->direction.y, (*spotLights)[i]->direction.z);
 			glUniform1f(getUniformLocation("spotLight.cutOff"), glm::cos(glm::radians((*spotLights)[i]->cutOff)));
+			glUniform1f(getUniformLocation("spotLight.outerCutOff"), glm::cos(glm::radians((*spotLights)[i]->outerCutOff)));
 		}
 	}
 }
