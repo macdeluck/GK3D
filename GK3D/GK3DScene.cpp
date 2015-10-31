@@ -15,7 +15,7 @@ namespace GK
 	{
 		std::vector<Vertex> vertices;
 		std::vector<GLuint> indices;
-		ModelLoader().loadModel("cube.obj", &vertices, &indices);
+		ModelLoader().loadModel("bench_v01.obj", &vertices, &indices);
 
 		std::shared_ptr<ShaderProgram> objectShader = std::shared_ptr<ShaderProgram>(new ObjectShader());
 		objectShader->compile();
@@ -42,14 +42,14 @@ namespace GK
 		lightSource.reset(new PointLightInstance(lightShader, lightMaterial,
 			1.0f, 0.09f, 0.032f,
 			glm::vec3(1.2f, 1.0f, 2.0f),
-			glm::vec3(0.25f, 0.25f, 0.25f)));
+			glm::vec3(0.01f, 0.01f, 0.01f)));
 		(*this->getLightSources())[0] = lightSource;
 
 		std::shared_ptr<PointLightInstance> lightSource2;
 		lightSource2.reset(new PointLightInstance(lightShader, lightMaterial,
 			1.0f, 0.09f, 0.032f,
 			glm::vec3(0, 4.0f, -11.25f),
-			glm::vec3(0.25f, 0.25f, 0.25f)));
+			glm::vec3(0.01f, 0.01f, 0.01f)));
 		(*this->getLightSources())[1] = lightSource2;
 
 		std::vector<std::shared_ptr<DrawableInstance> > boxInstances = { lightSource, lightSource2 };
@@ -78,7 +78,7 @@ namespace GK
 			boxInstances.push_back(std::shared_ptr<DrawableInstance>( new DrawableInstance(objectShader,
 				cubesMaterial,
 				cubePositions[i],
-				glm::vec3(0.5f, 0.5f, 0.5f),
+				glm::vec3(0.01f, 0.01f, 0.01f),
 				angle * 1.0f,
 				angle * 0.3f,
 				angle * 0.5f)));
