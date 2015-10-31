@@ -104,6 +104,11 @@ namespace GK
 
 		while (!quit)
 		{
+			for (std::set<std::weak_ptr<Window> >::iterator i = windows.begin(); i != windows.end(); ++i)
+			{
+				(*i).lock()->beginFrame();
+			}
+
 			while (SDL_PollEvent(&e) != 0)
 			{
 				if (e.type == SDL_QUIT)
@@ -125,6 +130,11 @@ namespace GK
 			for (std::set<std::weak_ptr<Window> >::iterator i = windows.begin(); i != windows.end(); ++i)
 			{
 				(*i).lock()->render();
+			}
+
+			for (std::set<std::weak_ptr<Window> >::iterator i = windows.begin(); i != windows.end(); ++i)
+			{
+				(*i).lock()->endFrame();
 			}
 
 			bool allWindowsClosed = true;

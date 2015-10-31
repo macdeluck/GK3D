@@ -168,7 +168,7 @@ namespace GK
 
 	void Window::update()
 	{
-		on_update();
+		onUpdate();
 	}
 
 	void Window::render()
@@ -177,7 +177,7 @@ namespace GK
 		{
 			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 			_gain_gl();
-			on_render();
+			onRender();
 			SDL_GL_SwapWindow(&(*mWindow));
 		}
 	}
@@ -228,11 +228,29 @@ namespace GK
 		return mWindowState->shown;
 	}
 
-	void Window::on_update()
+	void Window::beginFrame()
+	{
+		onBeginFrame();
+	}
+
+	void Window::endFrame()
+	{
+		onEndFrame();
+	}
+
+	void Window::onBeginFrame()
 	{
 	}
 
-	void Window::on_render()
+	void Window::onUpdate()
+	{
+	}
+
+	void Window::onRender()
+	{
+	}
+
+	void Window::onEndFrame()
 	{
 	}
 

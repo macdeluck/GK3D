@@ -21,8 +21,10 @@ namespace GK
 		virtual ~GK3DWindow();
 		virtual void handleEvent(SDL_Event& event) override;
 	protected:
-		virtual void on_render() override;
-		virtual void on_update() override;
+		virtual void onBeginFrame() override;
+		virtual void onUpdate() override;
+		virtual void onRender() override;
+		virtual void onEndFrame() override;
 	private:
 		int currentPolygonMode;
 		void postFrame();
@@ -32,6 +34,7 @@ namespace GK
 		void handleMouseButton(SDL_MouseButtonEvent event);
 		Timer fpsTimer;
 		Timer capTimer;
+		Timer deltaTimer;
 		int countedFrames;
 		int sprintModifier;
 		std::set<CameraMovementDirection> cameraMoves;

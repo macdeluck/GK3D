@@ -19,6 +19,7 @@ namespace GK
 		SDL_SetRelativeMouseMode(SDL_TRUE);
 		fpsTimer.start();
 		capTimer.start();
+		deltaTimer.start();
 	}
 	GK3DWindow::GK3DWindow(const GK3DWindow& otherWindow) : Window(otherWindow) {}
 	GK3DWindow& GK3DWindow::operator=(const GK3DWindow& otherWindow)
@@ -41,33 +42,8 @@ namespace GK
 			handleMouseButton(event.button);
 	}
 
-	void GK3DWindow::on_render()
+	void GK3DWindow::onBeginFrame()
 	{
-		scene->render();
-	}
-	void GK3DWindow::on_update()
-	{
-		GLfloat deltaTime = (GLfloat)capTimer.getTicks();
-		for (std::set<CameraMovementDirection>::iterator it = cameraMoves.begin();
-			it != cameraMoves.end(); it++)
-		{
-			scene->getCamera()->move(*it, sprintModifier*deltaTime);
-		}
-		scene->update(deltaTime);
-		scene->getCamera()->setScreenWidth(getWidth());
-		scene->getCamera()->setScreenHeight(getHeight());
-		postFrame();
-	}
-
-	void GK3DWindow::postFrame()
-	{
-		++countedFrames;
-		int frameTicks = capTimer.getTicks();
-		if (frameTicks < SCREEN_TICK_PER_FRAME)
-		{
-			SDL_Delay(SCREEN_TICK_PER_FRAME - frameTicks);
-		}
-		capTimer.start();
 		float avgFPS = countedFrames / (fpsTimer.getTicks() / 1000.f);
 		if (avgFPS > 2000000)
 		{
@@ -80,6 +56,36 @@ namespace GK
 		ss << std::fixed << std::setprecision(3) << std::setw(9) << cameraPos.y << ", ";
 		ss << std::fixed << std::setprecision(3) << std::setw(9) << cameraPos.z << ")";
 		SDL_SetWindowTitle(&(*(this->getWindowHandle().lock())), ss.str().c_str());
+		capTimer.start();
+	}
+
+	void GK3DWindow::onRender()
+	{
+		scene->render();
+	}
+
+	void GK3DWindow::onUpdate()
+	{
+		GLfloat deltaTime = (GLfloat)deltaTimer.getTicks();
+		deltaTimer.start();
+		for (std::set<CameraMovementDirection>::iterator it = cameraMoves.begin();
+			it != cameraMoves.end(); it++)
+		{
+			scene->getCamera()->move(*it, sprintModifier*deltaTime);
+		}
+		scene->update(deltaTime);
+		scene->getCamera()->setScreenWidth(getWidth());
+		scene->getCamera()->setScreenHeight(getHeight());
+	}
+
+	void GK3DWindow::onEndFrame()
+	{
+		++countedFrames;
+		int frameTicks = capTimer.getTicks();
+		if (frameTicks < SCREEN_TICK_PER_FRAME)
+		{
+			SDL_Delay(SCREEN_TICK_PER_FRAME - frameTicks);
+		}
 	}
 
 	void GK3DWindow::handleKey(Uint32 type, SDL_Keycode code)

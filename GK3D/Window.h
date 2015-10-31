@@ -29,9 +29,13 @@ namespace GK
 		void render();
 		void update();
 		void close();
+		void beginFrame();
+		void endFrame();
 	protected:
-		virtual void on_render();
-		virtual void on_update();
+		virtual void onBeginFrame();
+		virtual void onUpdate();
+		virtual void onRender();
+		virtual void onEndFrame();
 		std::weak_ptr<SDL_Window> getWindowHandle();
 	private:
 		void _refresh();
