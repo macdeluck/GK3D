@@ -25,12 +25,13 @@ out vec4 color;
 
 void main()
 {    
+    vec3 lightDir = normalize(light.position - vertexFragPos);
+
     // Ambient
     vec3 ambient = light.ambient * material.ambient;
   	
     // Diffuse 
     vec3 norm = normalize(vertexNormal);
-    vec3 lightDir = normalize(light.position - vertexFragPos);
     float diff = max(dot(norm, lightDir), 0.0);
     vec3 diffuse = light.diffuse * (diff * material.diffuse);
     
