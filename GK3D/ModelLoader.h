@@ -15,8 +15,8 @@ namespace GK
 	{
 	private:
 		void loadShapes(std::vector<tinyobj::shape_t> shapes,
-			std::shared_ptr<std::vector<Vertex> > output,
-			std::shared_ptr<std::vector<GLuint> > indices);
+			std::vector<Vertex>* vertices,
+			std::vector<GLuint>* indices);
 		void calculateAndSetNormal(
 			std::shared_ptr<std::vector<GLfloat> > vertex1,
 			std::shared_ptr<std::vector<GLfloat> > vertex2,
@@ -27,8 +27,8 @@ namespace GK
 		virtual ~ModelLoader();
 		
 		void loadModel(std::string path,
-			std::shared_ptr<std::vector<Vertex> > output,
-			std::shared_ptr<std::vector<GLuint> > indices);
+			std::vector<Vertex>* vertices,
+			std::vector<GLuint>* indices);
 	};
 }
 

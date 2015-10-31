@@ -10,14 +10,12 @@
 
 namespace GK
 {
-	std::vector<Vertex> getBoxVertices();
-
 	GK3DScene::GK3DScene(int screenWidth, int screenHeight)
 		: Scene(std::vector<std::shared_ptr<Drawable> >(), Camera(screenWidth, screenHeight, glm::vec3(0, 0, -5)))
 	{
-		std::shared_ptr<std::vector<Vertex> > output;
-		std::shared_ptr<std::vector<GLuint> > indices;
-		ModelLoader().loadModel("cube.obj", output, indices);
+		std::vector<Vertex> vertices;
+		std::vector<GLuint> indices;
+		ModelLoader().loadModel("cube.obj", &vertices, &indices);
 
 		std::shared_ptr<ShaderProgram> objectShader = std::shared_ptr<ShaderProgram>(new ObjectShader());
 		objectShader->compile();
@@ -44,14 +42,14 @@ namespace GK
 		lightSource.reset(new PointLightInstance(lightShader, lightMaterial,
 			1.0f, 0.09f, 0.032f,
 			glm::vec3(1.2f, 1.0f, 2.0f),
-			glm::vec3(0.5f, 0.5f, 0.5f)));
+			glm::vec3(0.25f, 0.25f, 0.25f)));
 		(*this->getLightSources())[0] = lightSource;
 
 		std::shared_ptr<PointLightInstance> lightSource2;
 		lightSource2.reset(new PointLightInstance(lightShader, lightMaterial,
 			1.0f, 0.09f, 0.032f,
 			glm::vec3(0, 4.0f, -11.25f),
-			glm::vec3(0.5f, 0.5f, 0.5f)));
+			glm::vec3(0.25f, 0.25f, 0.25f)));
 		(*this->getLightSources())[1] = lightSource2;
 
 		std::vector<std::shared_ptr<DrawableInstance> > boxInstances = { lightSource, lightSource2 };
@@ -80,7 +78,7 @@ namespace GK
 			boxInstances.push_back(std::shared_ptr<DrawableInstance>( new DrawableInstance(objectShader,
 				cubesMaterial,
 				cubePositions[i],
-				glm::vec3(1.0f, 1.0f, 1.0f),
+				glm::vec3(0.5f, 0.5f, 0.5f),
 				angle * 1.0f,
 				angle * 0.3f,
 				angle * 0.5f)));
@@ -89,7 +87,8 @@ namespace GK
 		std::shared_ptr<Drawable> box;
 		box.reset(
 			new Drawable(
-			getBoxVertices(),
+			vertices,
+			indices,
 			boxInstances));
 		getDrawables()->push_back(box);
 	}
@@ -115,55 +114,5 @@ namespace GK
 				glm::vec3(1.0f, 1.0f, 1.0f)));
 		}
 		spotLightOn = !spotLightOn;
-	}
-
-	std::vector<Vertex> getBoxVertices()
-	{
-		Vertex v = { -0.5f, -0.5f, -0.5f, 0.0f, 0.0f, -1.0f };
-		std::vector<Vertex> result = {
-			// Positions         // Normals
-			{ -0.5f, -0.5f, -0.5f, 0.0f, 0.0f, -1.0f },
-			{ 0.5f, -0.5f, -0.5f, 0.0f, 0.0f, -1.0f },
-			{ 0.5f, 0.5f, -0.5f, 0.0f, 0.0f, -1.0f },
-			{ 0.5f, 0.5f, -0.5f, 0.0f, 0.0f, -1.0f },
-			{ -0.5f, 0.5f, -0.5f, 0.0f, 0.0f, -1.0f },
-			{ -0.5f, -0.5f, -0.5f, 0.0f, 0.0f, -1.0f },
-
-			{ -0.5f, -0.5f, 0.5f, 0.0f, 0.0f, 1.0f },
-			{ 0.5f, -0.5f, 0.5f, 0.0f, 0.0f, 1.0f },
-			{ 0.5f, 0.5f, 0.5f, 0.0f, 0.0f, 1.0f },
-			{ 0.5f, 0.5f, 0.5f, 0.0f, 0.0f, 1.0f },
-			{ -0.5f, 0.5f, 0.5f, 0.0f, 0.0f, 1.0f },
-			{ -0.5f, -0.5f, 0.5f, 0.0f, 0.0f, 1.0f },
-
-			{ -0.5f, 0.5f, 0.5f, -1.0f, 0.0f, 0.0f },
-			{ -0.5f, 0.5f, -0.5f, -1.0f, 0.0f, 0.0f },
-			{ -0.5f, -0.5f, -0.5f, -1.0f, 0.0f, 0.0f },
-			{ -0.5f, -0.5f, -0.5f, -1.0f, 0.0f, 0.0f },
-			{ -0.5f, -0.5f, 0.5f, -1.0f, 0.0f, 0.0f },
-			{ -0.5f, 0.5f, 0.5f, -1.0f, 0.0f, 0.0f },
-
-			{ 0.5f, 0.5f, 0.5f, 1.0f, 0.0f, 0.0f },
-			{ 0.5f, 0.5f, -0.5f, 1.0f, 0.0f, 0.0f },
-			{ 0.5f, -0.5f, -0.5f, 1.0f, 0.0f, 0.0f },
-			{ 0.5f, -0.5f, -0.5f, 1.0f, 0.0f, 0.0f },
-			{ 0.5f, -0.5f, 0.5f, 1.0f, 0.0f, 0.0f },
-			{ 0.5f, 0.5f, 0.5f, 1.0f, 0.0f, 0.0f },
-
-			{ -0.5f, -0.5f, -0.5f, 0.0f, -1.0f, 0.0f },
-			{ 0.5f, -0.5f, -0.5f, 0.0f, -1.0f, 0.0f },
-			{ 0.5f, -0.5f, 0.5f, 0.0f, -1.0f, 0.0f },
-			{ 0.5f, -0.5f, 0.5f, 0.0f, -1.0f, 0.0f },
-			{ -0.5f, -0.5f, 0.5f, 0.0f, -1.0f, 0.0f },
-			{ -0.5f, -0.5f, -0.5f, 0.0f, -1.0f, 0.0f },
-
-			{ -0.5f, 0.5f, -0.5f, 0.0f, 1.0f, 0.0f },
-			{ 0.5f, 0.5f, -0.5f, 0.0f, 1.0f, 0.0f },
-			{ 0.5f, 0.5f, 0.5f, 0.0f, 1.0f, 0.0f },
-			{ 0.5f, 0.5f, 0.5f, 0.0f, 1.0f, 0.0f },
-			{ -0.5f, 0.5f, 0.5f, 0.0f, 1.0f, 0.0f },
-			{ -0.5f, 0.5f, -0.5f, 0.0f, 1.0f, 0.0f }
-		};
-		return result;
 	}
 }
