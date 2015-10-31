@@ -19,7 +19,9 @@ namespace GK
 		std::vector<DrawableInstance> boxInstances = 
 		{
 			DrawableInstance(lightShader,
-			Material(glm::vec3(1.0f, 1.0f, 1.0f)),
+			Material(glm::vec3(0.2f, 0.2f, 0.2f),
+				glm::vec3(0.5f, 0.5f, 0.5f),
+				glm::vec3(1.0f, 1.0f, 1.0f)),
 			glm::vec3(2.3f, 1.7f, -2.0f),
 			glm::vec3(0.5f, 0.5f, 0.5f)),
 			DrawableInstance(objectShader,
