@@ -6,8 +6,7 @@
 #include "SpotLightInstance.h"
 #include "Camera.h"
 #include "Scene.h"
-
-#include "tiny_obj_loader.h"
+#include "ModelLoader.h"
 
 namespace GK
 {
@@ -16,6 +15,10 @@ namespace GK
 	GK3DScene::GK3DScene(int screenWidth, int screenHeight)
 		: Scene(std::vector<std::shared_ptr<Drawable> >(), Camera(screenWidth, screenHeight, glm::vec3(0, 0, -5)))
 	{
+		std::shared_ptr<std::vector<Vertex> > output;
+		std::shared_ptr<std::vector<GLuint> > indices;
+		ModelLoader().loadModel("cube.obj", output, indices);
+
 		std::shared_ptr<ShaderProgram> objectShader = std::shared_ptr<ShaderProgram>(new ObjectShader());
 		objectShader->compile();
 		std::shared_ptr<ShaderProgram> lightShader = std::shared_ptr<ShaderProgram>(new LightShader());

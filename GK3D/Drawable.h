@@ -2,7 +2,6 @@
 #define _GK_DRAWABLE
 
 #include "Common.h"
-#include <array>
 
 namespace GK
 {

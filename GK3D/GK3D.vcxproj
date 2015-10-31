@@ -79,6 +79,7 @@
     <ClCompile Include="GK3DScene.cpp" />
     <ClCompile Include="GK3DWindow.cpp" />
     <ClCompile Include="LightShader.cpp" />
+    <ClCompile Include="ModelLoader.cpp" />
     <ClCompile Include="PointLightInstance.cpp" />
     <ClCompile Include="ObjectShader.cpp" />
     <ClCompile Include="Scene.cpp" />
@@ -97,6 +98,7 @@
     <ClInclude Include="GK3DApplication.h" />
     <ClInclude Include="GK3DScene.h" />
     <ClInclude Include="GK3DWindow.h" />
+    <ClInclude Include="ModelLoader.h" />
     <ClInclude Include="PointLightInstance.h" />
     <ClInclude Include="LightShader.h" />
     <ClInclude Include="ObjectShader.h" />
