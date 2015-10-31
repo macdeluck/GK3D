@@ -44,11 +44,13 @@ namespace GK
 	}
 	void GK3DWindow::on_update()
 	{
+		GLfloat deltaTime = (GLfloat)capTimer.getTicks();
 		for (std::set<CameraMovementDirection>::iterator it = cameraMoves.begin();
 			it != cameraMoves.end(); it++)
 		{
-			scene->getCamera().lock()->move(*it, (GLfloat)capTimer.getTicks());
+			scene->getCamera().lock()->move(*it, deltaTime);
 		}
+		scene->update(deltaTime);
 		scene->getCamera().lock()->setScreenWidth(getWidth());
 		scene->getCamera().lock()->setScreenHeight(getHeight());
 		postFrame();

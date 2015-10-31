@@ -47,20 +47,20 @@ namespace GK
 		glUniform3f(getUniformLocation("viewPos"), cameraPosition.x, cameraPosition.y, cameraPosition.z);
 
 		// material
-		Material material = drawableInstance.material;
-		glUniform3f(getUniformLocation("material.ambient"), material.ambient.r, material.ambient.g, material.ambient.b);
-		glUniform3f(getUniformLocation("material.diffuse"), material.diffuse.r, material.diffuse.g, material.diffuse.b);
-		glUniform3f(getUniformLocation("material.specular"), material.specular.r, material.specular.g, material.specular.b);
-		glUniform1f(getUniformLocation("material.shininess"), material.shininess);
+		std::shared_ptr<Material> material = drawableInstance.material;
+		glUniform3f(getUniformLocation("material.ambient"), material->ambient.r, material->ambient.g, material->ambient.b);
+		glUniform3f(getUniformLocation("material.diffuse"), material->diffuse.r, material->diffuse.g, material->diffuse.b);
+		glUniform3f(getUniformLocation("material.specular"), material->specular.r, material->specular.g, material->specular.b);
+		glUniform1f(getUniformLocation("material.shininess"), material->shininess);
 
 		// light source
 		DrawableInstance lightSource = (*(*scene.lock()->getDrawables().lock()->begin())->getInstances().begin());
 		glUniform3f(getUniformLocation("light.ambient"), 
-			lightSource.material.ambient.r, lightSource.material.ambient.g, lightSource.material.ambient.b);
+			lightSource.material->ambient.r, lightSource.material->ambient.g, lightSource.material->ambient.b);
 		glUniform3f(getUniformLocation("light.diffuse"), 
-			lightSource.material.diffuse.r, lightSource.material.diffuse.g, lightSource.material.diffuse.b);
+			lightSource.material->diffuse.r, lightSource.material->diffuse.g, lightSource.material->diffuse.b);
 		glUniform3f(getUniformLocation("light.specular"), 
-			lightSource.material.specular.r, lightSource.material.specular.g, lightSource.material.specular.b);
+			lightSource.material->specular.r, lightSource.material->specular.g, lightSource.material->specular.b);
 		glUniform3f(getUniformLocation("light.position"), 
 			lightSource.position.x, lightSource.position.y, lightSource.position.z);
 	}

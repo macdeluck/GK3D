@@ -13,7 +13,7 @@ namespace GK
 	{}
 	
 	DrawableInstance::DrawableInstance(std::shared_ptr<ShaderProgram> shaderProgram,
-		Material material,
+		std::shared_ptr<Material> material,
 		glm::vec3 position,
 		glm::vec3 scale,
 		GLfloat angleX, GLfloat angleY, GLfloat angleZ)
