@@ -37,15 +37,20 @@ struct SpotLight {
     float quadratic;
 };
 
-#define POINT_LIGHTS_NUM 2
+#define POINT_LIGHTS_NUM 0
 #define SPOT_LIGHTS_NUM 1
 
+#if POINT_LIGHTS_NUM > 0
 uniform PointLight pointLights[POINT_LIGHTS_NUM];
+#endif
+#if SPOT_LIGHTS_NUM > 0
 uniform SpotLight spotLights[SPOT_LIGHTS_NUM];
+#endif
 uniform Material material;
 uniform vec3 viewPos;
 out vec4 color;
 
+#if POINT_LIGHTS_NUM > 0
 vec3 CalcPointLight(PointLight light, vec3 normal, vec3 fragPos, vec3 viewDir)
 {
     vec3 lightDir = normalize(light.position - fragPos);
@@ -68,7 +73,9 @@ vec3 CalcPointLight(PointLight light, vec3 normal, vec3 fragPos, vec3 viewDir)
     specular *= attenuation;
     return (ambient + diffuse + specular);
 }
+#endif
 
+#if SPOT_LIGHTS_NUM > 0
 vec3 CalcSpotLight(SpotLight light, vec3 normal, vec3 fragPos, vec3 viewDir)
 {
     vec3 lightDir = normalize(light.position - vertexFragPos);
@@ -95,6 +102,7 @@ vec3 CalcSpotLight(SpotLight light, vec3 normal, vec3 fragPos, vec3 viewDir)
     specular *= attenuation;
     return (ambient + diffuse + specular);
 }
+#endif
 
 void main()
 {
@@ -102,11 +110,16 @@ void main()
     vec3 viewDir = normalize(viewPos - vertexFragPos);
 
 	vec3 result = vec3(0.0, 0.0, 0.0);
-
+	
+#if POINT_LIGHTS_NUM > 0
     for(int i = 0; i < POINT_LIGHTS_NUM; i++)
         result += CalcPointLight(pointLights[i], norm, vertexFragPos, viewDir);
+#endif
+
+#if SPOT_LIGHTS_NUM > 0
     for(int i = 0; i < SPOT_LIGHTS_NUM; i++)
         result += CalcSpotLight(spotLights[i], norm, vertexFragPos, viewDir);
+#endif
     
     color = vec4(result, 1.0);
 }
