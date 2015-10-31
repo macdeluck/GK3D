@@ -11,7 +11,7 @@ namespace GK
 
 	GK3DWindow::GK3DWindow(int width, int height, std::string title, bool shown, bool resizable)
 		: Window(width, height, title, shown, resizable),
-		cameraMoves(), countedFrames(0), scene(new GK3DScene(width, height)),
+		cameraMoves(), sprintModifier(1), countedFrames(0), scene(new GK3DScene(width, height)),
 		currentPolygonMode(0)
 	{
 		glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
@@ -48,7 +48,7 @@ namespace GK
 		for (std::set<CameraMovementDirection>::iterator it = cameraMoves.begin();
 			it != cameraMoves.end(); it++)
 		{
-			scene->getCamera()->move(*it, deltaTime);
+			scene->getCamera()->move(*it, sprintModifier*deltaTime);
 		}
 		scene->update(deltaTime);
 		scene->getCamera()->setScreenWidth(getWidth());
@@ -110,6 +110,10 @@ namespace GK
 				glPolygonMode(GL_FRONT_AND_BACK, polygonModes[currentPolygonMode]);
 				currentPolygonMode = 1 - currentPolygonMode;
 			}
+		case SDLK_LSHIFT:
+			if (type == SDL_KEYUP)
+				sprintModifier = 1;
+			else sprintModifier = 3;
 			break;
 		}
 		if (add)

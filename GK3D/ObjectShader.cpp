@@ -65,6 +65,9 @@ namespace GK
 				(*lightSources)[i]->material->specular.r, (*lightSources)[i]->material->specular.g, (*lightSources)[i]->material->specular.b);
 			glUniform3f(getUniformLocation("light.position"),
 				(*lightSources)[i]->position.x, (*lightSources)[i]->position.y, (*lightSources)[i]->position.z);
+			glUniform1f(getUniformLocation("light.constant"), (*lightSources)[i]->constantTerm);
+			glUniform1f(getUniformLocation("light.linear"), (*lightSources)[i]->linearTerm);
+			glUniform1f(getUniformLocation("light.quadratic"), (*lightSources)[i]->quadraticTerm);
 		}
 	}
 }

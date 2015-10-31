@@ -32,6 +32,7 @@ namespace GK
 		Timer fpsTimer;
 		Timer capTimer;
 		int countedFrames;
+		int sprintModifier;
 		std::set<CameraMovementDirection> cameraMoves;
 		std::shared_ptr<Scene> scene;
 	};
