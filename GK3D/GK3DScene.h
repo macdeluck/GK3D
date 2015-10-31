@@ -13,6 +13,10 @@ namespace GK
 		GK3DScene(int screenWidth, int screenHeight);
 		virtual ~GK3DScene();
 		virtual void update(GLfloat deltaTime) override;
+		void toggleCameraLight();
+	private:
+		std::shared_ptr<SpotLightInstance> spotLight;
+		bool spotLightOn;
 	};
 }
 

@@ -31,6 +31,9 @@ namespace GK
 		int getScreenHeight();
 		void setScreenHeight(int screenHeight);
 		glm::vec3 getPosition();
+		void setPosition(glm::vec3 position);
+		glm::vec3 getFront();
+		void setFront(glm::vec3 front);
 
 	private:
 		glm::vec3 position;

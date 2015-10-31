@@ -36,6 +36,8 @@ namespace GK
 			handleMouseMotion();
 		if (event.type == SDL_MOUSEWHEEL)
 			handleMouseWheel(event.wheel);
+		if (event.type == SDL_MOUSEBUTTONDOWN)
+			handleMouseButton(event.button);
 	}
 
 	void GK3DWindow::on_render()
@@ -131,5 +133,11 @@ namespace GK
 	void GK3DWindow::handleMouseWheel(SDL_MouseWheelEvent event)
 	{
 		scene->getCamera()->zoom((GLfloat)event.y);
+	}
+
+	void GK3DWindow::handleMouseButton(SDL_MouseButtonEvent event)
+	{
+		if ((event.type = SDL_MOUSEBUTTONUP) && (event.button == SDL_BUTTON_LEFT))
+			std::dynamic_pointer_cast<GK3DScene>(this->scene)->toggleCameraLight();
 	}
 }

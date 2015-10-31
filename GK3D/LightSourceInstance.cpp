@@ -1,5 +1,4 @@
 #include "LightSourceInstance.h"
-#include "LightShader.h"
 
 namespace GK
 {

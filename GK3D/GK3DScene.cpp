@@ -3,6 +3,7 @@
 #include "ObjectShader.h"
 #include "LightShader.h"
 #include "LightSourceInstance.h"
+#include "SpotLightInstance.h"
 #include "Camera.h"
 #include "Scene.h"
 
@@ -22,6 +23,18 @@ namespace GK
 		lightMaterial.reset(new Material(glm::vec3(0.2f, 0.2f, 0.2f),
 			glm::vec3(0.5f, 0.5f, 0.5f),
 			glm::vec3(1.0f, 1.0f, 1.0f)));
+
+		std::shared_ptr<Material> cameraSpotLightMaterial;
+		cameraSpotLightMaterial.reset(new Material(glm::vec3(0.2f, 0.2f, 0.2f),
+			glm::vec3(0.5f, 0.5f, 0.5f),
+			glm::vec3(1.0f, 1.0f, 1.0f)));
+
+		spotLight.reset(new SpotLightInstance(lightShader, cameraSpotLightMaterial));
+		spotLight->position = getCamera()->getPosition();
+		spotLight->direction = getCamera()->getFront();
+		(*this->getSpotLights())[0] = spotLight;
+		spotLightOn = true;
+
 		std::shared_ptr<LightSourceInstance> lightSource;
 		lightSource.reset(new LightSourceInstance(lightShader, lightMaterial,
 			1.0f, 0.09f, 0.032f,
@@ -74,17 +87,25 @@ namespace GK
 
 	void GK3DScene::update(GLfloat deltaTime)
 	{
-		/*
-		glm::vec3 lightColor;
-		lightColor.x = sin((SDL_GetTicks() / 1000.0f) * 2.0f);
-		lightColor.y = sin((SDL_GetTicks() / 1000.0f) * 0.7f);
-		lightColor.z = sin((SDL_GetTicks() / 1000.0f) * 1.3f);
+		spotLight->position = getCamera()->getPosition();
+		spotLight->direction = getCamera()->getFront();
+	}
 
-		glm::vec3 diffuseColor = lightColor   * glm::vec3(0.5f); // Decrease the influence
-		glm::vec3 ambientColor = diffuseColor * glm::vec3(0.2f); // Low influence
-
-		(*getDrawables().lock()->begin())->getInstances().begin()->material->diffuse = diffuseColor;
-		(*getDrawables().lock()->begin())->getInstances().begin()->material->ambient = ambientColor;*/
+	void GK3DScene::toggleCameraLight()
+	{
+		if (spotLightOn)
+		{
+			spotLight->material->diffuse = glm::vec3(0, 0, 0);
+			spotLight->material->ambient = glm::vec3(0, 0, 0);
+			spotLight->material->specular = glm::vec3(0, 0, 0);
+		}
+		else
+		{
+			spotLight->material->diffuse = glm::vec3(0.2f, 0.2f, 0.2f);
+			spotLight->material->ambient = glm::vec3(0.5f, 0.5f, 0.5f);
+			spotLight->material->specular = glm::vec3(1.0f, 1.0f, 1.0f);
+		}
+		spotLightOn = !spotLightOn;
 	}
 
 	std::vector<Vertex> getBoxVertices()

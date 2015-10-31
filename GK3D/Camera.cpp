@@ -124,4 +124,19 @@ namespace GK
 	{
 		return position;
 	}
+
+	void Camera::setPosition(glm::vec3 position)
+	{
+		this->position = position;
+	}
+
+	glm::vec3 Camera::getFront()
+	{
+		return front;
+	}
+
+	void Camera::setFront(glm::vec3 front)
+	{
+		this->front = front;
+	}
 }
