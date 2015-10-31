@@ -22,14 +22,38 @@ namespace GK
 			std::shared_ptr<Material>(new Material(glm::vec3(0.2f, 0.2f, 0.2f),
 				glm::vec3(0.5f, 0.5f, 0.5f),
 				glm::vec3(1.0f, 1.0f, 1.0f))),
-			glm::vec3(2.3f, 1.7f, -2.0f),
-			glm::vec3(0.5f, 0.5f, 0.5f)),
-			DrawableInstance(objectShader,
-			std::shared_ptr<Material>(new Material(glm::vec3(1.0f, 0.5f, 0.31f),
-				glm::vec3(1.0f, 0.5f, 0.31f),
-				glm::vec3(0.5f, 0.5f, 0.5f),
-				32.0f)))
+			glm::vec3(1.2f, 1.0f, 2.0f),
+			glm::vec3(0.5f, 0.5f, 0.5f))
 		};
+		glm::vec3 cubePositions[] = {
+			glm::vec3(0.0f, 0.0f, 0.0f),
+			glm::vec3(2.0f, 5.0f, -15.0f),
+			glm::vec3(-1.5f, -2.2f, -2.5f),
+			glm::vec3(-3.8f, -2.0f, -12.3f),
+			glm::vec3(2.4f, -0.4f, -3.5f),
+			glm::vec3(-1.7f, 3.0f, -7.5f),
+			glm::vec3(1.3f, -2.0f, -2.5f),
+			glm::vec3(1.5f, 2.0f, -2.5f),
+			glm::vec3(1.5f, 0.2f, -1.5f),
+			glm::vec3(-1.3f, 1.0f, -1.5f)
+		};
+		std::shared_ptr<Material> cubesMaterial;
+		cubesMaterial.reset(new Material(
+			glm::vec3(0.0215f, 0.1745f, 0.0215f),
+			glm::vec3(0.07568f, 0.61424f, 0.07568f),
+			glm::vec3(0.633f, 0.727811f, 0.633f),
+			0.6f * 128.f));
+		for (GLuint i = 0; i < 10; i++)
+		{
+			GLfloat angle = 20.0f * i;
+			boxInstances.push_back(DrawableInstance(objectShader,
+				cubesMaterial,
+				cubePositions[i],
+				glm::vec3(1.0f, 1.0f, 1.0f),
+				angle * 1.0f,
+				angle * 0.3f,
+				angle * 0.5f));
+		}
 		box.reset(
 			new Drawable(
 			getBoxVertices(),
@@ -41,6 +65,7 @@ namespace GK
 
 	void GK3DScene::update(GLfloat deltaTime)
 	{
+		/*
 		glm::vec3 lightColor;
 		lightColor.x = sin((SDL_GetTicks() / 1000.0f) * 2.0f);
 		lightColor.y = sin((SDL_GetTicks() / 1000.0f) * 0.7f);
@@ -50,7 +75,7 @@ namespace GK
 		glm::vec3 ambientColor = diffuseColor * glm::vec3(0.2f); // Low influence
 
 		(*getDrawables().lock()->begin())->getInstances().begin()->material->diffuse = diffuseColor;
-		(*getDrawables().lock()->begin())->getInstances().begin()->material->ambient = ambientColor;
+		(*getDrawables().lock()->begin())->getInstances().begin()->material->ambient = ambientColor;*/
 	}
 
 	std::vector<Vertex> getBoxVertices()
