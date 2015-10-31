@@ -57,20 +57,20 @@ namespace GK
 	{
 	public:
 		Drawable(std::vector<Vertex> vertices,
-			std::vector<DrawableInstance> instances);
+			std::vector<std::shared_ptr<DrawableInstance> > instances);
 		Drawable(std::vector<Vertex> vertices,
 			std::vector<GLuint> indices,
-			std::vector<DrawableInstance> instances);
+			std::vector<std::shared_ptr<DrawableInstance> > instances);
 		virtual ~Drawable();
-		std::vector<DrawableInstance> getInstances();
-		void render(std::weak_ptr<Scene> scene);
+		std::vector<std::shared_ptr<DrawableInstance> > getInstances();
+		void render(std::shared_ptr<Scene> scene);
 	private:
 		void init();
 
 		std::shared_ptr<GLuint> vbo;
 		std::shared_ptr<GLuint> ebo;
 		std::shared_ptr<GLuint> vao;
-		std::vector<DrawableInstance> instances;
+		std::vector<std::shared_ptr<DrawableInstance> > instances;
 		std::vector<Vertex> vertices;
 		std::vector<GLuint> indices;
 		std::vector<GLfloat> getVertexData();

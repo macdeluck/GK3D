@@ -16,14 +16,14 @@ namespace GK
 		std::shared_ptr<ShaderProgram> lightShader = std::shared_ptr<ShaderProgram>(new LightShader());
 		lightShader->compile();
 		std::shared_ptr<Drawable> box;
-		std::vector<DrawableInstance> boxInstances = 
+		std::vector<std::shared_ptr<DrawableInstance> > boxInstances = 
 		{
-			DrawableInstance(lightShader,
+			std::shared_ptr<DrawableInstance>(new DrawableInstance(lightShader,
 			std::shared_ptr<Material>(new Material(glm::vec3(0.2f, 0.2f, 0.2f),
 				glm::vec3(0.5f, 0.5f, 0.5f),
 				glm::vec3(1.0f, 1.0f, 1.0f))),
 			glm::vec3(1.2f, 1.0f, 2.0f),
-			glm::vec3(0.5f, 0.5f, 0.5f))
+			glm::vec3(0.5f, 0.5f, 0.5f)))
 		};
 		glm::vec3 cubePositions[] = {
 			glm::vec3(0.0f, 0.0f, 0.0f),
@@ -46,19 +46,19 @@ namespace GK
 		for (GLuint i = 0; i < 10; i++)
 		{
 			GLfloat angle = 20.0f * i;
-			boxInstances.push_back(DrawableInstance(objectShader,
+			boxInstances.push_back(std::shared_ptr<DrawableInstance>( new DrawableInstance(objectShader,
 				cubesMaterial,
 				cubePositions[i],
 				glm::vec3(1.0f, 1.0f, 1.0f),
 				angle * 1.0f,
 				angle * 0.3f,
-				angle * 0.5f));
+				angle * 0.5f)));
 		}
 		box.reset(
 			new Drawable(
 			getBoxVertices(),
 			boxInstances));
-		getDrawables().lock()->push_back(box);
+		getDrawables()->push_back(box);
 	}
 
 	GK3DScene::~GK3DScene() {}

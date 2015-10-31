@@ -48,11 +48,11 @@ namespace GK
 		for (std::set<CameraMovementDirection>::iterator it = cameraMoves.begin();
 			it != cameraMoves.end(); it++)
 		{
-			scene->getCamera().lock()->move(*it, deltaTime);
+			scene->getCamera()->move(*it, deltaTime);
 		}
 		scene->update(deltaTime);
-		scene->getCamera().lock()->setScreenWidth(getWidth());
-		scene->getCamera().lock()->setScreenHeight(getHeight());
+		scene->getCamera()->setScreenWidth(getWidth());
+		scene->getCamera()->setScreenHeight(getHeight());
 		postFrame();
 	}
 
@@ -121,11 +121,11 @@ namespace GK
 	{
 		int x, y;
 		SDL_GetRelativeMouseState(&x, &y);
-		scene->getCamera().lock()->rotate((GLfloat)x, (GLfloat)-y);
+		scene->getCamera()->rotate((GLfloat)x, (GLfloat)-y);
 	}
 
 	void GK3DWindow::handleMouseWheel(SDL_MouseWheelEvent event)
 	{
-		scene->getCamera().lock()->zoom((GLfloat)event.y);
+		scene->getCamera()->zoom((GLfloat)event.y);
 	}
 }

@@ -41,9 +41,9 @@ namespace GK
 		std::shared_ptr<Shader> getFragmentShader();
 		void compile();
 		virtual void beforeLink();
-		void render(DrawableInstance drawable, std::weak_ptr<Scene> scene);
+		void render(std::shared_ptr<DrawableInstance> drawable, std::shared_ptr<Scene> scene);
 	protected:
-		virtual void prepareForRender(DrawableInstance drawable, std::weak_ptr<Scene> scene);
+		virtual void prepareForRender(std::shared_ptr<DrawableInstance> drawable, std::shared_ptr<Scene> scene);
 		GLuint getUniformLocation(std::string uniformName);
 		GLuint getProgramId();
 	private:

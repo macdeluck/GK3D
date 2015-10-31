@@ -19,7 +19,7 @@ namespace GK
 		LightShader();
 		virtual ~LightShader();
 		virtual void beforeLink() override;
-		virtual void prepareForRender(DrawableInstance drawableInstance, std::weak_ptr<Scene> scene) override;
+		virtual void prepareForRender(std::shared_ptr<DrawableInstance> drawableInstance, std::shared_ptr<Scene> scene) override;
 	};
 }
 

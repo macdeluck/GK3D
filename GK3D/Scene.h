@@ -17,8 +17,8 @@ namespace GK
 
 		virtual void update(GLfloat deltaTime);
 		void render();
-		std::weak_ptr<std::vector<std::shared_ptr<Drawable> > > getDrawables();
-		std::weak_ptr<Camera> getCamera();
+		std::shared_ptr<std::vector<std::shared_ptr<Drawable> > > getDrawables();
+		std::shared_ptr<Camera> getCamera();
 	private:
 		std::shared_ptr<std::vector<std::shared_ptr<Drawable> > > drawables;
 		std::shared_ptr<Camera> camera;

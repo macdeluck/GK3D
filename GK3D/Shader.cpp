@@ -122,13 +122,13 @@ namespace GK
 	{
 	}
 
-	void ShaderProgram::render(DrawableInstance drawable, std::weak_ptr<Scene> scene)
+	void ShaderProgram::render(std::shared_ptr<DrawableInstance> drawable, std::shared_ptr<Scene> scene)
 	{
 		use();
 		prepareForRender(drawable, scene);
 	}
 
-	void ShaderProgram::prepareForRender(DrawableInstance drawableInstance, std::weak_ptr<Scene> scene)
+	void ShaderProgram::prepareForRender(std::shared_ptr<DrawableInstance> drawableInstance, std::shared_ptr<Scene> scene)
 	{
 	}
 }

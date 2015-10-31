@@ -23,14 +23,14 @@ namespace GK
 	}
 
 	Drawable::Drawable(std::vector<Vertex> vertices, std::vector<GLuint> indices,
-		std::vector<DrawableInstance> instances)
+		std::vector<std::shared_ptr<DrawableInstance> > instances)
 		: vertices(vertices), instances(instances), indices(indices), vao(new GLuint(0)), vbo(new GLuint(0)), ebo(new GLuint(0))
 	{
 		init();
 	}
 
 	Drawable::Drawable(std::vector<Vertex> vertices,
-		std::vector<DrawableInstance> instances)
+		std::vector<std::shared_ptr<DrawableInstance> > instances)
 		: vertices(vertices), instances(instances), indices(0), vao(new GLuint(0)), vbo(new GLuint(0)), ebo(new GLuint(0))
 	{
 		init();
@@ -85,12 +85,12 @@ namespace GK
 		}
 	}
 
-	void Drawable::render(std::weak_ptr<Scene> scene)
+	void Drawable::render(std::shared_ptr<Scene> scene)
 	{
 		glBindVertexArray(*vao);
 		for (size_t i = 0; i < instances.size(); i++)
 		{
-			instances[i].shaderProgram->render(instances[i], scene);
+			instances[i]->shaderProgram->render(instances[i], scene);
 			if (indices.size() > 0)
 				glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, 0);
 			else glDrawArrays(GL_TRIANGLES, 0, vertices.size());
@@ -98,7 +98,7 @@ namespace GK
 		glBindVertexArray(0);
 	}
 
-	std::vector<DrawableInstance> Drawable::getInstances()
+	std::vector<std::shared_ptr<DrawableInstance> >  Drawable::getInstances()
 	{
 		return instances;
 	}

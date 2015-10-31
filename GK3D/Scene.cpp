@@ -24,11 +24,11 @@ namespace GK
 		}
 	}
 
-	std::weak_ptr<std::vector<std::shared_ptr<Drawable> > > Scene::getDrawables()
+	std::shared_ptr<std::vector<std::shared_ptr<Drawable> > > Scene::getDrawables()
 	{
 		return drawables;
 	}
-	std::weak_ptr<Camera> Scene::getCamera()
+	std::shared_ptr<Camera> Scene::getCamera()
 	{
 		return camera;
 	}
