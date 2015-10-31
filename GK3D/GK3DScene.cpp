@@ -7,6 +7,8 @@
 #include "Camera.h"
 #include "Scene.h"
 
+#include "tiny_obj_loader.h"
+
 namespace GK
 {
 	std::vector<Vertex> getBoxVertices();

@@ -85,6 +85,7 @@
     <ClCompile Include="Shader.cpp" />
     <ClCompile Include="SpotLightInstance.cpp" />
     <ClCompile Include="Timer.cpp" />
+    <ClCompile Include="tiny_obj_loader.cpp" />
     <ClCompile Include="Window.cpp" />
     <ClCompile Include="program.cpp" />
   </ItemGroup>
@@ -103,6 +104,7 @@
     <ClInclude Include="Shader.h" />
     <ClInclude Include="SpotLightInstance.h" />
     <ClInclude Include="Timer.h" />
+    <ClInclude Include="tiny_obj_loader.h" />
     <ClInclude Include="Window.h" />
   </ItemGroup>
   <ItemGroup>
