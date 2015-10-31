@@ -2,10 +2,6 @@
 #define _GK_SCENE
 
 #include "Common.h"
-#include <array>
-
-#define POINT_LIGHTS_NUM 0
-#define SPOT_LIGHTS_NUM 1
 
 namespace GK
 {
@@ -14,8 +10,8 @@ namespace GK
 	struct PointLightInstance;
 	struct SpotLightInstance;
 
-	typedef std::array<std::shared_ptr<PointLightInstance>, POINT_LIGHTS_NUM > PointLightsArray;
-	typedef std::array<std::shared_ptr<SpotLightInstance>, SPOT_LIGHTS_NUM > SpotLightsArray;
+	typedef std::vector<std::shared_ptr<PointLightInstance> > PointLightsArray;
+	typedef std::vector<std::shared_ptr<SpotLightInstance> > SpotLightsArray;
 
 	class Scene : private std::enable_shared_from_this<Scene>
 	{

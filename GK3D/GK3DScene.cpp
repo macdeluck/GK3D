@@ -35,7 +35,7 @@ namespace GK
 		spotLight.reset(new SpotLightInstance(lightShader, cameraSpotLightMaterial));
 		spotLight->position = getCamera()->getPosition();
 		spotLight->direction = getCamera()->getFront();
-		(*this->getSpotLights())[0] = spotLight;
+		(*this->getSpotLights()).push_back(spotLight);
 		spotLightOn = true;
 
 		std::shared_ptr<PointLightInstance> lightSource;
@@ -43,16 +43,16 @@ namespace GK
 			1.0f, 0.09f, 0.032f,
 			glm::vec3(1.2f, 1.0f, 2.0f),
 			glm::vec3(0.01f, 0.01f, 0.01f)));
-		//(*this->getLightSources())[0] = lightSource;
+		(*this->getLightSources()).push_back(lightSource);
 
 		std::shared_ptr<PointLightInstance> lightSource2;
 		lightSource2.reset(new PointLightInstance(lightShader, lightMaterial,
 			1.0f, 0.09f, 0.032f,
 			glm::vec3(0, 4.0f, -11.25f),
 			glm::vec3(0.01f, 0.01f, 0.01f)));
-		//(*this->getLightSources())[1] = lightSource2;
+		(*this->getLightSources()).push_back(lightSource2);
 
-		std::vector<std::shared_ptr<DrawableInstance> > boxInstances;// = { lightSource, lightSource2 };
+		std::vector<std::shared_ptr<DrawableInstance> > boxInstances = { lightSource, lightSource2 };
 
 		glm::vec3 cubePositions[] = {
 			glm::vec3(0.0f, 0.0f, 0.0f),

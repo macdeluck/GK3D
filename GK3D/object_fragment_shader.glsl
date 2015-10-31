@@ -37,20 +37,22 @@ struct SpotLight {
     float quadratic;
 };
 
-#define POINT_LIGHTS_NUM 0
-#define SPOT_LIGHTS_NUM 1
+#define MAX_POINT_LIGHTS_NUM 20
+#define MAX_SPOT_LIGHTS_NUM 10
 
-#if POINT_LIGHTS_NUM > 0
-uniform PointLight pointLights[POINT_LIGHTS_NUM];
+#if MAX_POINT_LIGHTS_NUM > 0
+uniform PointLight pointLights[MAX_POINT_LIGHTS_NUM];
+uniform uint pointLightsNum;
 #endif
-#if SPOT_LIGHTS_NUM > 0
-uniform SpotLight spotLights[SPOT_LIGHTS_NUM];
+#if MAX_SPOT_LIGHTS_NUM > 0
+uniform SpotLight spotLights[MAX_SPOT_LIGHTS_NUM];
+uniform uint spotLightsNum;
 #endif
 uniform Material material;
 uniform vec3 viewPos;
 out vec4 color;
 
-#if POINT_LIGHTS_NUM > 0
+#if MAX_POINT_LIGHTS_NUM > 0
 vec3 CalcPointLight(PointLight light, vec3 normal, vec3 fragPos, vec3 viewDir)
 {
     vec3 lightDir = normalize(light.position - fragPos);
@@ -75,7 +77,7 @@ vec3 CalcPointLight(PointLight light, vec3 normal, vec3 fragPos, vec3 viewDir)
 }
 #endif
 
-#if SPOT_LIGHTS_NUM > 0
+#if MAX_SPOT_LIGHTS_NUM > 0
 vec3 CalcSpotLight(SpotLight light, vec3 normal, vec3 fragPos, vec3 viewDir)
 {
     vec3 lightDir = normalize(light.position - vertexFragPos);
@@ -111,13 +113,13 @@ void main()
 
 	vec3 result = vec3(0.0, 0.0, 0.0);
 	
-#if POINT_LIGHTS_NUM > 0
-    for(int i = 0; i < POINT_LIGHTS_NUM; i++)
+#if MAX_POINT_LIGHTS_NUM > 0
+    for(int i = 0; i < pointLightsNum; i++)
         result += CalcPointLight(pointLights[i], norm, vertexFragPos, viewDir);
 #endif
 
-#if SPOT_LIGHTS_NUM > 0
-    for(int i = 0; i < SPOT_LIGHTS_NUM; i++)
+#if MAX_SPOT_LIGHTS_NUM > 0
+    for(int i = 0; i < spotLightsNum; i++)
         result += CalcSpotLight(spotLights[i], norm, vertexFragPos, viewDir);
 #endif
     
