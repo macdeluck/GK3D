@@ -24,7 +24,7 @@ namespace GK
 		void render();
 		std::shared_ptr<std::vector<std::shared_ptr<Drawable> > > getDrawables();
 		std::shared_ptr<Camera> getCamera();
-		std::shared_ptr<PointLightsArray> getLightSources();
+		std::shared_ptr<PointLightsArray> getPointLights();
 		std::shared_ptr<SpotLightsArray> getSpotLights();
 	private:
 		std::shared_ptr<PointLightsArray> lightSources;

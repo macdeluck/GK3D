@@ -15,8 +15,8 @@ namespace GK
 		virtual void update(GLfloat deltaTime) override;
 		void toggleCameraLight();
 	private:
-		std::shared_ptr<SpotLightInstance> spotLight;
-		bool spotLightOn;
+		std::shared_ptr<SpotLightInstance> cameraSpotLight;
+		bool cameraSpotLightOn;
 	};
 }
 

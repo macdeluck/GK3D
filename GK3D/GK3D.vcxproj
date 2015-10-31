@@ -83,6 +83,7 @@
     <ClCompile Include="PointLightInstance.cpp" />
     <ClCompile Include="ObjectShader.cpp" />
     <ClCompile Include="Scene.cpp" />
+    <ClCompile Include="GK3DSceneLoader.cpp" />
     <ClCompile Include="Shader.cpp" />
     <ClCompile Include="SpotLightInstance.cpp" />
     <ClCompile Include="Timer.cpp" />
@@ -103,6 +104,7 @@
     <ClInclude Include="LightShader.h" />
     <ClInclude Include="ObjectShader.h" />
     <ClInclude Include="Scene.h" />
+    <ClInclude Include="GK3DSceneLoader.h" />
     <ClInclude Include="Shader.h" />
     <ClInclude Include="SpotLightInstance.h" />
     <ClInclude Include="Timer.h" />
