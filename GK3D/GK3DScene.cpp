@@ -95,15 +95,13 @@ namespace GK
 	{
 		if (spotLightOn)
 		{
-			spotLight->material->diffuse = glm::vec3(0, 0, 0);
-			spotLight->material->ambient = glm::vec3(0, 0, 0);
-			spotLight->material->specular = glm::vec3(0, 0, 0);
+			spotLight->material.reset(new Material());
 		}
 		else
 		{
-			spotLight->material->diffuse = glm::vec3(0.2f, 0.2f, 0.2f);
-			spotLight->material->ambient = glm::vec3(0.5f, 0.5f, 0.5f);
-			spotLight->material->specular = glm::vec3(1.0f, 1.0f, 1.0f);
+			spotLight->material.reset(new Material(glm::vec3(0.2f, 0.2f, 0.2f),
+				glm::vec3(0.5f, 0.5f, 0.5f),
+				glm::vec3(1.0f, 1.0f, 1.0f)));
 		}
 		spotLightOn = !spotLightOn;
 	}
