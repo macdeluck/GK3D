@@ -1,4 +1,5 @@
 #include "ObjectShader.h"
+#include "LightSourceInstance.h"
 #include "Scene.h"
 #include "Camera.h"
 
@@ -53,15 +54,17 @@ namespace GK
 		glUniform3f(getUniformLocation("material.specular"), material->specular.r, material->specular.g, material->specular.b);
 		glUniform1f(getUniformLocation("material.shininess"), material->shininess);
 
-		// light source
-		std::shared_ptr<DrawableInstance> lightSource = *(*scene->getDrawables()->begin())->getInstances().begin();
-		glUniform3f(getUniformLocation("light.ambient"), 
-			lightSource->material->ambient.r, lightSource->material->ambient.g, lightSource->material->ambient.b);
-		glUniform3f(getUniformLocation("light.diffuse"), 
-			lightSource->material->diffuse.r, lightSource->material->diffuse.g, lightSource->material->diffuse.b);
-		glUniform3f(getUniformLocation("light.specular"), 
-			lightSource->material->specular.r, lightSource->material->specular.g, lightSource->material->specular.b);
-		glUniform3f(getUniformLocation("light.position"), 
-			lightSource->position.x, lightSource->position.y, lightSource->position.z);
+		std::shared_ptr<std::array<std::shared_ptr<LightSourceInstance>, LIGHT_SOURCES_NUM> > lightSources = scene->getLightSources();
+		for (size_t i = 0; i < lightSources->size(); i++)
+		{
+			glUniform3f(getUniformLocation("light.ambient"),
+				(*lightSources)[i]->material->ambient.r, (*lightSources)[i]->material->ambient.g, (*lightSources)[i]->material->ambient.b);
+			glUniform3f(getUniformLocation("light.diffuse"),
+				(*lightSources)[i]->material->diffuse.r, (*lightSources)[i]->material->diffuse.g, (*lightSources)[i]->material->diffuse.b);
+			glUniform3f(getUniformLocation("light.specular"),
+				(*lightSources)[i]->material->specular.r, (*lightSources)[i]->material->specular.g, (*lightSources)[i]->material->specular.b);
+			glUniform3f(getUniformLocation("light.position"),
+				(*lightSources)[i]->position.x, (*lightSources)[i]->position.y, (*lightSources)[i]->position.z);
+		}
 	}
 }

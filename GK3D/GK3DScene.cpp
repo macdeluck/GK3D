@@ -2,7 +2,9 @@
 #include "Drawable.h"
 #include "ObjectShader.h"
 #include "LightShader.h"
+#include "LightSourceInstance.h"
 #include "Camera.h"
+#include "Scene.h"
 
 namespace GK
 {
@@ -15,16 +17,21 @@ namespace GK
 		objectShader->compile();
 		std::shared_ptr<ShaderProgram> lightShader = std::shared_ptr<ShaderProgram>(new LightShader());
 		lightShader->compile();
-		std::shared_ptr<Drawable> box;
-		std::vector<std::shared_ptr<DrawableInstance> > boxInstances = 
-		{
-			std::shared_ptr<DrawableInstance>(new DrawableInstance(lightShader,
-			std::shared_ptr<Material>(new Material(glm::vec3(0.2f, 0.2f, 0.2f),
-				glm::vec3(0.5f, 0.5f, 0.5f),
-				glm::vec3(1.0f, 1.0f, 1.0f))),
+		
+		std::shared_ptr<Material> lightMaterial;
+		lightMaterial.reset(new Material(glm::vec3(0.2f, 0.2f, 0.2f),
+			glm::vec3(0.5f, 0.5f, 0.5f),
+			glm::vec3(1.0f, 1.0f, 1.0f)));
+		std::shared_ptr<LightSourceInstance> lightSource;
+		lightSource.reset(new LightSourceInstance(lightShader, lightMaterial,
+			1.0f, 0.09f, 0.032f,
 			glm::vec3(1.2f, 1.0f, 2.0f),
-			glm::vec3(0.5f, 0.5f, 0.5f)))
-		};
+			glm::vec3(0.5f, 0.5f, 0.5f)));
+
+		(*this->getLightSources())[0] = lightSource;
+
+		std::vector<std::shared_ptr<DrawableInstance> > boxInstances = { lightSource };
+
 		glm::vec3 cubePositions[] = {
 			glm::vec3(0.0f, 0.0f, 0.0f),
 			glm::vec3(2.0f, 5.0f, -15.0f),
@@ -54,6 +61,8 @@ namespace GK
 				angle * 0.3f,
 				angle * 0.5f)));
 		}
+
+		std::shared_ptr<Drawable> box;
 		box.reset(
 			new Drawable(
 			getBoxVertices(),

@@ -6,11 +6,15 @@ namespace GK
 {
 	Scene::Scene(int screenWidth, int screenHeight)
 		: drawables(new std::vector<std::shared_ptr<Drawable> >(1)),
-		camera(new Camera(screenWidth, screenHeight)) {}
+		camera(new Camera(screenWidth, screenHeight)),
+		lightSources(new LightsArray()) 
+	{
+	}
 
 	Scene::Scene(std::vector<std::shared_ptr<Drawable> > drawables, Camera camera)
 		: drawables(new std::vector<std::shared_ptr<Drawable> >(drawables)),
-		camera(new Camera(camera)) {}
+		camera(new Camera(camera)),
+		lightSources(new LightsArray()) {}
 
 	Scene::~Scene() {}
 
@@ -31,5 +35,9 @@ namespace GK
 	std::shared_ptr<Camera> Scene::getCamera()
 	{
 		return camera;
+	}
+	std::shared_ptr<LightsArray> Scene::getLightSources()
+	{
+		return lightSources;
 	}
 }
