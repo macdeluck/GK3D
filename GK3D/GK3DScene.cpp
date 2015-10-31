@@ -40,10 +40,16 @@ namespace GK
 			1.0f, 0.09f, 0.032f,
 			glm::vec3(1.2f, 1.0f, 2.0f),
 			glm::vec3(0.5f, 0.5f, 0.5f)));
-
 		(*this->getLightSources())[0] = lightSource;
 
-		std::vector<std::shared_ptr<DrawableInstance> > boxInstances = { lightSource };
+		std::shared_ptr<PointLightInstance> lightSource2;
+		lightSource2.reset(new PointLightInstance(lightShader, lightMaterial,
+			1.0f, 0.09f, 0.032f,
+			glm::vec3(0, 4.0f, -11.25f),
+			glm::vec3(0.5f, 0.5f, 0.5f)));
+		(*this->getLightSources())[1] = lightSource2;
+
+		std::vector<std::shared_ptr<DrawableInstance> > boxInstances = { lightSource, lightSource2 };
 
 		glm::vec3 cubePositions[] = {
 			glm::vec3(0.0f, 0.0f, 0.0f),

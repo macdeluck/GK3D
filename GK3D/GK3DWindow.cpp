@@ -2,6 +2,7 @@
 #include "GK3DScene.h"
 #include "ObjectShader.h"
 #include "LightShader.h"
+#include <iomanip>
 #include <cmath>
 
 namespace GK
@@ -73,7 +74,11 @@ namespace GK
 			avgFPS = 0;
 		}
 		std::stringstream ss = std::stringstream("");
-		ss << "GK Window (FPS: " << avgFPS << ") ";
+		glm::vec3 cameraPos = scene->getCamera()->getPosition();
+		ss << std::fixed << std::setprecision(1) << std::setw(3) << "GK Window (FPS: " << avgFPS << ") (";
+		ss << std::fixed << std::setprecision(3) << std::setw(9) << cameraPos.x << ", ";
+		ss << std::fixed << std::setprecision(3) << std::setw(9) << cameraPos.y << ", ";
+		ss << std::fixed << std::setprecision(3) << std::setw(9) << cameraPos.z << ")";
 		SDL_SetWindowTitle(&(*(this->getWindowHandle().lock())), ss.str().c_str());
 	}
 
