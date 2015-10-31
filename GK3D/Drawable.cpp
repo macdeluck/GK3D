@@ -5,13 +5,20 @@
 
 namespace GK
 {
+	Material::Material(glm::vec3 ambient,
+		glm::vec3 diffuse,
+		glm::vec3 specular,
+		GLfloat shininess)
+		: ambient(ambient), diffuse(diffuse), specular(specular), shininess(shininess)
+	{}
+	
 	DrawableInstance::DrawableInstance(std::shared_ptr<ShaderProgram> shaderProgram,
-		glm::vec3 color,
+		Material material,
 		glm::vec3 position,
 		glm::vec3 scale,
 		GLfloat angleX, GLfloat angleY, GLfloat angleZ)
 		: shaderProgram(shaderProgram),
-		color(color), position(position), scale(scale), angleX(angleX), angleY(angleY), angleZ(angleZ)
+		material(material), position(position), scale(scale), angleX(angleX), angleY(angleY), angleZ(angleZ)
 	{
 	}
 

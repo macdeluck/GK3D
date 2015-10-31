@@ -42,10 +42,15 @@ namespace GK
 		model = glm::rotate(model, drawableInstance.angleZ, glm::vec3(0, 0, 1.0f));
 		model = glm::scale(model, drawableInstance.scale);
 		glUniformMatrix4fv(getUniformLocation("model"), 1, GL_FALSE, glm::value_ptr(model));
-		glm::vec3 color = drawableInstance.color;
-		glUniform3f(getUniformLocation("objectColor"), color.r, color.g, color.b);
+		Material material = drawableInstance.material;
+		glUniform3f(getUniformLocation("material.ambient"), material.ambient.r, material.ambient.g, material.ambient.b);
+		glUniform3f(getUniformLocation("material.diffuse"), material.diffuse.r, material.diffuse.g, material.diffuse.b);
+		glUniform3f(getUniformLocation("material.specular"), material.specular.r, material.specular.g, material.specular.b);
+		glUniform1f(getUniformLocation("material.shininess"), material.shininess);
 		DrawableInstance lightSource = (*(*scene.lock()->getDrawables().lock()->begin())->getInstances().begin());
-		glUniform3f(getUniformLocation("lightColor"), lightSource.color.r, lightSource.color.g, lightSource.color.b);
+		glUniform3f(getUniformLocation("lightColor"), lightSource.material.ambient.r,
+			lightSource.material.ambient.g,
+			lightSource.material.ambient.b);
 		glUniform3f(getUniformLocation("lightPos"), lightSource.position.x, lightSource.position.y, lightSource.position.z);
 		glm::vec3 cameraPosition = camera->getPosition();
 		glUniform3f(getUniformLocation("viewPos"), cameraPosition.x, cameraPosition.y, cameraPosition.z);

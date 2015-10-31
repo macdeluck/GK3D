@@ -23,9 +23,22 @@ namespace GK
 		GLfloat vertexData[VERTEX_SIZE];
 	};
 
+	struct Material
+	{
+		glm::vec3 ambient;
+		glm::vec3 diffuse;
+		glm::vec3 specular;
+		GLfloat shininess;
+
+		Material(glm::vec3 ambient = glm::vec3(0, 0, 0),
+			glm::vec3 diffuse = glm::vec3(0, 0, 0),
+			glm::vec3 specular = glm::vec3(0, 0, 0),
+			GLfloat shininess = 0.0f);
+	};
+
 	struct DrawableInstance
 	{
-		glm::vec3 color;
+		Material material;
 		glm::vec3 position;
 		glm::vec3 scale;
 		GLfloat angleX;
@@ -34,7 +47,7 @@ namespace GK
 		std::shared_ptr<ShaderProgram> shaderProgram;
 
 		DrawableInstance(std::shared_ptr<ShaderProgram> shaderProgram,
-			glm::vec3 color = glm::vec3(0, 0, 0),
+			Material material,
 			glm::vec3 position = glm::vec3(0, 0, 0),
 			glm::vec3 scale = glm::vec3(1, 1, 1),
 			GLfloat angleX = 0, GLfloat angleY = 0, GLfloat angleZ = 0);
