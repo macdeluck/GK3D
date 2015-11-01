@@ -36,6 +36,7 @@ namespace GK
 		Timer deltaTimer;
 		int sprintModifier;
 		std::set<CameraMovementDirection> cameraMoves;
+		std::set<CameraMovementDirection> objectMoves;
 		std::shared_ptr<Scene> scene;
 	};
 }

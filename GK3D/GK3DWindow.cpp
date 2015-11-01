@@ -63,6 +63,37 @@ namespace GK
 		scene->update(deltaTime);
 		scene->getCamera()->setScreenWidth(getWidth());
 		scene->getCamera()->setScreenHeight(getHeight());
+		for (std::set<CameraMovementDirection>::iterator it = objectMoves.begin();
+			it != objectMoves.end(); it++)
+		{
+			std::shared_ptr<DrawableInstance> positionedInstance;// = (*(*scene->getDrawables()->rbegin())->getInstances().begin());
+			if (positionedInstance.use_count() > 0)
+			{
+				switch (*it)
+				{
+				case CameraMovementDirection::FORWARD:
+					positionedInstance->position.x += deltaTime * 0.0001;
+					break;
+				case CameraMovementDirection::BACKWARD:
+					positionedInstance->position.x -= deltaTime * 0.0001;
+					break;
+				case CameraMovementDirection::LEFT:
+					positionedInstance->position.z += deltaTime * 0.0001;
+					break;
+				case CameraMovementDirection::RIGHT:
+					positionedInstance->position.z -= deltaTime * 0.0001;
+					break;
+				case CameraMovementDirection::UP:
+					positionedInstance->position.y += deltaTime * 0.0001;
+					break;
+				case CameraMovementDirection::DOWN:
+					positionedInstance->position.y -= deltaTime * 0.0001;
+					break;
+				default:
+					break;
+				}
+			}
+		}
 	}
 
 	void GK3DWindow::onEndFrame()
@@ -89,7 +120,10 @@ namespace GK
 	void GK3DWindow::handleKey(Uint32 type, SDL_Keycode code)
 	{
 		CameraMovementDirection direction;
+		CameraMovementDirection objectDirection;
 		bool add = type == SDL_KEYDOWN;
+		bool cameraMove = true;
+		bool objectMove = false;
 		switch (code)
 		{
 		case SDLK_w:
@@ -110,11 +144,43 @@ namespace GK
 		case SDLK_LCTRL:
 			direction = CameraMovementDirection::DOWN;
 			break;
+		case SDLK_UP:
+			objectDirection = CameraMovementDirection::FORWARD;
+			objectMove = true;
+			cameraMove = false;
+			break;
+		case SDLK_DOWN:
+			objectDirection = CameraMovementDirection::BACKWARD;
+			objectMove = true;
+			cameraMove = false;
+			break;
+		case SDLK_LEFT:
+			objectDirection = CameraMovementDirection::LEFT;
+			objectMove = true;
+			cameraMove = false;
+			break;
+		case SDLK_RIGHT:
+			objectDirection = CameraMovementDirection::RIGHT;
+			objectMove = true;
+			cameraMove = false;
+			break;
+		case SDLK_RSHIFT:
+			objectDirection = CameraMovementDirection::UP;
+			objectMove = true;
+			cameraMove = false;
+			break;
+		case SDLK_RCTRL:
+			objectDirection = CameraMovementDirection::DOWN;
+			objectMove = true;
+			cameraMove = false;
+			break;
 		case SDLK_ESCAPE:
+			cameraMove = false;
 			if (type == SDL_KEYUP)
 				this->close();
 			break;
 		case SDLK_f:
+			cameraMove = false;
 			if (type == SDL_KEYUP)
 			{
 				GLint polygonModes[] = { GL_FILL, GL_LINE };
@@ -122,14 +188,24 @@ namespace GK
 				currentPolygonMode = 1 - currentPolygonMode;
 			}
 		case SDLK_LSHIFT:
+			cameraMove = false;
 			if (type == SDL_KEYUP)
 				sprintModifier = 1;
 			else sprintModifier = 3;
 			break;
 		}
-		if (add)
-			cameraMoves.insert(direction);
-		else cameraMoves.erase(direction);
+		if (cameraMove)
+		{
+			if (add)
+				cameraMoves.insert(direction);
+			else cameraMoves.erase(direction);
+		}
+		if (objectMove)
+		{
+			if (add)
+				objectMoves.insert(objectDirection);
+			else objectMoves.erase(objectDirection);
+		}
 	}
 
 	void GK3DWindow::handleMouseMotion()

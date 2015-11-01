@@ -192,7 +192,7 @@ namespace GK
 	void GK3DSceneLoader::createFlashLight()
 	{
 		glm::vec3 flashLightScale = { 0.005f, 0.005f, 0.005f };
-		glm::vec3 flashLightPosition = { 0.3f, 0.025f, 0.55f };
+		glm::vec3 flashLightPosition = { 0.518999517f, 0.0480000004f, 0.319600284f };
 		glm::vec3 flashLightAngle = { -5.0f, 90.0f, 0.0f };
 		std::shared_ptr<DrawableInstance> flashLightInstance = std::shared_ptr<DrawableInstance>(new DrawableInstance(
 			shaders[SHADER_OBJECT],
