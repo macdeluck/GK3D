@@ -2,6 +2,7 @@
 #include "LightShader.h"
 #include "Scene.h"
 #include "Camera.h"
+#include <cmath>
 
 namespace GK
 {
@@ -40,5 +41,11 @@ namespace GK
 		model = glm::rotate(model, glm::radians(drawableInstance->angleZ), glm::vec3(0, 0, 1.0f));
 		model = glm::scale(model, drawableInstance->scale);
 		glUniformMatrix4fv(getUniformLocation("model"), 1, GL_FALSE, glm::value_ptr(model));
+
+		glm::vec3 intensity = drawableInstance->material->ambient + drawableInstance->material->diffuse;
+		GLfloat maxval = fmax(fmax(intensity.r, intensity.g), intensity.b);
+		if (maxval > 0)
+			intensity /= maxval;
+		glUniform3f(getUniformLocation("intensity"), intensity.r, intensity.g, intensity.b);
 	}
 }
