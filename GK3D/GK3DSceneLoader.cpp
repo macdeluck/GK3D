@@ -88,8 +88,8 @@ namespace GK
 
 	void GK3DSceneLoader::buildScene()
 	{
-		cameraPosition = glm::vec3(1.0f, 0.0f, 0.0f);
-		cameraFront = glm::vec3(-1.0f, 0.0f, 0.0f);
+		cameraPosition = glm::vec3(-5.0f, 0.0f, 0.0f);
+		cameraFront = glm::vec3(0.8f, 0.0f, 0.5f);
 		for (InstancesDic::const_iterator it = instances.begin(); it != instances.end(); ++it)
 		{
 			drawables->push_back(std::shared_ptr<Drawable>(

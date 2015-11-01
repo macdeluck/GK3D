@@ -138,8 +138,8 @@ namespace GK
 	void Camera::setFront(glm::vec3 front)
 	{
 		this->front = glm::normalize(front);
-		// TODO fix it
-		this->pitch = glm::degrees(asin(front.x));
-		this->yaw = glm::degrees(asin(front.z / cos(glm::radians(this->pitch))));
+		this->pitch = glm::degrees(asin(front.y));
+		this->yaw = glm::degrees(acos(front.x / cos(glm::radians(this->pitch))));
+		updateCameraVectors();
 	}
 }
