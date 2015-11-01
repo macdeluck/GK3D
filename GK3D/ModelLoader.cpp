@@ -43,7 +43,7 @@ namespace GK
 
 		std::vector<tinyobj::shape_t> shapes;
 		std::vector<tinyobj::material_t> materials;
-		std::string err = tinyobj::LoadObj(shapes, materials, basename.c_str(), directory.c_str());
+		std::string err = tinyobj::LoadObj(shapes, materials, path.c_str(), directory.c_str());
 		if (!err.empty())
 			throw Exception(err);
 		loadShapes(shapes, output, indices);

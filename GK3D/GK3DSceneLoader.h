@@ -48,6 +48,7 @@ namespace GK
 
 		void createInstances();
 		void createBenches();
+		void createLamps();
 		std::map<int, std::vector<std::shared_ptr<DrawableInstance> > > instances;
 
 		void buildSurface();

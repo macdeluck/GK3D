@@ -29,6 +29,7 @@ namespace GK
 
 	const int MODEL_CUBE = 0;
 	const int MODEL_BENCH = 1;
+	const int MODEL_LAMP = 2;
 
 	void GK3DSceneLoader::load()
 	{
@@ -60,13 +61,18 @@ namespace GK
 
 		vertices = std::vector<Vertex>();
 		indices = std::vector<GLuint>();
-		modelLoader.loadModel("cube.obj", &vertices, &indices);
+		modelLoader.loadModel("assets/cube.obj", &vertices, &indices);
 		modelsData[MODEL_CUBE] = ModelData(vertices, indices);
 
 		vertices = std::vector<Vertex>();
 		indices = std::vector<GLuint>();
-		modelLoader.loadModel("bench.obj", &vertices, &indices);
+		modelLoader.loadModel("assets/bench.obj", &vertices, &indices);
 		modelsData[MODEL_BENCH] = ModelData(vertices, indices);
+
+		vertices = std::vector<Vertex>();
+		indices = std::vector<GLuint>();
+		modelLoader.loadModel("assets/lamp.obj", &vertices, &indices);
+		modelsData[MODEL_LAMP] = ModelData(vertices, indices);
 	}
 
 	void GK3DSceneLoader::createInstances()
@@ -77,6 +83,7 @@ namespace GK
 		spotLights->push_back(spotLight);
 
 		createBenches();
+		createLamps();
 	}
 
 	void GK3DSceneLoader::createBenches()
@@ -102,6 +109,30 @@ namespace GK
 				benchAngles[i].y,
 				benchAngles[i].z));
 			instances[MODEL_BENCH].push_back(benchInstance);
+		}
+	}
+
+	void GK3DSceneLoader::createLamps()
+	{
+		const int lampCount = 1;
+		glm::vec3 lampScale = { 0.01f, 0.01f, 0.01f };
+		glm::vec3 lampPositions[lampCount] = {
+			{ 0.1f, 0.0f, 0.4f }
+		};
+		glm::vec3 lampAngles[lampCount] = {
+			{ 0.0f, 12.0f, 0.0f }
+		};
+		for (size_t i = 0; i < lampCount; i++)
+		{
+			std::shared_ptr<DrawableInstance> lampInstance = std::shared_ptr<DrawableInstance>(new DrawableInstance(
+				shaders[SHADER_OBJECT],
+				std::shared_ptr<Material>(new Material(Material::Silver)),
+				lampPositions[i],
+				lampScale,
+				lampAngles[i].x,
+				lampAngles[i].y,
+				lampAngles[i].z));
+			instances[MODEL_LAMP].push_back(lampInstance);
 		}
 	}
 
