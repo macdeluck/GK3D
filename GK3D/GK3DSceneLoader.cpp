@@ -33,6 +33,7 @@ namespace GK
 	const int MODEL_BENCH = 1;
 	const int MODEL_LAMP = 2;
 	const int MODEL_FIR = 3;
+	const int MODEL_FLASHLIGHT = 4;
 
 	void GK3DSceneLoader::load()
 	{
@@ -81,6 +82,11 @@ namespace GK
 		indices = std::vector<GLuint>();
 		modelLoader.loadModel("assets/fir.obj", &vertices, &indices);
 		modelsData[MODEL_FIR] = ModelData(vertices, indices);
+
+		vertices = std::vector<Vertex>();
+		indices = std::vector<GLuint>();
+		modelLoader.loadModel("assets/flashlight.obj", &vertices, &indices);
+		modelsData[MODEL_FLASHLIGHT] = ModelData(vertices, indices);
 	}
 
 	void GK3DSceneLoader::createInstances()
@@ -93,6 +99,7 @@ namespace GK
 		createBenches();
 		createLamps();
 		createFirs();
+		createFlashLight();
 	}
 
 	void GK3DSceneLoader::createBenches()
@@ -180,6 +187,22 @@ namespace GK
 				firScale));
 			instances[MODEL_FIR].push_back(firInstance);
 		}
+	}
+
+	void GK3DSceneLoader::createFlashLight()
+	{
+		glm::vec3 flashLightScale = { 0.005f, 0.005f, 0.005f };
+		glm::vec3 flashLightPosition = { 0.3f, 0.025f, 0.55f };
+		glm::vec3 flashLightAngle = { -5.0f, 90.0f, 0.0f };
+		std::shared_ptr<DrawableInstance> flashLightInstance = std::shared_ptr<DrawableInstance>(new DrawableInstance(
+			shaders[SHADER_OBJECT],
+			std::shared_ptr<Material>(new Material(Material::BlackPlastic)),
+			flashLightPosition,
+			flashLightScale,
+			flashLightAngle.x,
+			flashLightAngle.y,
+			flashLightAngle.z));
+		instances[MODEL_FLASHLIGHT].push_back(flashLightInstance);
 	}
 
 	typedef std::map<int, std::vector<std::shared_ptr<DrawableInstance> > > InstancesDic;

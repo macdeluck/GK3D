@@ -50,6 +50,7 @@ namespace GK
 		void createBenches();
 		void createLamps();
 		void createFirs();
+		void createFlashLight();
 		std::map<int, std::vector<std::shared_ptr<DrawableInstance> > > instances;
 
 		void buildSurface();
