@@ -51,10 +51,14 @@ namespace GK
 		}
 		std::stringstream ss = std::stringstream("");
 		glm::vec3 cameraPos = scene->getCamera()->getPosition();
-		ss << std::fixed << std::setprecision(1) << std::setw(3) << "GK Window (FPS: " << avgFPS << ") (";
+		glm::vec3 cameraFront = scene->getCamera()->getFront();
+		ss << std::fixed << std::setprecision(1) << std::setw(3) << "GK Window (FPS: " << avgFPS << ") (Pos: ";
 		ss << std::fixed << std::setprecision(3) << std::setw(9) << cameraPos.x << ", ";
 		ss << std::fixed << std::setprecision(3) << std::setw(9) << cameraPos.y << ", ";
-		ss << std::fixed << std::setprecision(3) << std::setw(9) << cameraPos.z << ")";
+		ss << std::fixed << std::setprecision(3) << std::setw(9) << cameraPos.z << ") (Front: ";
+		ss << std::fixed << std::setprecision(3) << std::setw(9) << cameraFront.x << ", ";
+		ss << std::fixed << std::setprecision(3) << std::setw(9) << cameraFront.y << ", ";
+		ss << std::fixed << std::setprecision(3) << std::setw(9) << cameraFront.z << ")";
 		SDL_SetWindowTitle(&(*(this->getWindowHandle().lock())), ss.str().c_str());
 		capTimer.start();
 	}
