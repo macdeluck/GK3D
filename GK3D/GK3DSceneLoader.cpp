@@ -6,6 +6,8 @@
 #include "ObjectShader.h"
 #include "LightShader.h"
 
+#include <random>
+
 namespace GK
 {
 	GK3DSceneLoader::GK3DSceneLoader()
@@ -30,6 +32,7 @@ namespace GK
 	const int MODEL_CUBE = 0;
 	const int MODEL_BENCH = 1;
 	const int MODEL_LAMP = 2;
+	const int MODEL_FIR = 3;
 
 	void GK3DSceneLoader::load()
 	{
@@ -73,6 +76,11 @@ namespace GK
 		indices = std::vector<GLuint>();
 		modelLoader.loadModel("assets/lamp.obj", &vertices, &indices);
 		modelsData[MODEL_LAMP] = ModelData(vertices, indices);
+
+		vertices = std::vector<Vertex>();
+		indices = std::vector<GLuint>();
+		modelLoader.loadModel("assets/fir.obj", &vertices, &indices);
+		modelsData[MODEL_FIR] = ModelData(vertices, indices);
 	}
 
 	void GK3DSceneLoader::createInstances()
@@ -84,6 +92,7 @@ namespace GK
 
 		createBenches();
 		createLamps();
+		createFirs();
 	}
 
 	void GK3DSceneLoader::createBenches()
@@ -142,7 +151,7 @@ namespace GK
 			lightPosition.z += -0.012f;
 			std::shared_ptr<PointLightInstance> lampLight = std::shared_ptr<PointLightInstance>(new PointLightInstance(
 				shaders[SHADER_LIGHT],
-				std::shared_ptr<Material>(new Material(Material::YellowLight)),
+				std::shared_ptr<Material>(new Material(Material::WhiteLight)),
 				1.0f, 0.7f, 1.8f,
 				lightPosition,
 				{ 0.01f, 0.01f, 0.01f },
@@ -151,6 +160,25 @@ namespace GK
 				lampAngles[i].z));
 			instances[MODEL_CUBE].push_back(lampLight);
 			pointLights->push_back(lampLight);
+		}
+	}
+
+	void GK3DSceneLoader::createFirs()
+	{
+		std::default_random_engine generator = std::default_random_engine(123);
+		std::uniform_real_distribution<GLfloat> distribution = std::uniform_real_distribution<GLfloat>(-3.0f, 3.0f);
+
+		const int firCount = 50;
+		glm::vec3 firScale = { 0.0005f, 0.0005f, 0.0005f };
+		for (size_t i = 0; i < firCount; i++)
+		{
+			glm::vec3 firPosition = glm::vec3(distribution(generator), 0.0f, distribution(generator));
+			std::shared_ptr<DrawableInstance> firInstance = std::shared_ptr<DrawableInstance>(new DrawableInstance(
+				shaders[SHADER_OBJECT],
+				std::shared_ptr<Material>(new Material(Material::GreenRubber)),
+				firPosition,
+				firScale));
+			instances[MODEL_FIR].push_back(firInstance);
 		}
 	}
 
@@ -183,7 +211,7 @@ namespace GK
 				glm::vec3(0.2f, 0.5f, 0.2f),
 				glm::vec3(0.0f, 0.0f, 0.0f))),
 			glm::vec3(0.0f, -0.005f, 0.0f),
-			glm::vec3(5.0f, 5.0f, 5.0f)));
+			glm::vec3(3.0f, 3.0f, 3.0f)));
 		drawables->push_back(std::shared_ptr<Drawable>(
 			new Drawable(vertices, indices, { surfaceInstance })));
 	}
