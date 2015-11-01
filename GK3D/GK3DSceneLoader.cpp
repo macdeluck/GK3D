@@ -76,6 +76,11 @@ namespace GK
 			std::shared_ptr<Material>(new Material(Material::WhiteLight))));
 		spotLights->push_back(spotLight);
 
+		createBenches();
+	}
+
+	void GK3DSceneLoader::createBenches()
+	{
 		const int benchCount = 2;
 		glm::vec3 benchScale = { 0.001f, 0.001f, 0.001f };
 		glm::vec3 benchPositions[benchCount] = {

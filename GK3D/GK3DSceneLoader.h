@@ -47,6 +47,7 @@ namespace GK
 		std::map<int, std::pair<std::vector<Vertex>, std::vector<GLuint> > > modelsData;
 
 		void createInstances();
+		void createBenches();
 		std::map<int, std::vector<std::shared_ptr<DrawableInstance> > > instances;
 
 		void buildSurface();
