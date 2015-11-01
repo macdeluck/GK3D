@@ -12,13 +12,12 @@ namespace GK
 
 	GK3DWindow::GK3DWindow(int width, int height, std::string title, bool shown, bool resizable)
 		: Window(width, height, title, shown, resizable),
-		cameraMoves(), sprintModifier(1), countedFrames(0), scene(new GK3DScene(width, height)),
+		cameraMoves(), sprintModifier(1), scene(new GK3DScene(width, height)),
 		currentPolygonMode(0)
 	{
 		glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
 		SDL_SetRelativeMouseMode(SDL_TRUE);
 		fpsTimer.start();
-		capTimer.start();
 		deltaTimer.start();
 	}
 	GK3DWindow::GK3DWindow(const GK3DWindow& otherWindow) : Window(otherWindow) {}
@@ -44,23 +43,7 @@ namespace GK
 
 	void GK3DWindow::onBeginFrame()
 	{
-		float avgFPS = countedFrames / (fpsTimer.getTicks() / 1000.f);
-		if (avgFPS > 2000000)
-		{
-			avgFPS = 0;
-		}
-		std::stringstream ss = std::stringstream("");
-		glm::vec3 cameraPos = scene->getCamera()->getPosition();
-		glm::vec3 cameraFront = scene->getCamera()->getFront();
-		ss << std::fixed << std::setprecision(1) << std::setw(3) << "GK Window (FPS: " << avgFPS << ") (Pos: ";
-		ss << std::fixed << std::setprecision(3) << std::setw(9) << cameraPos.x << ", ";
-		ss << std::fixed << std::setprecision(3) << std::setw(9) << cameraPos.y << ", ";
-		ss << std::fixed << std::setprecision(3) << std::setw(9) << cameraPos.z << ") (Front: ";
-		ss << std::fixed << std::setprecision(3) << std::setw(9) << cameraFront.x << ", ";
-		ss << std::fixed << std::setprecision(3) << std::setw(9) << cameraFront.y << ", ";
-		ss << std::fixed << std::setprecision(3) << std::setw(9) << cameraFront.z << ")";
-		SDL_SetWindowTitle(&(*(this->getWindowHandle().lock())), ss.str().c_str());
-		capTimer.start();
+		fpsTimer.start();
 	}
 
 	void GK3DWindow::onRender()
@@ -84,8 +67,19 @@ namespace GK
 
 	void GK3DWindow::onEndFrame()
 	{
-		++countedFrames;
-		int frameTicks = capTimer.getTicks();
+		int frameTicks = fpsTimer.getTicks();
+		float fps = ((float)SCREEN_TICK_PER_FRAME / ((frameTicks < SCREEN_TICK_PER_FRAME) ? SCREEN_TICK_PER_FRAME : frameTicks)) * SCREEN_FPS;
+		std::stringstream ss = std::stringstream("");
+		glm::vec3 cameraPos = scene->getCamera()->getPosition();
+		glm::vec3 cameraFront = scene->getCamera()->getFront();
+		ss << std::fixed << std::setprecision(1) << std::setw(3) << "GK Window (FPS: " << fps << ") (Pos: ";
+		ss << std::fixed << std::setprecision(3) << std::setw(9) << cameraPos.x << ", ";
+		ss << std::fixed << std::setprecision(3) << std::setw(9) << cameraPos.y << ", ";
+		ss << std::fixed << std::setprecision(3) << std::setw(9) << cameraPos.z << ") (Front: ";
+		ss << std::fixed << std::setprecision(3) << std::setw(9) << cameraFront.x << ", ";
+		ss << std::fixed << std::setprecision(3) << std::setw(9) << cameraFront.y << ", ";
+		ss << std::fixed << std::setprecision(3) << std::setw(9) << cameraFront.z << ")";
+		SDL_SetWindowTitle(&(*(this->getWindowHandle().lock())), ss.str().c_str());
 		if (frameTicks < SCREEN_TICK_PER_FRAME)
 		{
 			SDL_Delay(SCREEN_TICK_PER_FRAME - frameTicks);

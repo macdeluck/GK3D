@@ -33,9 +33,7 @@ namespace GK
 		void handleMouseWheel(SDL_MouseWheelEvent event);
 		void handleMouseButton(SDL_MouseButtonEvent event);
 		Timer fpsTimer;
-		Timer capTimer;
 		Timer deltaTimer;
-		int countedFrames;
 		int sprintModifier;
 		std::set<CameraMovementDirection> cameraMoves;
 		std::shared_ptr<Scene> scene;
