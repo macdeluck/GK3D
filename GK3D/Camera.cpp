@@ -6,7 +6,7 @@ namespace GK
 	const GLfloat Camera::MAXFOV = 45.0f;
 	const GLfloat Camera::YAW = 90.0f;
 	const GLfloat Camera::PITCH = 0.0f;
-	const GLfloat Camera::SPEED = 0.001f;
+	const GLfloat Camera::SPEED = 0.0005f;
 	const GLfloat Camera::SENSITIVTY = 0.25f;
 	const GLfloat Camera::WHEELSENSITIVTY = 0.1f;
 	const GLfloat Camera::ZOOM = 45.0f;

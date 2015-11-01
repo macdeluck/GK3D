@@ -120,7 +120,7 @@ namespace GK
 			{ 0.1f, 0.0f, 0.4f }
 		};
 		glm::vec3 lampAngles[lampCount] = {
-			{ 0.0f, 12.0f, 0.0f }
+			{ 0.0f, 0.0f, 0.0f }
 		};
 		for (size_t i = 0; i < lampCount; i++)
 		{
@@ -133,6 +133,22 @@ namespace GK
 				lampAngles[i].y,
 				lampAngles[i].z));
 			instances[MODEL_LAMP].push_back(lampInstance);
+
+			glm::vec3 lightPosition = lampPositions[i];
+			lightPosition.x += 0.0055f;
+			lightPosition.y += 0.27f;
+			lightPosition.z += -0.012f;
+			std::shared_ptr<PointLightInstance> lampLight = std::shared_ptr<PointLightInstance>(new PointLightInstance(
+				shaders[SHADER_LIGHT],
+				std::shared_ptr<Material>(new Material(Material::WhiteLight)),
+				1.0f, 0.09f, 0.032f,
+				lightPosition,
+				{ 0.01f, 0.01f, 0.01f },
+				lampAngles[i].x,
+				lampAngles[i].y,
+				lampAngles[i].z));
+			instances[MODEL_CUBE].push_back(lampLight);
+			pointLights->push_back(lampLight);
 		}
 	}
 
@@ -164,7 +180,7 @@ namespace GK
 				glm::vec3(0.1f, 0.2, 0.1f),
 				glm::vec3(0.01f, 0.5f, 0.01f),
 				glm::vec3(0.0f, 0.0f, 0.0f))),
-			glm::vec3(0.0f, 0.0f, 0.0f),
+			glm::vec3(0.0f, -0.005f, 0.0f),
 			glm::vec3(5.0f, 5.0f, 5.0f)));
 		drawables->push_back(std::shared_ptr<Drawable>(
 			new Drawable(vertices, indices, { surfaceInstance })));
