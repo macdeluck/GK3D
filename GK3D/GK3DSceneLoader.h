@@ -49,6 +49,7 @@ namespace GK
 		void createInstances();
 		std::map<int, std::vector<std::shared_ptr<DrawableInstance> > > instances;
 
+		void buildSurface();
 		void buildScene();
 	};
 }

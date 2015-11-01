@@ -35,6 +35,7 @@ namespace GK
 		loadShaders();
 		loadModelsData();
 		createInstances();
+		buildSurface();
 		buildScene();
 	}
 
@@ -88,12 +89,33 @@ namespace GK
 
 	void GK3DSceneLoader::buildScene()
 	{
-		cameraPosition = glm::vec3(-5.0f, 0.0f, 0.0f);
+		cameraPosition = glm::vec3(-5.0f, 1.0f, 0.0f);
 		cameraFront = glm::vec3(0.8f, 0.0f, -0.5f);
 		for (InstancesDic::const_iterator it = instances.begin(); it != instances.end(); ++it)
 		{
 			drawables->push_back(std::shared_ptr<Drawable>(
 				new Drawable(modelsData[it->first].first, modelsData[it->first].second, it->second)));
 		}
+	}
+
+	void GK3DSceneLoader::buildSurface()
+	{
+		std::vector<Vertex> vertices = {
+			{ 1.0f, 0.0f, -1.0f, 0.0f, 1.0f, 0.0f },
+			{ 1.0f, 0.0f, 1.0f, 0.0f, 1.0f, 0.0f },
+			{ -1.0f, 0.0f, -1.0f, 0.0f, 1.0f, 0.0f },
+			{ -1.0f, 0.0f, 1.0f, 0.0f, 1.0f, 0.0f }
+		};
+		std::vector<GLuint> indices = { 1, 2, 0, 1, 2, 3 };
+		std::shared_ptr<DrawableInstance> surfaceInstance = std::shared_ptr<DrawableInstance>(new DrawableInstance(
+			shaders[SHADER_OBJECT],
+			std::shared_ptr<Material>(new Material(
+				glm::vec3(0.1f, 0.2, 0.1f),
+				glm::vec3(0.01f, 0.5f, 0.01f),
+				glm::vec3(0.0f, 0.0f, 0.0f))),
+			glm::vec3(0.0f, 0.0f, 0.0f),
+			glm::vec3(20.0f, 20.0f, 20.0f)));
+		drawables->push_back(std::shared_ptr<Drawable>(
+			new Drawable(vertices, indices, { surfaceInstance })));
 	}
 }
