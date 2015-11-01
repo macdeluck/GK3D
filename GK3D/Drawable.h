@@ -30,6 +30,12 @@ namespace GK
 		GLfloat shininess;
 
 		static const Material WhiteLight;
+		static const Material RedLight;
+		static const Material GreenLight;
+		static const Material BlueLight;
+		static const Material CyanLight;
+		static const Material MagentaLight;
+		static const Material YellowLight;
 
 		static const Material Emerald;
 		static const Material Jade;

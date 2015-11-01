@@ -114,12 +114,14 @@ namespace GK
 
 	void GK3DSceneLoader::createLamps()
 	{
-		const int lampCount = 1;
+		const int lampCount = 2;
 		glm::vec3 lampScale = { 0.01f, 0.01f, 0.01f };
 		glm::vec3 lampPositions[lampCount] = {
-			{ 0.1f, 0.0f, 0.4f }
+			{ 0.1f, 0.0f, 0.4f },
+			{ 1.5f, 0.0f, -0.275f }
 		};
 		glm::vec3 lampAngles[lampCount] = {
+			{ 0.0f, 0.0f, 0.0f },
 			{ 0.0f, 0.0f, 0.0f }
 		};
 		for (size_t i = 0; i < lampCount; i++)
@@ -140,8 +142,8 @@ namespace GK
 			lightPosition.z += -0.012f;
 			std::shared_ptr<PointLightInstance> lampLight = std::shared_ptr<PointLightInstance>(new PointLightInstance(
 				shaders[SHADER_LIGHT],
-				std::shared_ptr<Material>(new Material(Material::WhiteLight)),
-				1.0f, 0.09f, 0.032f,
+				std::shared_ptr<Material>(new Material(Material::YellowLight)),
+				1.0f, 0.7f, 1.8f,
 				lightPosition,
 				{ 0.01f, 0.01f, 0.01f },
 				lampAngles[i].x,
@@ -178,7 +180,7 @@ namespace GK
 			shaders[SHADER_OBJECT],
 			std::shared_ptr<Material>(new Material(
 				glm::vec3(0.1f, 0.2, 0.1f),
-				glm::vec3(0.01f, 0.5f, 0.01f),
+				glm::vec3(0.2f, 0.5f, 0.2f),
 				glm::vec3(0.0f, 0.0f, 0.0f))),
 			glm::vec3(0.0f, -0.005f, 0.0f),
 			glm::vec3(5.0f, 5.0f, 5.0f)));
