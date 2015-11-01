@@ -76,21 +76,36 @@ namespace GK
 			std::shared_ptr<Material>(new Material(Material::WhiteLight))));
 		spotLights->push_back(spotLight);
 
-		std::shared_ptr<DrawableInstance> benchInstance = std::shared_ptr<DrawableInstance>(new DrawableInstance(
-			shaders[SHADER_OBJECT],
-			std::shared_ptr<Material>(new Material(Material::Emerald)),
-			glm::vec3(0.0f, 0.0f, 0.0f),
-			glm::vec3(0.001f, 0.001f, 0.001f)));
-
-		instances[MODEL_BENCH].push_back(benchInstance);
+		const int benchCount = 2;
+		glm::vec3 benchScale = { 0.001f, 0.001f, 0.001f };
+		glm::vec3 benchPositions[benchCount] = {
+			{ 0.0f, 0.0f, 0.0f },
+			{ 0.739f, 0.0f, 0.395f }
+		};
+		glm::vec3 benchAngles[benchCount] = {
+			{ 0.0f, 0.0f, 0.0f },
+			{ 0.0f, 138.0f, 0.0f }
+		};
+		for (size_t i = 0; i < benchCount; i++)
+		{
+			std::shared_ptr<DrawableInstance> benchInstance = std::shared_ptr<DrawableInstance>(new DrawableInstance(
+				shaders[SHADER_OBJECT],
+				std::shared_ptr<Material>(new Material(Material::Copper)),
+				benchPositions[i],
+				benchScale,
+				benchAngles[i].x,
+				benchAngles[i].y,
+				benchAngles[i].z));
+			instances[MODEL_BENCH].push_back(benchInstance);
+		}
 	}
 
 	typedef std::map<int, std::vector<std::shared_ptr<DrawableInstance> > > InstancesDic;
 
 	void GK3DSceneLoader::buildScene()
 	{
-		cameraPosition = glm::vec3(-5.0f, 1.0f, 0.0f);
-		cameraFront = glm::vec3(0.8f, 0.0f, -0.5f);
+		cameraPosition = glm::vec3(0.5f, 0.17f, -0.82f);
+		cameraFront = glm::vec3(-0.46f, -0.12f, 0.88f);
 		for (InstancesDic::const_iterator it = instances.begin(); it != instances.end(); ++it)
 		{
 			drawables->push_back(std::shared_ptr<Drawable>(
@@ -114,7 +129,7 @@ namespace GK
 				glm::vec3(0.01f, 0.5f, 0.01f),
 				glm::vec3(0.0f, 0.0f, 0.0f))),
 			glm::vec3(0.0f, 0.0f, 0.0f),
-			glm::vec3(20.0f, 20.0f, 20.0f)));
+			glm::vec3(5.0f, 5.0f, 5.0f)));
 		drawables->push_back(std::shared_ptr<Drawable>(
 			new Drawable(vertices, indices, { surfaceInstance })));
 	}
