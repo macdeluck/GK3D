@@ -65,7 +65,7 @@ namespace GK
 
 		vertices = std::vector<Vertex>();
 		indices = std::vector<GLuint>();
-		modelLoader.loadModel("bench_v01.obj", &vertices, &indices);
+		modelLoader.loadModel("bench.obj", &vertices, &indices);
 		modelsData[MODEL_BENCH] = ModelData(vertices, indices);
 	}
 
