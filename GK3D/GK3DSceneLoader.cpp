@@ -120,7 +120,7 @@ namespace GK
 			{ 0.1f, 0.0f, 0.4f }
 		};
 		glm::vec3 lampAngles[lampCount] = {
-			{ 0.0f, 0.0f, 0.0f }
+			{ 0.0f, 12.0f, 0.0f }
 		};
 		for (size_t i = 0; i < lampCount; i++)
 		{
