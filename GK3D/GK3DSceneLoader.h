@@ -33,6 +33,7 @@ namespace GK
 		std::shared_ptr<DrawablesArray> getDrawables();
 		glm::vec3 getCameraPosition();
 		glm::vec3 getCameraFront();
+		std::shared_ptr<PointLightInstance> getDamagedLamp();
 	private:
 		std::shared_ptr<PointLightsArray> pointLights;
 		std::shared_ptr<SpotLightsArray> spotLights;

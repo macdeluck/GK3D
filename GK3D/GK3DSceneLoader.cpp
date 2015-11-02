@@ -170,6 +170,13 @@ namespace GK
 		}
 	}
 
+	std::shared_ptr<PointLightInstance> GK3DSceneLoader::getDamagedLamp()
+	{
+		if (pointLights->size() > 0)
+			return (*pointLights->begin());
+		return std::shared_ptr<PointLightInstance>(nullptr);
+	}
+
 	void GK3DSceneLoader::createFirs()
 	{
 		std::default_random_engine generator = std::default_random_engine(123);

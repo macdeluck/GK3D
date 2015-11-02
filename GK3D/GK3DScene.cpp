@@ -9,6 +9,8 @@
 #include "ModelLoader.h"
 #include "GK3DSceneLoader.h"
 
+#include <random>
+
 namespace GK
 {
 	GK3DScene::GK3DScene(int screenWidth, int screenHeight)
@@ -36,6 +38,10 @@ namespace GK
 		}
 		cameraSpotLight = (*spotLights->begin());
 		cameraSpotLightOn = true;
+		damagedLamp = sceneLoader.getDamagedLamp();
+		damagedLightTicks = 0;
+		currentDamagedLightMaterial = 0;
+		damagedLightGenerator = std::default_random_engine();
 
 		getCamera()->setFront(sceneLoader.getCameraFront());
 		getCamera()->setPosition(sceneLoader.getCameraPosition());
@@ -47,6 +53,7 @@ namespace GK
 	{
 		cameraSpotLight->position = getCamera()->getPosition();
 		cameraSpotLight->direction = getCamera()->getFront();
+		damagedLampFlickering(deltaTime);
 	}
 
 	void GK3DScene::toggleCameraLight()
@@ -62,5 +69,30 @@ namespace GK
 				glm::vec3(1.0f, 1.0f, 1.0f)));
 		}
 		cameraSpotLightOn = !cameraSpotLightOn;
+	}
+
+	void GK3DScene::damagedLampFlickering(GLfloat deltaTime)
+	{
+		const int lampMaterialsCount = 7;
+		const Material lampMaterials[lampMaterialsCount] = {
+			Material::WhiteLight,
+			Material::RedLight,
+			Material::GreenLight,
+			Material::BlueLight,
+			Material::CyanLight,
+			Material::MagentaLight,
+			Material::YellowLight
+		};
+		damagedLightTicks += deltaTime;
+		float degrees = glm::degrees(damagedLightTicks / 1000);
+		if ((damagedLightTicks > 5000) && (degrees > 360))
+		{
+			damagedLightTicks = 0;
+			std::uniform_int_distribution<int> distribution = std::uniform_int_distribution<int>(0, 7);
+			currentDamagedLightMaterial = distribution(damagedLightGenerator);
+		}
+		if (((cos(0.01f*degrees) + 0.5*cos(45 * degrees)) > 1))
+			damagedLamp->material.reset(new Material());
+		else damagedLamp->material.reset(new Material(lampMaterials[currentDamagedLightMaterial]));
 	}
 }

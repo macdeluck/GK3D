@@ -72,22 +72,22 @@ namespace GK
 				switch (*it)
 				{
 				case CameraMovementDirection::FORWARD:
-					positionedInstance->position.x += deltaTime * 0.0001;
+					positionedInstance->position.x += deltaTime * 0.0001f;
 					break;
 				case CameraMovementDirection::BACKWARD:
-					positionedInstance->position.x -= deltaTime * 0.0001;
+					positionedInstance->position.x -= deltaTime * 0.0001f;
 					break;
 				case CameraMovementDirection::LEFT:
-					positionedInstance->position.z += deltaTime * 0.0001;
+					positionedInstance->position.z += deltaTime * 0.0001f;
 					break;
 				case CameraMovementDirection::RIGHT:
-					positionedInstance->position.z -= deltaTime * 0.0001;
+					positionedInstance->position.z -= deltaTime * 0.0001f;
 					break;
 				case CameraMovementDirection::UP:
-					positionedInstance->position.y += deltaTime * 0.0001;
+					positionedInstance->position.y += deltaTime * 0.0001f;
 					break;
 				case CameraMovementDirection::DOWN:
-					positionedInstance->position.y -= deltaTime * 0.0001;
+					positionedInstance->position.y -= deltaTime * 0.0001f;
 					break;
 				default:
 					break;

@@ -2,10 +2,14 @@
 #define _GK3D_SCENE
 
 #include "Scene.h"
+#include <random>
 
 namespace GK
 {
 	class ObjectShader;
+	struct SpotLightInstance;
+	struct DrawableInstance;
+	struct PointLightInstance;
 
 	class GK3DScene : public Scene
 	{
@@ -16,7 +20,14 @@ namespace GK
 		void toggleCameraLight();
 	private:
 		std::shared_ptr<SpotLightInstance> cameraSpotLight;
+		std::shared_ptr<PointLightInstance> damagedLamp;
+		std::shared_ptr<SpotLightInstance> flashLight;
 		bool cameraSpotLightOn;
+
+		GLfloat damagedLightTicks;
+		int currentDamagedLightMaterial;
+		void damagedLampFlickering(GLfloat deltaTime);
+		std::default_random_engine damagedLightGenerator;
 	};
 }
 
