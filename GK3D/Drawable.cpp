@@ -143,13 +143,13 @@ namespace GK
 		return std::vector<GLfloat>(std::begin(vertexData), std::end(vertexData));
 	}
 
-	const Material Material::WhiteLight = Material(glm::vec3(0.2f, 0.2f, 0.2f), glm::vec3(0.5f, 0.5f, 0.5f), glm::vec3(1.0f, 1.0f, 1.0f), 0.0f);
-	const Material Material::RedLight = Material(glm::vec3(0.2f, 0.0f, 0.0f), glm::vec3(0.5f, 0.0f, 0.0f), glm::vec3(0.0f, 0.0f, 1.0f), 0.0f);
-	const Material Material::GreenLight = Material(glm::vec3(0.0f, 0.2f, 0.0f), glm::vec3(0.0f, 0.5f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f), 0.0f);
-	const Material Material::BlueLight = Material(glm::vec3(0.0f, 0.0f, 0.2f), glm::vec3(0.0f, 0.0f, 0.5f), glm::vec3(0.0f, 0.0f, 1.0f), 0.0f);
-	const Material Material::CyanLight = Material(glm::vec3(0.0f, 0.2f, 0.2f), glm::vec3(0.0f, 0.5f, 0.5f), glm::vec3(0.0f, 1.0f, 1.0f), 0.0f);
-	const Material Material::MagentaLight = Material(glm::vec3(0.2f, 0.0f, 0.2f), glm::vec3(0.5f, 0.0f, 0.5f), glm::vec3(1.0f, 0.0f, 1.0f), 0.0f);
-	const Material Material::YellowLight = Material(glm::vec3(0.2f, 0.2f, 0.0f), glm::vec3(0.5f, 0.5f, 0.0f), glm::vec3(1.0f, 1.0f, 0.0f), 0.0f);
+	const Material Material::WhiteLight = Material(glm::vec3(0.2f, 0.2f, 0.2f), glm::vec3(0.5f, 0.5f, 0.5f), glm::vec3(1.0f, 1.0f, 1.0f), 1.0f);
+	const Material Material::RedLight = Material(glm::vec3(0.2f, 0.0f, 0.0f), glm::vec3(0.5f, 0.0f, 0.0f), glm::vec3(0.0f, 0.0f, 1.0f), 1.0f);
+	const Material Material::GreenLight = Material(glm::vec3(0.0f, 0.2f, 0.0f), glm::vec3(0.0f, 0.5f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f), 1.0f);
+	const Material Material::BlueLight = Material(glm::vec3(0.0f, 0.0f, 0.2f), glm::vec3(0.0f, 0.0f, 0.5f), glm::vec3(0.0f, 0.0f, 1.0f), 1.0f);
+	const Material Material::CyanLight = Material(glm::vec3(0.0f, 0.2f, 0.2f), glm::vec3(0.0f, 0.5f, 0.5f), glm::vec3(0.0f, 1.0f, 1.0f), 1.0f);
+	const Material Material::MagentaLight = Material(glm::vec3(0.2f, 0.0f, 0.2f), glm::vec3(0.5f, 0.0f, 0.5f), glm::vec3(1.0f, 0.0f, 1.0f), 1.0f);
+	const Material Material::YellowLight = Material(glm::vec3(0.2f, 0.2f, 0.0f), glm::vec3(0.5f, 0.5f, 0.0f), glm::vec3(1.0f, 1.0f, 0.0f), 1.0f);
 
 	const Material Material::Emerald = Material(glm::vec3(0.0215f, 0.1745f, 0.0215f), glm::vec3(0.07568f, 0.61424f, 0.07568f), glm::vec3(0.633f, 0.727811f, 0.633f), 76.8f);
 	const Material Material::Jade = Material(glm::vec3(0.135f, 0.2225f, 0.1575f), glm::vec3(0.54f, 0.89f, 0.63f), glm::vec3(0.316228f, 0.316228f, 0.316228f), 12.8f);

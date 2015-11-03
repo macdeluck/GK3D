@@ -56,7 +56,7 @@ namespace GK
 		glUniform1f(getUniformLocation("material.shininess"), material->shininess);
 
 		std::shared_ptr<PointLightsArray> pointLights = scene->getPointLights();
-		glUniform1ui(getUniformLocation("pointLightsNum"), pointLights->size());
+		glUniform1i(getUniformLocation("pointLightsNum"), (int)pointLights->size());
 		for (size_t i = 0; i < pointLights->size(); i++)
 		{
 			std::stringstream sb = std::stringstream("");
@@ -75,7 +75,7 @@ namespace GK
 		}
 
 		std::shared_ptr<SpotLightsArray> spotLights = scene->getSpotLights();
-		glUniform1ui(getUniformLocation("spotLightsNum"), spotLights->size());
+		glUniform1i(getUniformLocation("spotLightsNum"), (int)spotLights->size());
 		for (size_t i = 0; i < spotLights->size(); i++)
 		{
 			std::stringstream sb = std::stringstream("");

@@ -65,7 +65,7 @@ namespace GK
 		Material(glm::vec3 ambient = glm::vec3(0, 0, 0),
 			glm::vec3 diffuse = glm::vec3(0, 0, 0),
 			glm::vec3 specular = glm::vec3(0, 0, 0),
-			GLfloat shininess = 0.0f);
+			GLfloat shininess = 1.0f);
 	};
 
 	struct DrawableInstance

@@ -42,11 +42,11 @@ struct SpotLight {
 
 #if MAX_POINT_LIGHTS_NUM > 0
 uniform PointLight pointLights[MAX_POINT_LIGHTS_NUM];
-uniform uint pointLightsNum;
+uniform int pointLightsNum;
 #endif
 #if MAX_SPOT_LIGHTS_NUM > 0
 uniform SpotLight spotLights[MAX_SPOT_LIGHTS_NUM];
-uniform uint spotLightsNum;
+uniform int spotLightsNum;
 #endif
 uniform Material material;
 uniform vec3 viewPos;

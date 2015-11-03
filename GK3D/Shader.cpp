@@ -36,7 +36,7 @@ namespace GK
 		if (!success)
 		{
 			glGetShaderInfoLog(*shaderId, 512, NULL, infoLog);
-			throw Exception(std::string("Shader compilation failed: ") + std::string(infoLog));
+			throw Exception(std::string("Shader compilation failed:\n") + std::string(infoLog));
 		}
 	}
 
