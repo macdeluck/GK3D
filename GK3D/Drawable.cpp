@@ -194,7 +194,7 @@ namespace GK
 	}
 
 	const Material Material::WhiteLight = Material(glm::vec3(0.2f, 0.2f, 0.2f), glm::vec3(0.5f, 0.5f, 0.5f), glm::vec3(1.0f, 1.0f, 1.0f), 1.0f);
-	const Material Material::RedLight = Material(glm::vec3(0.2f, 0.0f, 0.0f), glm::vec3(0.5f, 0.0f, 0.0f), glm::vec3(0.0f, 0.0f, 1.0f), 1.0f);
+	const Material Material::RedLight = Material(glm::vec3(0.2f, 0.0f, 0.0f), glm::vec3(0.5f, 0.0f, 0.0f), glm::vec3(1.0f, 0.0f, 0.0f), 1.0f);
 	const Material Material::GreenLight = Material(glm::vec3(0.0f, 0.2f, 0.0f), glm::vec3(0.0f, 0.5f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f), 1.0f);
 	const Material Material::BlueLight = Material(glm::vec3(0.0f, 0.0f, 0.2f), glm::vec3(0.0f, 0.0f, 0.5f), glm::vec3(0.0f, 0.0f, 1.0f), 1.0f);
 	const Material Material::CyanLight = Material(glm::vec3(0.0f, 0.2f, 0.2f), glm::vec3(0.0f, 0.5f, 0.5f), glm::vec3(0.0f, 1.0f, 1.0f), 1.0f);

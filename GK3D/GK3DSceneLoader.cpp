@@ -40,7 +40,7 @@ namespace GK
 		loadShaders();
 		loadModelsData();
 		createInstances();
-		//buildSurface();
+		buildSurface();
 		buildScene();
 	}
 
@@ -70,25 +70,25 @@ namespace GK
 		modelLoader.loadModel("assets/cube.obj", &vertices, &indices, &material, &materialImage);
 		modelsData[MODEL_CUBE] = ModelData(vertices, indices, material, materialImage);
 
-/*		vertices = std::vector<Vertex>();
+		vertices = std::vector<Vertex>();
 		indices = std::vector<GLuint>();
-		modelLoader.loadModel("assets/bench.obj", &vertices, &indices);
-		modelsData[MODEL_BENCH] = ModelData(vertices, indices);
+		modelLoader.loadModel("assets/bench.obj", &vertices, &indices, &material, &materialImage);
+		modelsData[MODEL_BENCH] = ModelData(vertices, indices, material, materialImage);
 
 		vertices = std::vector<Vertex>();
 		indices = std::vector<GLuint>();
-		modelLoader.loadModel("assets/lamp.obj", &vertices, &indices);
-		modelsData[MODEL_LAMP] = ModelData(vertices, indices);
+		modelLoader.loadModel("assets/lamp.obj", &vertices, &indices, &material, &materialImage);
+		modelsData[MODEL_LAMP] = ModelData(vertices, indices, material, materialImage);
 
 		vertices = std::vector<Vertex>();
 		indices = std::vector<GLuint>();
-		modelLoader.loadModel("assets/fir.obj", &vertices, &indices);
-		modelsData[MODEL_FIR] = ModelData(vertices, indices);
+		modelLoader.loadModel("assets/fir.obj", &vertices, &indices, &material, &materialImage);
+		modelsData[MODEL_FIR] = ModelData(vertices, indices, material, materialImage);
 
 		vertices = std::vector<Vertex>();
 		indices = std::vector<GLuint>();
-		modelLoader.loadModel("assets/flashlight.obj", &vertices, &indices);
-		modelsData[MODEL_FLASHLIGHT] = ModelData(vertices, indices);*/
+		modelLoader.loadModel("assets/flashlight.obj", &vertices, &indices, &material, &materialImage);
+		modelsData[MODEL_FLASHLIGHT] = ModelData(vertices, indices, material, materialImage);
 	}
 
 	void GK3DSceneLoader::createInstances()
@@ -99,44 +99,30 @@ namespace GK
 		spotLights->push_back(spotLight);
 
 		createCubes();
-		//createBenches();
-		//createLamps();
-		//createFirs();
+		createBenches();
+		createLamps();
+		createFirs();
 		createFlashLight();
 	}
 
 	void GK3DSceneLoader::createCubes()
 	{
-		const int cubesCount = 1;
-		glm::vec3 cubeScale = { 0.5f, 0.5f, 0.5f };
-		glm::vec3 cubesPositions[cubesCount] = {
+		int currentModel = MODEL_CUBE;
+		const int modelsCount = 1;
+		glm::vec3 modelScale = { 0.1f, 0.1f, 0.1f };
+		glm::vec3 modelPositions[modelsCount] = {
+			{ 0.5f, 0.5f, 0.0f }
+		};
+		glm::vec3 modelsAngles[modelsCount] = {
 			{ 0.0f, 0.0f, 0.0f }
 		};
-		glm::vec3 cubesAngles[cubesCount] = {
-			{ 0.0f, 0.0f, 0.0f }
-		};
-		std::shared_ptr<Material> material;
-		if (std::get<2>(modelsData[MODEL_CUBE]))
-			material = std::get<2>(modelsData[MODEL_CUBE]);
-		else material = std::shared_ptr<Material>(new Material(Material::Emerald));
-		if (std::get<3>(modelsData[MODEL_CUBE]))
-			material->diffuseTex = Texture(std::get<3>(modelsData[MODEL_CUBE]));
-		for (size_t i = 0; i < cubesCount; i++)
-		{
-			std::shared_ptr<DrawableInstance> cubeInstance = std::shared_ptr<DrawableInstance>(new DrawableInstance(
-				shaders[SHADER_OBJECT],
-				material,
-				cubesPositions[i],
-				cubeScale,
-				cubesAngles[i].x,
-				cubesAngles[i].y,
-				cubesAngles[i].z));
-			instances[MODEL_CUBE].push_back(cubeInstance);
-		}
+		std::shared_ptr<Material> defaultMaterial = std::shared_ptr<Material>(new Material(Material::Emerald));
+		createGenericModel(currentModel, modelsCount, modelScale, modelPositions, modelsAngles, defaultMaterial);
 	}
 
 	void GK3DSceneLoader::createBenches()
 	{
+		int currentModel = MODEL_BENCH;
 		const int benchCount = 2;
 		glm::vec3 benchScale = { 0.001f, 0.001f, 0.001f };
 		glm::vec3 benchPositions[benchCount] = {
@@ -147,22 +133,32 @@ namespace GK
 			{ 0.0f, 0.0f, 0.0f },
 			{ 0.0f, 138.0f, 0.0f }
 		};
-		for (size_t i = 0; i < benchCount; i++)
-		{
-			std::shared_ptr<DrawableInstance> benchInstance = std::shared_ptr<DrawableInstance>(new DrawableInstance(
-				shaders[SHADER_OBJECT],
-				std::shared_ptr<Material>(new Material(Material::Copper)),
-				benchPositions[i],
-				benchScale,
-				benchAngles[i].x,
-				benchAngles[i].y,
-				benchAngles[i].z));
-			instances[MODEL_BENCH].push_back(benchInstance);
-		}
+		std::shared_ptr<Material> defaultMaterial = std::shared_ptr<Material>(new Material(Material::Copper));
+		createGenericModel(currentModel, benchCount, benchScale, benchPositions, benchAngles, defaultMaterial);
+	}
+
+	void GK3DSceneLoader::createLampCallback(int modelType, std::shared_ptr<DrawableInstance> pointLight)
+	{
+		glm::vec3 lightPosition = pointLight->position;
+		lightPosition.x += 0.0055f;
+		lightPosition.y += 0.27f;
+		lightPosition.z += -0.012f;
+		std::shared_ptr<PointLightInstance> lampLight = std::shared_ptr<PointLightInstance>(new PointLightInstance(
+			shaders[SHADER_LIGHT],
+			std::shared_ptr<Material>(new Material(Material::WhiteLight)),
+			1.0f, 0.7f, 1.8f,
+			lightPosition,
+			{ 0.01f, 0.01f, 0.01f },
+			pointLight->angleX,
+			pointLight->angleY,
+			pointLight->angleZ));
+		instances[MODEL_CUBE].push_back(lampLight);
+		pointLights->push_back(lampLight);
 	}
 
 	void GK3DSceneLoader::createLamps()
 	{
+		const int currentType = MODEL_LAMP;
 		const int lampCount = 2;
 		glm::vec3 lampScale = { 0.01f, 0.01f, 0.01f };
 		glm::vec3 lampPositions[lampCount] = {
@@ -173,34 +169,8 @@ namespace GK
 			{ 0.0f, 0.0f, 0.0f },
 			{ 0.0f, 0.0f, 0.0f }
 		};
-		for (size_t i = 0; i < lampCount; i++)
-		{
-			std::shared_ptr<DrawableInstance> lampInstance = std::shared_ptr<DrawableInstance>(new DrawableInstance(
-				shaders[SHADER_OBJECT],
-				std::shared_ptr<Material>(new Material(Material::Silver)),
-				lampPositions[i],
-				lampScale,
-				lampAngles[i].x,
-				lampAngles[i].y,
-				lampAngles[i].z));
-			instances[MODEL_LAMP].push_back(lampInstance);
-
-			glm::vec3 lightPosition = lampPositions[i];
-			lightPosition.x += 0.0055f;
-			lightPosition.y += 0.27f;
-			lightPosition.z += -0.012f;
-			std::shared_ptr<PointLightInstance> lampLight = std::shared_ptr<PointLightInstance>(new PointLightInstance(
-				shaders[SHADER_LIGHT],
-				std::shared_ptr<Material>(new Material(Material::WhiteLight)),
-				1.0f, 0.7f, 1.8f,
-				lightPosition,
-				{ 0.01f, 0.01f, 0.01f },
-				lampAngles[i].x,
-				lampAngles[i].y,
-				lampAngles[i].z));
-			instances[MODEL_CUBE].push_back(lampLight);
-			pointLights->push_back(lampLight);
-		}
+		std::shared_ptr<Material> defaultMaterial = std::shared_ptr<Material>(new Material(Material::Silver));
+		createGenericModel(currentType, lampCount, lampScale, lampPositions, lampAngles, defaultMaterial, std::bind(&GK3DSceneLoader::createLampCallback, this, std::placeholders::_1, std::placeholders::_2));
 	}
 
 	std::shared_ptr<PointLightInstance> GK3DSceneLoader::getDamagedLamp()
@@ -217,12 +187,18 @@ namespace GK
 
 		const int firCount = 50;
 		glm::vec3 firScale = { 0.0005f, 0.0005f, 0.0005f };
+		std::shared_ptr<Material> material;
+		if (std::get<2>(modelsData[MODEL_FIR]))
+			material = std::get<2>(modelsData[MODEL_FIR]);
+		else material = std::shared_ptr<Material>(new Material(Material::GreenRubber));
+		if (std::get<3>(modelsData[MODEL_FIR]))
+			material->diffuseTex = Texture(std::get<3>(modelsData[MODEL_FIR]));
 		for (size_t i = 0; i < firCount; i++)
 		{
 			glm::vec3 firPosition = glm::vec3(distribution(generator), 0.0f, distribution(generator));
 			std::shared_ptr<DrawableInstance> firInstance = std::shared_ptr<DrawableInstance>(new DrawableInstance(
 				shaders[SHADER_OBJECT],
-				std::shared_ptr<Material>(new Material(Material::GreenRubber)),
+				std::shared_ptr<Material>(material),
 				firPosition,
 				firScale));
 			instances[MODEL_FIR].push_back(firInstance);
@@ -231,18 +207,38 @@ namespace GK
 
 	void GK3DSceneLoader::createFlashLight()
 	{
-		glm::vec3 flashLightScale = { 0.005f, 0.005f, 0.005f };
-		glm::vec3 flashLightPosition = { 0.518999517f, 0.0480000004f, 0.319600284f };
-		glm::vec3 flashLightAngle = { -5.0f, 90.0f, 0.0f };
-		std::shared_ptr<DrawableInstance> flashLightInstance = std::shared_ptr<DrawableInstance>(new DrawableInstance(
-			shaders[SHADER_OBJECT],
-			std::shared_ptr<Material>(new Material(Material::BlackPlastic)),
-			flashLightPosition,
-			flashLightScale,
-			flashLightAngle.x,
-			flashLightAngle.y,
-			flashLightAngle.z));
-		instances[MODEL_FLASHLIGHT].push_back(flashLightInstance);
+		const int currentModel = MODEL_FLASHLIGHT;
+		const int count = 1;
+		glm::vec3 scale = { 0.005f, 0.005f, 0.005f };
+		glm::vec3 positions[count] = { { 0.518999517f, 0.0480000004f, 0.319600284f } };
+		glm::vec3 angles[count] = { { -5.0f, 90.0f, 0.0f } };
+		std::shared_ptr<Material> defaultMaterial = std::shared_ptr<Material>(new Material(Material::BlackPlastic));
+		createGenericModel(currentModel, count, scale, positions, angles, defaultMaterial);
+	}
+
+	void GK3DSceneLoader::createGenericModel(int modelType, size_t count, glm::vec3 scale, glm::vec3 * positions, glm::vec3 * angles, std::shared_ptr<Material> defaultMaterial,
+		std::function<void(int, std::shared_ptr<DrawableInstance>)> createdInstanceCallback)
+	{
+		std::shared_ptr<Material> material;
+		if (std::get<2>(modelsData[modelType]))
+			material = std::get<2>(modelsData[modelType]);
+		else material = std::shared_ptr<Material>(defaultMaterial);
+		if (std::get<3>(modelsData[modelType]))
+			material->diffuseTex = Texture(std::get<3>(modelsData[modelType]));
+		for (size_t i = 0; i < count; i++)
+		{
+			std::shared_ptr<DrawableInstance> instance = std::shared_ptr<DrawableInstance>(new DrawableInstance(
+				shaders[SHADER_OBJECT],
+				material,
+				positions[i],
+				scale,
+				angles[i].x,
+				angles[i].y,
+				angles[i].z));
+			instances[modelType].push_back(instance);
+			if (createdInstanceCallback)
+				createdInstanceCallback(modelType, instance);
+		}
 	}
 
 	typedef std::map<int, std::vector<std::shared_ptr<DrawableInstance> > > InstancesDic;

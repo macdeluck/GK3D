@@ -69,6 +69,11 @@ namespace GK
 			material->reset(createMaterialFromMtl(*materials.begin()));
 			materialImage->reset(loadImage(directory, *materials.begin()));
 		}
+		else
+		{
+			material->reset();
+			materialImage->reset();
+		}
 		if (!err.empty())
 			throw Exception(err);
 		loadShapes(shapes, output, indices);
