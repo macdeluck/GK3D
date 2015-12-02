@@ -56,39 +56,25 @@ namespace GK
 		}
 	}
 
-	typedef std::tuple<std::vector<Vertex>, std::vector<GLuint>, std::shared_ptr<Material>, std::shared_ptr<Image> > ModelData;
 	void GK3DSceneLoader::loadModelsData()
 	{
-		std::vector<Vertex> vertices;
-		std::vector<GLuint> indices;
-		std::shared_ptr<Material> material;
-		std::shared_ptr<Image> materialImage;
 		ModelLoader modelLoader;
+		ModelData modelData;
 
-		vertices = std::vector<Vertex>();
-		indices = std::vector<GLuint>();
-		modelLoader.loadModel("assets/cube.obj", &vertices, &indices, &material, &materialImage);
-		modelsData[MODEL_CUBE] = ModelData(vertices, indices, material, materialImage);
+		modelLoader.loadModel("assets/cube.obj", &modelData);
+		modelsData[MODEL_CUBE] = std::shared_ptr<ModelData>(new ModelData(modelData));
 
-		vertices = std::vector<Vertex>();
-		indices = std::vector<GLuint>();
-		modelLoader.loadModel("assets/bench.obj", &vertices, &indices, &material, &materialImage);
-		modelsData[MODEL_BENCH] = ModelData(vertices, indices, material, materialImage);
+		modelLoader.loadModel("assets/bench.obj", &modelData);
+		modelsData[MODEL_BENCH] = std::shared_ptr<ModelData>(new ModelData(modelData));
 
-		vertices = std::vector<Vertex>();
-		indices = std::vector<GLuint>();
-		modelLoader.loadModel("assets/lamp.obj", &vertices, &indices, &material, &materialImage);
-		modelsData[MODEL_LAMP] = ModelData(vertices, indices, material, materialImage);
+		modelLoader.loadModel("assets/lamp.obj", &modelData);
+		modelsData[MODEL_LAMP] = std::shared_ptr<ModelData>(new ModelData(modelData));
 
-		vertices = std::vector<Vertex>();
-		indices = std::vector<GLuint>();
-		modelLoader.loadModel("assets/fir.obj", &vertices, &indices, &material, &materialImage);
-		modelsData[MODEL_FIR] = ModelData(vertices, indices, material, materialImage);
+		modelLoader.loadModel("assets/fir.obj", &modelData);
+		modelsData[MODEL_FIR] = std::shared_ptr<ModelData>(new ModelData(modelData));
 
-		vertices = std::vector<Vertex>();
-		indices = std::vector<GLuint>();
-		modelLoader.loadModel("assets/flashlight.obj", &vertices, &indices, &material, &materialImage);
-		modelsData[MODEL_FLASHLIGHT] = ModelData(vertices, indices, material, materialImage);
+		modelLoader.loadModel("assets/flashlight.obj", &modelData);
+		modelsData[MODEL_FLASHLIGHT] = std::shared_ptr<ModelData>(new ModelData(modelData));
 	}
 
 	void GK3DSceneLoader::createInstances()
@@ -182,27 +168,22 @@ namespace GK
 
 	void GK3DSceneLoader::createFirs()
 	{
-		std::default_random_engine generator = std::default_random_engine(123);
+		std::default_random_engine generator = std::default_random_engine(127);
 		std::uniform_real_distribution<GLfloat> distribution = std::uniform_real_distribution<GLfloat>(-3.0f, 3.0f);
 
 		const int firCount = 50;
 		glm::vec3 firScale = { 0.0005f, 0.0005f, 0.0005f };
 		std::shared_ptr<Material> material;
-		if (std::get<2>(modelsData[MODEL_FIR]))
-			material = std::get<2>(modelsData[MODEL_FIR]);
-		else material = std::shared_ptr<Material>(new Material(Material::GreenRubber));
-		if (std::get<3>(modelsData[MODEL_FIR]))
-			material->diffuseTex = Texture(std::get<3>(modelsData[MODEL_FIR]));
+		std::vector<glm::vec3> positions(firCount);
+		std::vector<glm::vec3> angles(firCount);
+
+		std::shared_ptr<Material> defaultMaterial = std::shared_ptr<Material>(new Material(Material::GreenRubber));
 		for (size_t i = 0; i < firCount; i++)
 		{
-			glm::vec3 firPosition = glm::vec3(distribution(generator), 0.0f, distribution(generator));
-			std::shared_ptr<DrawableInstance> firInstance = std::shared_ptr<DrawableInstance>(new DrawableInstance(
-				shaders[SHADER_OBJECT],
-				std::shared_ptr<Material>(material),
-				firPosition,
-				firScale));
-			instances[MODEL_FIR].push_back(firInstance);
+			positions[i] = glm::vec3(distribution(generator), 0.0f, distribution(generator));
+			angles[i] = glm::vec3(1, 1, 1);
 		}
+		createGenericModel(MODEL_FIR, firCount, firScale, positions.data(), angles.data(), defaultMaterial);
 	}
 
 	void GK3DSceneLoader::createFlashLight()
@@ -220,11 +201,11 @@ namespace GK
 		std::function<void(int, std::shared_ptr<DrawableInstance>)> createdInstanceCallback)
 	{
 		std::shared_ptr<Material> material;
-		if (std::get<2>(modelsData[modelType]))
-			material = std::get<2>(modelsData[modelType]);
+		if (modelsData[modelType]->material)
+			material = modelsData[modelType]->material;
 		else material = std::shared_ptr<Material>(defaultMaterial);
-		if (std::get<3>(modelsData[modelType]))
-			material->diffuseTex = Texture(std::get<3>(modelsData[modelType]));
+		if (modelsData[modelType]->diffuseTex)
+			material->diffuseTex = Texture(modelsData[modelType]->diffuseTex);
 		for (size_t i = 0; i < count; i++)
 		{
 			std::shared_ptr<DrawableInstance> instance = std::shared_ptr<DrawableInstance>(new DrawableInstance(
@@ -250,7 +231,7 @@ namespace GK
 		for (InstancesDic::const_iterator it = instances.begin(); it != instances.end(); ++it)
 		{
 			drawables->push_back(std::shared_ptr<Drawable>(
-				new Drawable(std::get<0>(modelsData[it->first]), std::get<1>(modelsData[it->first]), it->second)));
+				new Drawable(modelsData[it->first]->vertices, modelsData[it->first]->indices, it->second)));
 		}
 	}
 

@@ -14,6 +14,14 @@ namespace GK
 	struct Material;
 	class Image;
 
+	struct ModelData {
+		std::vector<Vertex> vertices;
+		std::vector<GLuint> indices;
+		std::shared_ptr<Material> material;
+		std::shared_ptr<Image> diffuseTex;
+		std::shared_ptr<Image> alphaTex;
+	};
+
 	class ModelLoader
 	{
 	private:
@@ -29,11 +37,7 @@ namespace GK
 		ModelLoader();
 		virtual ~ModelLoader();
 		
-		void loadModel(std::string path,
-			std::vector<Vertex>* vertices,
-			std::vector<GLuint>* indices,
-			std::shared_ptr<Material>* material,
-			std::shared_ptr<Image>* materialImage);
+		void loadModel(std::string path, ModelData* modelData);
 	};
 }
 

@@ -38,10 +38,10 @@ namespace GK
 		return new Material(ambient, diffuse, specular, mtl.shininess);
 	}
 
-	Image* loadImage(std::string basename, tinyobj::material_t mtl)
+	Image* loadImage(std::string basename, std::string filename)
 	{
 		Image* result = new Image();
-		result->loadFile(basename + OS_PATH_SEPARATOR + mtl.diffuse_texname);
+		result->loadFile(basename + filename);
 		return result;
 	}
 
@@ -52,11 +52,7 @@ namespace GK
 		(*directory) = std::string(pathname.begin(), it.base());
 	}
 
-	void ModelLoader::loadModel(std::string path, 
-		std::vector<Vertex>* output, 
-		std::vector<GLuint>* indices,
-		std::shared_ptr<Material>* material,
-		std::shared_ptr<Image>* materialImage)
+	void ModelLoader::loadModel(std::string path, ModelData* modelData)
 	{
 		std::string basename, directory;
 		splitPath(path, &basename, &directory);
@@ -64,19 +60,26 @@ namespace GK
 		std::vector<tinyobj::shape_t> shapes;
 		std::vector<tinyobj::material_t> materials;
 		std::string err = tinyobj::LoadObj(shapes, materials, path.c_str(), directory.c_str());
+
+		modelData->vertices.clear();
+		modelData->indices.clear();
+		modelData->material.reset();
+		modelData->diffuseTex.reset();
+		modelData->alphaTex.reset();
+
 		if (materials.size() > 0)
 		{
-			material->reset(createMaterialFromMtl(*materials.begin()));
-			materialImage->reset(loadImage(directory, *materials.begin()));
-		}
-		else
-		{
-			material->reset();
-			materialImage->reset();
+			modelData->material.reset(createMaterialFromMtl(*materials.begin()));
+			if (!materials.begin()->diffuse_texname.empty())
+				modelData->diffuseTex.reset(loadImage(directory, materials.begin()->diffuse_texname));
+			else modelData->diffuseTex.reset();
+			if (!materials.begin()->alpha_texname.empty())
+				modelData->alphaTex.reset(loadImage(directory, materials.begin()->alpha_texname));
+			else modelData->alphaTex.reset();
 		}
 		if (!err.empty())
 			throw Exception(err);
-		loadShapes(shapes, output, indices);
+		loadShapes(shapes, &modelData->vertices, &modelData->indices);
 	}
 
 	typedef std::vector<std::shared_ptr<std::vector<GLfloat> > > FaceVertexData;
