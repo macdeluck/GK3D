@@ -60,6 +60,8 @@ namespace GK
 		glEnableVertexAttribArray(0);
 		glVertexAttribPointer(1, Vertex::VERTEX_NORMALS, GL_FLOAT, GL_FALSE, Vertex::VERTEX_SIZE * sizeof(GLfloat), (GLvoid*)(Vertex::VERTEX_POSITIONS * sizeof(GLfloat)));
 		glEnableVertexAttribArray(1);
+		glVertexAttribPointer(2, Vertex::VERTEX_TEXCOORDS, GL_FLOAT, GL_FALSE, Vertex::VERTEX_SIZE * sizeof(GLfloat), (GLvoid*)((Vertex::VERTEX_POSITIONS + Vertex::VERTEX_NORMALS) * sizeof(GLfloat)));
+		glEnableVertexAttribArray(2);
 
 		if (indices.size() > 0)
 		{

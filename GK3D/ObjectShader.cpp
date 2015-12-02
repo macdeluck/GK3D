@@ -25,6 +25,7 @@ namespace GK
 	{
 		glBindAttribLocation(getProgramId(), 0, "position");
 		glBindAttribLocation(getProgramId(), 1, "normal");
+		glBindAttribLocation(getProgramId(), 2, "texCoord");
 	}
 
 	void ObjectShader::prepareForRender(std::shared_ptr<DrawableInstance> drawableInstance, std::shared_ptr<Scene> scene)
@@ -54,6 +55,7 @@ namespace GK
 		glUniform3f(getUniformLocation("material.diffuse"), material->diffuse.r, material->diffuse.g, material->diffuse.b);
 		glUniform3f(getUniformLocation("material.specular"), material->specular.r, material->specular.g, material->specular.b);
 		glUniform1f(getUniformLocation("material.shininess"), material->shininess);
+		glUniform1i(getUniformLocation("material.diffuseMap.used"), 0);
 
 		std::shared_ptr<PointLightsArray> pointLights = scene->getPointLights();
 		glUniform1i(getUniformLocation("pointLightsNum"), (int)pointLights->size());

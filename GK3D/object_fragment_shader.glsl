@@ -1,12 +1,21 @@
 #version 150 core
 
 in vec3 vertexNormal;
-in vec3 vertexFragPos; 
+in vec3 vertexFragPos;
+in vec2 vertexTexCoord;
+
+struct Texture {
+	int used;
+	sampler2D texture;
+};
 
 struct Material {
     vec3 ambient;
     vec3 diffuse;
     vec3 specular;
+
+	Texture diffuseMap;
+
     float shininess;
 };
 
@@ -69,6 +78,10 @@ vec3 CalcPointLight(PointLight light, vec3 normal, vec3 fragPos, vec3 viewDir)
     // Combine results
     vec3 ambient = light.ambient * material.ambient;
     vec3 diffuse = light.diffuse * (diff * material.diffuse);
+	if (material.diffuseMap.used != 0)
+	{
+		diffuse *= vec3(texture(material.diffuseMap.texture, vertexTexCoord));
+	}
     vec3 specular = light.specular * (spec * material.specular);
     ambient  *= attenuation;
     diffuse  *= attenuation;
@@ -98,6 +111,10 @@ vec3 CalcSpotLight(SpotLight light, vec3 normal, vec3 fragPos, vec3 viewDir)
     // Combine results
     vec3 ambient = light.ambient * material.ambient;
     vec3 diffuse = light.diffuse * (diff * material.diffuse);
+	if (material.diffuseMap.used != 0)
+	{
+		diffuse *= vec3(texture(material.diffuseMap.texture, vertexTexCoord));
+	}
     vec3 specular = light.specular * (spec * material.specular);
     ambient  *= attenuation*intensity;
     diffuse  *= attenuation*intensity;
