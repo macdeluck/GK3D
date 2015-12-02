@@ -56,18 +56,19 @@ namespace GK
 		}
 	}
 
-	typedef std::tuple<std::vector<Vertex>, std::vector<GLuint>, std::shared_ptr<Material> > ModelData;
+	typedef std::tuple<std::vector<Vertex>, std::vector<GLuint>, std::shared_ptr<Material>, std::shared_ptr<Image> > ModelData;
 	void GK3DSceneLoader::loadModelsData()
 	{
 		std::vector<Vertex> vertices;
 		std::vector<GLuint> indices;
 		std::shared_ptr<Material> material;
+		std::shared_ptr<Image> materialImage;
 		ModelLoader modelLoader;
 
 		vertices = std::vector<Vertex>();
 		indices = std::vector<GLuint>();
-		modelLoader.loadModel("assets/cube.obj", &vertices, &indices, &material);
-		modelsData[MODEL_CUBE] = ModelData(vertices, indices, material);
+		modelLoader.loadModel("assets/cube.obj", &vertices, &indices, &material, &materialImage);
+		modelsData[MODEL_CUBE] = ModelData(vertices, indices, material, materialImage);
 
 /*		vertices = std::vector<Vertex>();
 		indices = std::vector<GLuint>();
@@ -118,6 +119,8 @@ namespace GK
 		if (std::get<2>(modelsData[MODEL_CUBE]))
 			material = std::get<2>(modelsData[MODEL_CUBE]);
 		else material = std::shared_ptr<Material>(new Material(Material::Emerald));
+		if (std::get<3>(modelsData[MODEL_CUBE]))
+			material->diffuseTex = Texture(std::get<3>(modelsData[MODEL_CUBE]));
 		for (size_t i = 0; i < cubesCount; i++)
 		{
 			std::shared_ptr<DrawableInstance> cubeInstance = std::shared_ptr<DrawableInstance>(new DrawableInstance(

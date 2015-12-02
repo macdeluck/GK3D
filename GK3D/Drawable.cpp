@@ -1,6 +1,7 @@
 #include "Drawable.h"
 #include "Scene.h"
 #include "Shader.h"
+#include "Image.h"
 #include <algorithm>
 
 namespace GK
@@ -8,8 +9,9 @@ namespace GK
 	Material::Material(glm::vec3 ambient,
 		glm::vec3 diffuse,
 		glm::vec3 specular,
-		GLfloat shininess)
-		: ambient(ambient), diffuse(diffuse), specular(specular), shininess(shininess)
+		GLfloat shininess,
+		Texture diffuseTex)
+		: ambient(ambient), diffuse(diffuse), specular(specular), shininess(shininess), diffuseTex(diffuseTex)
 	{}
 	
 	DrawableInstance::DrawableInstance(std::shared_ptr<ShaderProgram> shaderProgram,
@@ -143,6 +145,52 @@ namespace GK
 	std::vector<GLfloat> Vertex::toVector()
 	{
 		return std::vector<GLfloat>(std::begin(vertexData), std::end(vertexData));
+	}
+
+	std::list<int> Texture::availableLocations = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 };
+
+	Texture::Texture()
+		: texture(nullptr)
+	{
+	}
+
+	Texture::Texture(std::shared_ptr<Image> image)
+		: texture(new GLuint)
+	{
+		if (availableLocations.empty())
+			throw Exception("No more locations available");
+		location = availableLocations.front();
+		availableLocations.pop_front();
+		glGenTextures(1, &(*texture));
+		glBindTexture(GL_TEXTURE_2D, (*texture));
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, image->getWidth(), image->getHeight(), 0, GL_RGB, GL_UNSIGNED_BYTE, image->getData().data());
+		glGenerateMipmap(GL_TEXTURE_2D);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST_MIPMAP_NEAREST);
+		glBindTexture(GL_TEXTURE_2D, 0);
+	}
+
+	Texture::~Texture()
+	{
+		if (texture.unique())
+			glDeleteTextures(1, &(*texture));
+	}
+
+	bool Texture::empty()
+	{
+		return !(bool)texture;
+	}
+
+	GLuint Texture::getId()
+	{
+		return *texture;
+	}
+
+	GLuint Texture::getLocation()
+	{
+		return location;
 	}
 
 	const Material Material::WhiteLight = Material(glm::vec3(0.2f, 0.2f, 0.2f), glm::vec3(0.5f, 0.5f, 0.5f), glm::vec3(1.0f, 1.0f, 1.0f), 1.0f);

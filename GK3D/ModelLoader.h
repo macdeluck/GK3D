@@ -12,6 +12,7 @@ namespace GK
 {
 	struct Vertex;
 	struct Material;
+	class Image;
 
 	class ModelLoader
 	{
@@ -31,7 +32,8 @@ namespace GK
 		void loadModel(std::string path,
 			std::vector<Vertex>* vertices,
 			std::vector<GLuint>* indices,
-			std::shared_ptr<Material>* material);
+			std::shared_ptr<Material>* material,
+			std::shared_ptr<Image>* materialImage);
 	};
 }
 

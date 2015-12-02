@@ -32,4 +32,21 @@ namespace GK
 		this->data = std::vector<unsigned char>(image, image + width * height * 3);
 		SOIL_free_image_data(image);
 	}
+
+	int Image::getWidth() const
+	{
+		return width;
+	}
+
+	int Image::getHeight() const
+	{
+		return height;
+	}
+
+	std::vector<unsigned char> Image::getData()
+	{
+		return data;
+	}
+
+
 }

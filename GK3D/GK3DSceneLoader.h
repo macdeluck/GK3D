@@ -14,6 +14,7 @@ namespace GK
 	struct Vertex;
 	struct Material;
 	class Drawable;
+	class Image;
 
 	struct DrawableInstance;
 	struct PointLightInstance;
@@ -47,7 +48,7 @@ namespace GK
 		std::map<int, std::shared_ptr<ShaderProgram> > shaders;
 
 		void loadModelsData();
-		std::map<int, std::tuple<std::vector<Vertex>, std::vector<GLuint>, std::shared_ptr<Material> > > modelsData;
+		std::map<int, std::tuple<std::vector<Vertex>, std::vector<GLuint>, std::shared_ptr<Material>, std::shared_ptr<Image> > > modelsData;
 
 		void createInstances();
 		void createCubes();

@@ -14,7 +14,7 @@ struct Material {
     vec3 diffuse;
     vec3 specular;
 
-	Texture diffuseMap;
+	Texture diffuseTex;
 
     float shininess;
 };
@@ -78,9 +78,9 @@ vec3 CalcPointLight(PointLight light, vec3 normal, vec3 fragPos, vec3 viewDir)
     // Combine results
     vec3 ambient = light.ambient * material.ambient;
     vec3 diffuse = light.diffuse * (diff * material.diffuse);
-	if (material.diffuseMap.used != 0)
+	if (material.diffuseTex.used != 0)
 	{
-		diffuse *= vec3(texture(material.diffuseMap.texture, vertexTexCoord));
+		diffuse *= vec3(texture(material.diffuseTex.texture, vertexTexCoord));
 	}
     vec3 specular = light.specular * (spec * material.specular);
     ambient  *= attenuation;
@@ -111,9 +111,9 @@ vec3 CalcSpotLight(SpotLight light, vec3 normal, vec3 fragPos, vec3 viewDir)
     // Combine results
     vec3 ambient = light.ambient * material.ambient;
     vec3 diffuse = light.diffuse * (diff * material.diffuse);
-	if (material.diffuseMap.used != 0)
+	if (material.diffuseTex.used != 0)
 	{
-		diffuse *= vec3(texture(material.diffuseMap.texture, vertexTexCoord));
+		diffuse *= vec3(texture(material.diffuseTex.texture, vertexTexCoord));
 	}
     vec3 specular = light.specular * (spec * material.specular);
     ambient  *= attenuation*intensity;

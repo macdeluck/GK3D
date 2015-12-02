@@ -28,6 +28,20 @@ namespace GK
 		glBindAttribLocation(getProgramId(), 2, "texCoord");
 	}
 
+	const int GLtextureLocationsCount = 10;
+	int GLtextureLocations[GLtextureLocationsCount] = {
+		GL_TEXTURE0,
+		GL_TEXTURE1,
+		GL_TEXTURE2,
+		GL_TEXTURE3,
+		GL_TEXTURE4,
+		GL_TEXTURE5,
+		GL_TEXTURE6,
+		GL_TEXTURE7,
+		GL_TEXTURE8,
+		GL_TEXTURE9
+	};
+
 	void ObjectShader::prepareForRender(std::shared_ptr<DrawableInstance> drawableInstance, std::shared_ptr<Scene> scene)
 	{
 		std::shared_ptr<Camera> camera = scene->getCamera();
@@ -55,7 +69,15 @@ namespace GK
 		glUniform3f(getUniformLocation("material.diffuse"), material->diffuse.r, material->diffuse.g, material->diffuse.b);
 		glUniform3f(getUniformLocation("material.specular"), material->specular.r, material->specular.g, material->specular.b);
 		glUniform1f(getUniformLocation("material.shininess"), material->shininess);
-		glUniform1i(getUniformLocation("material.diffuseMap.used"), 0);
+		if (material->diffuseTex.empty())
+			glUniform1i(getUniformLocation("material.diffuseTex.used"), 0);
+		else
+		{
+			glUniform1i(getUniformLocation("material.diffuseTex.used"), 1);
+			glUniform1i(glGetUniformLocation(getProgramId(), "material.diffuseTex.texture"), material->diffuseTex.getLocation());
+			glActiveTexture(GLtextureLocations[material->diffuseTex.getLocation()]);
+			glBindTexture(GL_TEXTURE_2D, material->diffuseTex.getId());
+		}
 
 		std::shared_ptr<PointLightsArray> pointLights = scene->getPointLights();
 		glUniform1i(getUniformLocation("pointLightsNum"), (int)pointLights->size());

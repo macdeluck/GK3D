@@ -2,11 +2,18 @@
 #define _GK_DRAWABLE
 
 #include "Common.h"
+#include <list>
 
 namespace GK
 {
 	class ShaderProgram;
 	class Scene;
+	class Image;
+
+	struct Vertex;
+	struct Material;
+	struct DrawableInstance;
+	class Drawable;
 
 	struct Vertex
 	{
@@ -26,12 +33,31 @@ namespace GK
 		GLfloat vertexData[VERTEX_SIZE];
 	};
 
+	struct Texture
+	{
+	private:
+		static std::list<int> availableLocations;
+		int location;
+		std::shared_ptr<GLuint> texture;
+
+	public:
+		Texture();
+		Texture(std::shared_ptr<Image> image);
+		virtual ~Texture();
+		bool empty();
+		GLuint getId();
+		GLuint getLocation();
+
+		friend class Drawable;
+	};
+
 	struct Material
 	{
 		glm::vec3 ambient;
 		glm::vec3 diffuse;
 		glm::vec3 specular;
 		GLfloat shininess;
+		Texture diffuseTex;
 
 		static const Material WhiteLight;
 		static const Material RedLight;
@@ -69,7 +95,8 @@ namespace GK
 		Material(glm::vec3 ambient = glm::vec3(0, 0, 0),
 			glm::vec3 diffuse = glm::vec3(0, 0, 0),
 			glm::vec3 specular = glm::vec3(0, 0, 0),
-			GLfloat shininess = 1.0f);
+			GLfloat shininess = 1.0f,
+			Texture diffuseTex = Texture());
 	};
 
 	struct DrawableInstance

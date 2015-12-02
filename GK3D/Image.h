@@ -20,6 +20,7 @@ namespace GK
 		void loadFile(std::string path);
 		int getWidth() const;
 		int getHeight() const;
+		std::vector<unsigned char> getData();
 	};
 }
 

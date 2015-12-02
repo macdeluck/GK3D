@@ -1,9 +1,9 @@
 #include <memory>
 #include <algorithm>
-#include <SOIL.h>
 
 #include "ModelLoader.h"
 #include "Drawable.h"
+#include "Image.h"
 
 namespace GK
 {
@@ -11,6 +11,7 @@ namespace GK
 	ModelLoader::~ModelLoader() {}
 
 	#ifdef _WIN32
+		const char OS_PATH_SEPARATOR = '\\';
 		struct MatchPathSeparator
 		{
 			bool operator()( char ch ) const
@@ -19,6 +20,7 @@ namespace GK
 			}
 		};
 	#elif __linux__
+		const char OS_PATH_SEPARATOR = '/';
 		struct MatchPathSeparator
 		{
 			bool operator()(char ch) const
@@ -36,6 +38,13 @@ namespace GK
 		return new Material(ambient, diffuse, specular, mtl.shininess);
 	}
 
+	Image* loadImage(std::string basename, tinyobj::material_t mtl)
+	{
+		Image* result = new Image();
+		result->loadFile(basename + OS_PATH_SEPARATOR + mtl.diffuse_texname);
+		return result;
+	}
+
 	void splitPath(std::string const& pathname, std::string* basename, std::string* directory)
 	{
 		std::string::const_reverse_iterator it = std::find_if(pathname.rbegin(), pathname.rend(), MatchPathSeparator());
@@ -46,7 +55,8 @@ namespace GK
 	void ModelLoader::loadModel(std::string path, 
 		std::vector<Vertex>* output, 
 		std::vector<GLuint>* indices,
-		std::shared_ptr<Material>* material)
+		std::shared_ptr<Material>* material,
+		std::shared_ptr<Image>* materialImage)
 	{
 		std::string basename, directory;
 		splitPath(path, &basename, &directory);
@@ -55,7 +65,10 @@ namespace GK
 		std::vector<tinyobj::material_t> materials;
 		std::string err = tinyobj::LoadObj(shapes, materials, path.c_str(), directory.c_str());
 		if (materials.size() > 0)
+		{
 			material->reset(createMaterialFromMtl(*materials.begin()));
+			materialImage->reset(loadImage(directory, *materials.begin()));
+		}
 		if (!err.empty())
 			throw Exception(err);
 		loadShapes(shapes, output, indices);
