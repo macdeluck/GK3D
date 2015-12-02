@@ -168,7 +168,7 @@ namespace GK
 
 	void GK3DSceneLoader::createFirs()
 	{
-		std::default_random_engine generator = std::default_random_engine(127);
+		std::default_random_engine generator = std::default_random_engine(123);
 		std::uniform_real_distribution<GLfloat> distribution = std::uniform_real_distribution<GLfloat>(-3.0f, 3.0f);
 
 		const int firCount = 50;
@@ -206,6 +206,8 @@ namespace GK
 		else material = std::shared_ptr<Material>(defaultMaterial);
 		if (modelsData[modelType]->diffuseTex)
 			material->diffuseTex = Texture(modelsData[modelType]->diffuseTex);
+		if (modelsData[modelType]->alphaTex)
+			material->alphaTex = Texture(modelsData[modelType]->alphaTex);
 		for (size_t i = 0; i < count; i++)
 		{
 			std::shared_ptr<DrawableInstance> instance = std::shared_ptr<DrawableInstance>(new DrawableInstance(

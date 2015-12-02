@@ -58,6 +58,7 @@ namespace GK
 		glm::vec3 specular;
 		GLfloat shininess;
 		Texture diffuseTex;
+		Texture alphaTex;
 
 		static const Material WhiteLight;
 		static const Material RedLight;

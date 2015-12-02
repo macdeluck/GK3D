@@ -16,7 +16,7 @@ struct Material {
     float shininess;
 
 	Texture diffuseTex;
-	Texture transparency;
+	Texture alphaTex;
 };
 
 struct PointLight {
@@ -140,7 +140,7 @@ void main()
         result += CalcSpotLight(spotLights[i], norm, vertexFragPos, viewDir);
 #endif
 	float transparency = 1.0;
-    if (material.transparency.used != 0)
-		transparency = float(texture(material.transparency.texture, vertexTexCoord));
+    if (material.alphaTex.used != 0)
+		transparency = float(texture(material.alphaTex.texture, vertexTexCoord));
     color = vec4(result, transparency);
 }

@@ -78,6 +78,15 @@ namespace GK
 			glActiveTexture(GLtextureLocations[material->diffuseTex.getLocation()]);
 			glBindTexture(GL_TEXTURE_2D, material->diffuseTex.getId());
 		}
+		if (material->alphaTex.empty())
+			glUniform1i(getUniformLocation("material.alphaTex.used"), 0);
+		else
+		{
+			glUniform1i(getUniformLocation("material.alphaTex.used"), 1);
+			glUniform1i(glGetUniformLocation(getProgramId(), "material.alphaTex.texture"), material->alphaTex.getLocation());
+			glActiveTexture(GLtextureLocations[material->alphaTex.getLocation()]);
+			glBindTexture(GL_TEXTURE_2D, material->alphaTex.getId());
+		}
 
 		std::shared_ptr<PointLightsArray> pointLights = scene->getPointLights();
 		glUniform1i(getUniformLocation("pointLightsNum"), (int)pointLights->size());
