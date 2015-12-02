@@ -2,6 +2,8 @@
 #
 # object Branches to come ...
 #
+mtllib fir.mtl
+usemtl branch
 v  20.809086 150.699585 -1.574082
 v  23.856909 132.719330 -58.281429
 v  19.442093 125.485603 -107.332840
