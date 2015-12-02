@@ -39,8 +39,8 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <IncludePath>$(SolutionDir)..\SDL2\include;$(SolutionDir)..\GLEW\include;$(SolutionDir)..\glm;$(IncludePath)</IncludePath>
-    <LibraryPath>$(SolutionDir)..\SDL2\lib\x86\;$(SolutionDir)..\GLEW\lib\Release\Win32\;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(SolutionDir)..\SDL2\include;$(SolutionDir)..\GLEW\include;$(SolutionDir)..\GLM;$(SolutionDir)..\SOIL\include;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)..\SDL2\lib\x86\;$(SolutionDir)..\GLEW\lib\Release\Win32\;$(SolutionDir)..\SOIL\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <IncludePath>$(SolutionDir)..\SDL2\include;$(SolutionDir)..\GLEW\include;$(SolutionDir)..\glm;$(IncludePath)</IncludePath>
@@ -56,7 +56,7 @@
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>SDL2.lib;SDL2main.lib;glew32.lib;OpenGL32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>SDL2.lib;SDL2main.lib;glew32.lib;OpenGL32.lib;SOIL.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <EntryPointSymbol>mainCRTStartup</EntryPointSymbol>
       <SubSystem>Console</SubSystem>
     </Link>

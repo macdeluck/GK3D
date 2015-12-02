@@ -40,7 +40,7 @@ namespace GK
 		loadShaders();
 		loadModelsData();
 		createInstances();
-		buildSurface();
+		//buildSurface();
 		buildScene();
 	}
 
@@ -56,19 +56,20 @@ namespace GK
 		}
 	}
 
-	typedef std::pair<std::vector<Vertex>, std::vector<GLuint> > ModelData;
+	typedef std::tuple<std::vector<Vertex>, std::vector<GLuint>, std::shared_ptr<Material> > ModelData;
 	void GK3DSceneLoader::loadModelsData()
 	{
 		std::vector<Vertex> vertices;
 		std::vector<GLuint> indices;
+		std::shared_ptr<Material> material;
 		ModelLoader modelLoader;
 
 		vertices = std::vector<Vertex>();
 		indices = std::vector<GLuint>();
-		modelLoader.loadModel("assets/cube.obj", &vertices, &indices);
-		modelsData[MODEL_CUBE] = ModelData(vertices, indices);
+		modelLoader.loadModel("assets/cube.obj", &vertices, &indices, &material);
+		modelsData[MODEL_CUBE] = ModelData(vertices, indices, material);
 
-		vertices = std::vector<Vertex>();
+/*		vertices = std::vector<Vertex>();
 		indices = std::vector<GLuint>();
 		modelLoader.loadModel("assets/bench.obj", &vertices, &indices);
 		modelsData[MODEL_BENCH] = ModelData(vertices, indices);
@@ -86,7 +87,7 @@ namespace GK
 		vertices = std::vector<Vertex>();
 		indices = std::vector<GLuint>();
 		modelLoader.loadModel("assets/flashlight.obj", &vertices, &indices);
-		modelsData[MODEL_FLASHLIGHT] = ModelData(vertices, indices);
+		modelsData[MODEL_FLASHLIGHT] = ModelData(vertices, indices);*/
 	}
 
 	void GK3DSceneLoader::createInstances()
@@ -96,10 +97,39 @@ namespace GK
 			std::shared_ptr<Material>(new Material(Material::WhiteLight))));
 		spotLights->push_back(spotLight);
 
-		createBenches();
-		createLamps();
-		createFirs();
+		createCubes();
+		//createBenches();
+		//createLamps();
+		//createFirs();
 		createFlashLight();
+	}
+
+	void GK3DSceneLoader::createCubes()
+	{
+		const int cubesCount = 1;
+		glm::vec3 cubeScale = { 0.5f, 0.5f, 0.5f };
+		glm::vec3 cubesPositions[cubesCount] = {
+			{ 0.0f, 0.0f, 0.0f }
+		};
+		glm::vec3 cubesAngles[cubesCount] = {
+			{ 0.0f, 0.0f, 0.0f }
+		};
+		std::shared_ptr<Material> material;
+		if (std::get<2>(modelsData[MODEL_CUBE]))
+			material = std::get<2>(modelsData[MODEL_CUBE]);
+		else material = std::shared_ptr<Material>(new Material(Material::Emerald));
+		for (size_t i = 0; i < cubesCount; i++)
+		{
+			std::shared_ptr<DrawableInstance> cubeInstance = std::shared_ptr<DrawableInstance>(new DrawableInstance(
+				shaders[SHADER_OBJECT],
+				material,
+				cubesPositions[i],
+				cubeScale,
+				cubesAngles[i].x,
+				cubesAngles[i].y,
+				cubesAngles[i].z));
+			instances[MODEL_CUBE].push_back(cubeInstance);
+		}
 	}
 
 	void GK3DSceneLoader::createBenches()
@@ -221,17 +251,17 @@ namespace GK
 		for (InstancesDic::const_iterator it = instances.begin(); it != instances.end(); ++it)
 		{
 			drawables->push_back(std::shared_ptr<Drawable>(
-				new Drawable(modelsData[it->first].first, modelsData[it->first].second, it->second)));
+				new Drawable(std::get<0>(modelsData[it->first]), std::get<1>(modelsData[it->first]), it->second)));
 		}
 	}
 
 	void GK3DSceneLoader::buildSurface()
 	{
 		std::vector<Vertex> vertices = {
-			{ 1.0f, 0.0f, -1.0f, 0.0f, 1.0f, 0.0f },
-			{ 1.0f, 0.0f, 1.0f, 0.0f, 1.0f, 0.0f },
-			{ -1.0f, 0.0f, -1.0f, 0.0f, 1.0f, 0.0f },
-			{ -1.0f, 0.0f, 1.0f, 0.0f, 1.0f, 0.0f }
+			{ 1.0f, 0.0f, -1.0f, 0.0f, 1.0f, 0.0f, 1.0f, 0.0f },
+			{ 1.0f, 0.0f, 1.0f, 0.0f, 1.0f, 0.0f, 1.0f, 1.0f },
+			{ -1.0f, 0.0f, -1.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f },
+			{ -1.0f, 0.0f, 1.0f, 0.0f, 1.0f, 0.0f, 0.0f, 1.0f }
 		};
 		std::vector<GLuint> indices = { 1, 2, 0, 1, 2, 3 };
 		std::shared_ptr<DrawableInstance> surfaceInstance = std::shared_ptr<DrawableInstance>(new DrawableInstance(

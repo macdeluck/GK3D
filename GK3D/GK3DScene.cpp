@@ -91,8 +91,11 @@ namespace GK
 			std::uniform_int_distribution<int> distribution = std::uniform_int_distribution<int>(0, lampMaterialsCount-1);
 			currentDamagedLightMaterial = distribution(damagedLightGenerator);
 		}
-		if (((cos(0.01f*degrees) + 0.5*cos(45 * degrees)) > 1))
-			damagedLamp->material.reset(new Material());
-		else damagedLamp->material.reset(new Material(lampMaterials[currentDamagedLightMaterial]));
+		if (damagedLamp)
+		{
+			if (((cos(0.01f*degrees) + 0.5*cos(45 * degrees)) > 1))
+				damagedLamp->material.reset(new Material());
+			else damagedLamp->material.reset(new Material(lampMaterials[currentDamagedLightMaterial]));
+		}
 	}
 }

@@ -5,12 +5,14 @@
 #include <vector>
 #include <map>
 #include <utility>
+#include <tuple>
 
 #include "Common.h"
 
 namespace GK
 {
 	struct Vertex;
+	struct Material;
 	class Drawable;
 
 	struct DrawableInstance;
@@ -45,9 +47,10 @@ namespace GK
 		std::map<int, std::shared_ptr<ShaderProgram> > shaders;
 
 		void loadModelsData();
-		std::map<int, std::pair<std::vector<Vertex>, std::vector<GLuint> > > modelsData;
+		std::map<int, std::tuple<std::vector<Vertex>, std::vector<GLuint>, std::shared_ptr<Material> > > modelsData;
 
 		void createInstances();
+		void createCubes();
 		void createBenches();
 		void createLamps();
 		void createFirs();

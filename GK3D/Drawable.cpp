@@ -56,9 +56,9 @@ namespace GK
 		std::vector<GLfloat> vertexData = getVertexData();
 		glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat)*vertexData.size(), vertexData.data(), GL_STATIC_DRAW);
 
-		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, Vertex::VERTEX_SIZE * sizeof(GLfloat), (GLvoid*)0);
+		glVertexAttribPointer(0, Vertex::VERTEX_POSITIONS, GL_FLOAT, GL_FALSE, Vertex::VERTEX_SIZE * sizeof(GLfloat), (GLvoid*)0);
 		glEnableVertexAttribArray(0);
-		glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, Vertex::VERTEX_SIZE * sizeof(GLfloat), (GLvoid*)(3 * sizeof(GLfloat)));
+		glVertexAttribPointer(1, Vertex::VERTEX_NORMALS, GL_FLOAT, GL_FALSE, Vertex::VERTEX_SIZE * sizeof(GLfloat), (GLvoid*)(Vertex::VERTEX_POSITIONS * sizeof(GLfloat)));
 		glEnableVertexAttribArray(1);
 
 		if (indices.size() > 0)

@@ -1,5 +1,6 @@
 #include <memory>
 #include <algorithm>
+#include <SOIL.h>
 
 #include "ModelLoader.h"
 #include "Drawable.h"
@@ -27,6 +28,14 @@ namespace GK
 		};
 	#endif
 
+	Material* createMaterialFromMtl(tinyobj::material_t mtl)
+	{
+		glm::vec3 ambient(mtl.ambient[0], mtl.ambient[1], mtl.ambient[2]);
+		glm::vec3 diffuse(mtl.diffuse[0], mtl.diffuse[1], mtl.diffuse[2]);
+		glm::vec3 specular(mtl.specular[0], mtl.specular[1], mtl.specular[2]);
+		return new Material(ambient, diffuse, specular, mtl.shininess);
+	}
+
 	void splitPath(std::string const& pathname, std::string* basename, std::string* directory)
 	{
 		std::string::const_reverse_iterator it = std::find_if(pathname.rbegin(), pathname.rend(), MatchPathSeparator());
@@ -36,7 +45,8 @@ namespace GK
 
 	void ModelLoader::loadModel(std::string path, 
 		std::vector<Vertex>* output, 
-		std::vector<GLuint>* indices)
+		std::vector<GLuint>* indices,
+		std::shared_ptr<Material>* material)
 	{
 		std::string basename, directory;
 		splitPath(path, &basename, &directory);
@@ -44,6 +54,8 @@ namespace GK
 		std::vector<tinyobj::shape_t> shapes;
 		std::vector<tinyobj::material_t> materials;
 		std::string err = tinyobj::LoadObj(shapes, materials, path.c_str(), directory.c_str());
+		if (materials.size() > 0)
+			material->reset(createMaterialFromMtl(*materials.begin()));
 		if (!err.empty())
 			throw Exception(err);
 		loadShapes(shapes, output, indices);
@@ -55,20 +67,18 @@ namespace GK
 		std::vector<Vertex>* output,
 		std::vector<GLuint>* indices)
 	{
-		const size_t vertexStride = 3;
-
 		for (size_t i = 0; i < shapes.size(); i++)
 		{
-			if ((shapes[i].mesh.positions.size() % vertexStride) != 0)
-				throw Exception("Vertex stride is different than " + std::to_string(vertexStride));
-			if ((shapes[i].mesh.indices.size() % vertexStride) != 0)
-				throw Exception("Indices stride is different than " + std::to_string(vertexStride));
+			if ((shapes[i].mesh.positions.size() % Vertex::VERTEX_POSITIONS) != 0)
+				throw Exception("Vertex stride is different than " + std::to_string(Vertex::VERTEX_POSITIONS));
+			if ((shapes[i].mesh.indices.size() % Vertex::VERTEX_POSITIONS) != 0)
+				throw Exception("Indices stride is different than " + std::to_string(Vertex::VERTEX_POSITIONS));
 
 			bool calculateNormals = shapes[i].mesh.normals.empty(); 
 			calculateNormals |= (shapes[i].mesh.normals.size() != shapes[i].mesh.positions.size());
 
-			size_t vertexNum = shapes[i].mesh.positions.size() / vertexStride;
-			size_t triangesNum = shapes[i].mesh.indices.size() / vertexStride;
+			size_t vertexNum = shapes[i].mesh.positions.size() / Vertex::VERTEX_POSITIONS;
+			size_t triangesNum = shapes[i].mesh.indices.size() / Vertex::VERTEX_POSITIONS;
 			size_t lastVertexIndex = output->size();
 			output->reserve(output->size() + vertexNum);
 			indices->reserve(indices->size() + shapes[i].mesh.indices.size());
@@ -78,9 +88,15 @@ namespace GK
 			for (size_t vertexNo = 0; vertexNo < vertexNum; vertexNo++)
 			{
 				faceData[vertexNo].reset(new std::vector<GLfloat>(Vertex::VERTEX_SIZE));
-				for (size_t j = 0; j < vertexStride; j++)
+				for (size_t j = 0; j < Vertex::VERTEX_POSITIONS; j++)
 				{
-					(*faceData[vertexNo])[j] = shapes[i].mesh.positions[vertexNo * vertexStride + j];
+					(*faceData[vertexNo])[j] = shapes[i].mesh.positions[vertexNo * Vertex::VERTEX_POSITIONS + j];
+				}
+				for (size_t j = 0; j < Vertex::VERTEX_TEXCOORDS; j++)
+				{
+					if (shapes[i].mesh.texcoords.size() > 0)
+						(*faceData[vertexNo])[Vertex::VERTEX_POSITIONS + Vertex::VERTEX_NORMALS + j] = shapes[i].mesh.texcoords[vertexNo * Vertex::VERTEX_TEXCOORDS + j];
+					else (*faceData[vertexNo])[Vertex::VERTEX_POSITIONS + Vertex::VERTEX_NORMALS + j] = -1;
 				}
 			}
 
@@ -90,18 +106,18 @@ namespace GK
 				for (size_t triangleNo = 0; triangleNo < triangesNum; triangleNo++)
 				{
 					calculateAndSetNormal(
-						faceData[shapes[i].mesh.indices[triangleNo * vertexStride + 0]],
-						faceData[shapes[i].mesh.indices[triangleNo * vertexStride + 1]],
-						faceData[shapes[i].mesh.indices[triangleNo * vertexStride + 2]]);
+						faceData[shapes[i].mesh.indices[triangleNo * Vertex::VERTEX_POSITIONS + 0]],
+						faceData[shapes[i].mesh.indices[triangleNo * Vertex::VERTEX_POSITIONS + 1]],
+						faceData[shapes[i].mesh.indices[triangleNo * Vertex::VERTEX_POSITIONS + 2]]);
 				}
 			}
 			else
 			{
 				for (size_t vertexNo = 0; vertexNo < vertexNum; vertexNo++)
 				{
-					for (size_t j = 0; j < vertexStride; j++)
+					for (size_t j = 0; j < Vertex::VERTEX_POSITIONS; j++)
 					{
-						(*faceData[vertexNo])[j + vertexStride] = shapes[i].mesh.normals[vertexNo * vertexStride + j];
+						(*faceData[vertexNo])[j + Vertex::VERTEX_POSITIONS] = shapes[i].mesh.normals[vertexNo * Vertex::VERTEX_POSITIONS + j];
 					}
 				}
 			}
@@ -136,8 +152,8 @@ namespace GK
 			u.y*v.z - u.z*v.y,
 			u.z*v.x - u.x*v.z,
 			u.x*v.y - u.y*v.x));
-		(*vertex1)[3] = (*vertex2)[3] = (*vertex3)[3] = normal.x;
-		(*vertex1)[4] = (*vertex2)[4] = (*vertex3)[4] = normal.y;
-		(*vertex1)[5] = (*vertex2)[5] = (*vertex3)[5] = normal.z;
+		(*vertex1)[Vertex::VERTEX_POSITIONS + 0] = (*vertex2)[Vertex::VERTEX_POSITIONS + 0] = (*vertex3)[Vertex::VERTEX_POSITIONS + 0] = normal.x;
+		(*vertex1)[Vertex::VERTEX_POSITIONS + 1] = (*vertex2)[Vertex::VERTEX_POSITIONS + 1] = (*vertex3)[Vertex::VERTEX_POSITIONS + 1] = normal.y;
+		(*vertex1)[Vertex::VERTEX_POSITIONS + 2] = (*vertex2)[Vertex::VERTEX_POSITIONS + 2] = (*vertex3)[Vertex::VERTEX_POSITIONS + 2] = normal.z;
 	}
 }

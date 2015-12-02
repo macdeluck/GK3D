@@ -11,7 +11,11 @@ namespace GK
 	struct Vertex
 	{
 	public:
-		static const int VERTEX_SIZE = 6;
+		static const int VERTEX_SIZE = 8;
+		static const int VERTEX_POSITIONS = 3;
+		static const int VERTEX_NORMALS = 3;
+		static const int VERTEX_TEXCOORDS = 2;
+		// 3f - position, 3f - normal, 2f - texcoords
 
 		Vertex();
 		Vertex(GLfloat vertexData[VERTEX_SIZE]);
