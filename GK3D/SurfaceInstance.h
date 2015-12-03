@@ -13,6 +13,7 @@ namespace GK
 		Texture terrainTexes[2];
 		int currentTerrainTex;
 		Texture marksTexture;
+		bool marksTexUsed;
 	public:
 		SurfaceInstance(std::shared_ptr<ShaderProgram> shaderProgram,
 			Texture firstTerrainTexture,
@@ -24,6 +25,7 @@ namespace GK
 			GLfloat angleX = 0, GLfloat angleY = 0, GLfloat angleZ = 0);
 
 		void toggleTerrainTex();
+		void toggleMarksTex();
 		friend class SurfaceShader;
 	};
 }

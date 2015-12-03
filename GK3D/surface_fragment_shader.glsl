@@ -19,6 +19,7 @@ struct Material {
 	Texture alphaTex;
 
 	Texture marksTex;
+	float marksTexScale;
 };
 
 struct PointLight {
@@ -84,7 +85,7 @@ vec3 CalcPointLight(PointLight light, vec3 normal, vec3 fragPos, vec3 viewDir)
 	{
 		if (material.marksTex.used != 0)
 		{
-			vec4 marksVal = vec4(texture(material.marksTex.texture, vertexTexCoord*10));
+			vec4 marksVal = vec4(texture(material.marksTex.texture, vertexTexCoord * material.marksTexScale));
 			vec3 colorVal = vec3(texture(material.diffuseTex.texture, vertexTexCoord));
 			diffuse = (1 - marksVal.a) * diffuse * colorVal + marksVal.a * diffuse * marksVal.rgb;
 		}
@@ -123,7 +124,7 @@ vec3 CalcSpotLight(SpotLight light, vec3 normal, vec3 fragPos, vec3 viewDir)
 	{
 		if (material.marksTex.used != 0)
 		{
-			vec4 marksVal = vec4(texture(material.marksTex.texture, vertexTexCoord*10));
+			vec4 marksVal = vec4(texture(material.marksTex.texture, vertexTexCoord * material.marksTexScale));
 			vec3 colorVal = vec3(texture(material.diffuseTex.texture, vertexTexCoord));
 			diffuse = (1 - marksVal.a) * diffuse * colorVal + marksVal.a * diffuse * marksVal.rgb;
 		}

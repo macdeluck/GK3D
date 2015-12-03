@@ -193,6 +193,10 @@ namespace GK
 			if (type == SDL_KEYUP)
 				std::dynamic_pointer_cast<GK3DScene>(this->scene)->toggleSurfaceTexture();
 			break;
+		case SDLK_y:
+			if (type == SDL_KEYUP)
+				std::dynamic_pointer_cast<GK3DScene>(this->scene)->toggleSurfaceMarksTexture();
+			break;
 		case SDLK_LSHIFT:
 			cameraMove = false;
 			if (type == SDL_KEYUP)

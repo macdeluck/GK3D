@@ -87,11 +87,12 @@ namespace GK
 			glActiveTexture(GLSurfacetextureLocations[material->alphaTex.getLocation()]);
 			glBindTexture(GL_TEXTURE_2D, material->alphaTex.getId());
 		}
-		if (surfaceInstance->marksTexture.empty())
+		if (surfaceInstance->marksTexture.empty() || !surfaceInstance->marksTexUsed)
 			glUniform1i(getUniformLocation("material.marksTex.used"), 0);
 		else
 		{
 			glUniform1i(getUniformLocation("material.marksTex.used"), 1);
+			glUniform1f(getUniformLocation("material.marksTexScale"), 10.0f);
 			glUniform1i(glGetUniformLocation(getProgramId(), "material.marksTex.texture"), surfaceInstance->marksTexture.getLocation());
 			glActiveTexture(GLSurfacetextureLocations[surfaceInstance->marksTexture.getLocation()]);
 			glBindTexture(GL_TEXTURE_2D, surfaceInstance->marksTexture.getId());

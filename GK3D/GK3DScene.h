@@ -20,6 +20,7 @@ namespace GK
 		virtual void update(GLfloat deltaTime) override;
 		void toggleCameraLight();
 		void toggleSurfaceTexture();
+		void toggleSurfaceMarksTexture();
 	private:
 		std::shared_ptr<SpotLightInstance> cameraSpotLight;
 		std::shared_ptr<PointLightInstance> damagedLamp;

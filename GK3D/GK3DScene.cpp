@@ -107,4 +107,9 @@ namespace GK
 		if (surfaceInstance)
 			surfaceInstance->toggleTerrainTex();
 	}
+	void GK3DScene::toggleSurfaceMarksTexture()
+	{
+		if (surfaceInstance)
+			surfaceInstance->toggleMarksTex();
+	}
 }
