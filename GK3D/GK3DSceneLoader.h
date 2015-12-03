@@ -17,10 +17,10 @@ namespace GK
 	class Image;
 	struct ModelData;
 
-	struct DrawableInstance;
-	struct PointLightInstance;
-	struct SpotLightInstance;
-	struct SurfaceInstance;
+	class DrawableInstance;
+	class PointLightInstance;
+	class SpotLightInstance;
+	class SurfaceInstance;
 	class ShaderProgram;
 	typedef std::vector<std::shared_ptr<PointLightInstance> > PointLightsArray;
 	typedef std::vector<std::shared_ptr<SpotLightInstance> > SpotLightsArray;

@@ -78,6 +78,9 @@
     <ClCompile Include="SurfaceInstance.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="SurfaceShader.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Common.h">
@@ -140,6 +143,9 @@
     <ClInclude Include="SurfaceInstance.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="SurfaceShader.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="object_fragment_shader.glsl">
@@ -149,6 +155,9 @@
       <Filter>Resource Files</Filter>
     </None>
     <None Include="light_fragment_shader.glsl">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="surface_fragment_shader.glsl">
       <Filter>Resource Files</Filter>
     </None>
   </ItemGroup>

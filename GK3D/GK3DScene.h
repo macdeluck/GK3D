@@ -7,10 +7,10 @@
 namespace GK
 {
 	class ObjectShader;
-	struct SpotLightInstance;
-	struct DrawableInstance;
-	struct PointLightInstance;
-	struct SurfaceInstance;
+	class SpotLightInstance;
+	class DrawableInstance;
+	class PointLightInstance;
+	class SurfaceInstance;
 
 	class GK3DScene : public Scene
 	{

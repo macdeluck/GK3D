@@ -6,7 +6,7 @@
 
 namespace GK
 {
-	struct PointLightInstance : public DrawableInstance
+	class PointLightInstance : public DrawableInstance
 	{
 	public:
 		GLfloat constantTerm;

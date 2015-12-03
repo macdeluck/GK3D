@@ -6,6 +6,7 @@
 #include "ModelLoader.h"
 #include "ObjectShader.h"
 #include "LightShader.h"
+#include "SurfaceShader.h"
 #include "Image.h"
 
 #include <random>
@@ -30,6 +31,7 @@ namespace GK
 
 	const int SHADER_OBJECT = 0;
 	const int SHADER_LIGHT = 1;
+	const int SHADER_SURFACE = 2;
 
 	const int MODEL_CUBE = 0;
 	const int MODEL_BENCH = 1;
@@ -52,6 +54,7 @@ namespace GK
 	{
 		shaders[SHADER_OBJECT] = std::shared_ptr<ShaderProgram>(new ObjectShader());
 		shaders[SHADER_LIGHT] = std::shared_ptr<ShaderProgram>(new LightShader());
+		shaders[SHADER_SURFACE] = std::shared_ptr<ShaderProgram>(new SurfaceShader());
 		for (ShadersDic::const_iterator it = shaders.begin(); it != shaders.end(); ++it)
 		{
 			it->second->compile();
@@ -258,6 +261,7 @@ namespace GK
 		std::vector<GLuint> indices = { 1, 2, 0, 1, 2, 3 };
 		Texture firstTerrainTex = Texture(firstTexImage);
 		Texture secondTerrainTex = Texture(secondTexImage);
+		Texture marksTex = Texture(leafsTexImage);
 		Material* material = new Material(
 			glm::vec3(0.2f, 0.2f, 0.2f),
 			glm::vec3(1.0f, 1.0f, 1.0f),
@@ -269,9 +273,10 @@ namespace GK
 			glm::vec3(0.0f, -0.005f, 0.0f)
 		};
 		surface = std::shared_ptr<SurfaceInstance>(new SurfaceInstance(
-			shaders[SHADER_OBJECT],
+			shaders[SHADER_SURFACE],
 			firstTerrainTex,
 			secondTerrainTex,
+			marksTex,
 			std::shared_ptr<Material>(material),
 			positions[0],
 			glm::vec3(3.0f, 3.0f, 3.0f)));

@@ -24,6 +24,10 @@ namespace GK
 	{
 	}
 
+	DrawableInstance::~DrawableInstance()
+	{
+	}
+
 	Drawable::Drawable(std::vector<Vertex> vertices, std::vector<GLuint> indices,
 		std::vector<std::shared_ptr<DrawableInstance> > instances)
 		: vertices(vertices), instances(instances), indices(indices), vao(new GLuint(0)), vbo(new GLuint(0)), ebo(new GLuint(0))
@@ -163,7 +167,9 @@ namespace GK
 		availableLocations.pop_front();
 		glGenTextures(1, &(*texture));
 		glBindTexture(GL_TEXTURE_2D, (*texture));
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, image->getWidth(), image->getHeight(), 0, GL_RGB, GL_UNSIGNED_BYTE, image->getData().data());
+		if (image->getImageChannels() == ImageChannels::ImageRGB)
+			glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, image->getWidth(), image->getHeight(), 0, GL_RGB, GL_UNSIGNED_BYTE, image->getData().data());
+		else glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, image->getWidth(), image->getHeight(), 0, GL_RGBA, GL_UNSIGNED_BYTE, image->getData().data());
 		glGenerateMipmap(GL_TEXTURE_2D);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);

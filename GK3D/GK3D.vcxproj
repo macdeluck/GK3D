@@ -97,6 +97,7 @@
     <ClCompile Include="Shader.cpp" />
     <ClCompile Include="SpotLightInstance.cpp" />
     <ClCompile Include="SurfaceInstance.cpp" />
+    <ClCompile Include="SurfaceShader.cpp" />
     <ClCompile Include="Timer.cpp" />
     <ClCompile Include="tiny_obj_loader.cpp" />
     <ClCompile Include="Window.cpp" />
@@ -120,6 +121,7 @@
     <ClInclude Include="Shader.h" />
     <ClInclude Include="SpotLightInstance.h" />
     <ClInclude Include="SurfaceInstance.h" />
+    <ClInclude Include="SurfaceShader.h" />
     <ClInclude Include="Timer.h" />
     <ClInclude Include="tiny_obj_loader.h" />
     <ClInclude Include="Window.h" />
@@ -132,6 +134,15 @@
       <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</DeploymentContent>
     </None>
     <None Include="object_vertex_shader.glsl">
+      <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</DeploymentContent>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="surface_fragment_shader.glsl">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+      </ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+      <FileType>Document</FileType>
       <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</DeploymentContent>
     </None>
   </ItemGroup>

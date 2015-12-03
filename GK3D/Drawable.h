@@ -12,7 +12,7 @@ namespace GK
 
 	struct Vertex;
 	struct Material;
-	struct DrawableInstance;
+	class DrawableInstance;
 	class Drawable;
 
 	struct Vertex
@@ -100,8 +100,9 @@ namespace GK
 			Texture diffuseTex = Texture());
 	};
 
-	struct DrawableInstance
+	class DrawableInstance
 	{
+	public:
 		std::shared_ptr<Material> material;
 		glm::vec3 position;
 		glm::vec3 scale;
@@ -115,6 +116,8 @@ namespace GK
 			glm::vec3 position = glm::vec3(0, 0, 0),
 			glm::vec3 scale = glm::vec3(1, 1, 1),
 			GLfloat angleX = 0, GLfloat angleY = 0, GLfloat angleZ = 0);
+
+		virtual ~DrawableInstance();
 	};
 
 	class Drawable

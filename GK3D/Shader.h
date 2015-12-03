@@ -7,7 +7,7 @@ namespace GK
 {
 	class ShaderProgram;
 	class Scene;
-	struct DrawableInstance;
+	class DrawableInstance;
 
 	enum ShaderType
 	{

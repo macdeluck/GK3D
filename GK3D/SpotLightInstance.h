@@ -5,7 +5,7 @@
 
 namespace GK
 {
-	struct SpotLightInstance : public PointLightInstance
+	class SpotLightInstance : public PointLightInstance
 	{
 	public:
 		glm::vec3 direction;

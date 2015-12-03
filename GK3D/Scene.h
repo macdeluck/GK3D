@@ -7,8 +7,8 @@ namespace GK
 {
 	class Drawable;
 	class Camera;
-	struct PointLightInstance;
-	struct SpotLightInstance;
+	class PointLightInstance;
+	class SpotLightInstance;
 
 	typedef std::vector<std::shared_ptr<PointLightInstance> > PointLightsArray;
 	typedef std::vector<std::shared_ptr<SpotLightInstance> > SpotLightsArray;
