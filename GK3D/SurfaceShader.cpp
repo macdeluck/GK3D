@@ -6,6 +6,8 @@
 #include "Camera.h"
 #include "SurfaceInstance.h"
 #include "Drawable.h"
+#include "Fog.h"
+#include "GK3DScene.h"
 
 namespace GK
 {
@@ -74,6 +76,11 @@ namespace GK
 			glm::vec3(0.0f, texScale.y, texOffset.y),
 			glm::vec3(0.0f, 0.0f, 1.0f)));
 		glUniformMatrix3fv(getUniformLocation("texModel"), 1, GL_FALSE, glm::value_ptr(texModel));
+
+		// fog
+		std::shared_ptr<GK3DScene> gkscene = std::dynamic_pointer_cast<GK3DScene>(scene);
+		glUniform1f(getUniformLocation("fog.density"), gkscene->getFog()->density);
+		glUniform3f(getUniformLocation("fog.color"), gkscene->getFog()->color.r, gkscene->getFog()->color.g, gkscene->getFog()->color.b);
 
 		// material
 		std::shared_ptr<Material> material = surfaceInstance->material;

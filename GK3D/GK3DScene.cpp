@@ -9,6 +9,7 @@
 #include "ModelLoader.h"
 #include "GK3DSceneLoader.h"
 #include "SurfaceInstance.h"
+#include "Fog.h"
 
 #include <random>
 
@@ -45,6 +46,7 @@ namespace GK
 		damagedLightTicks = 0;
 		currentDamagedLightMaterial = 0;
 		damagedLightGenerator = std::default_random_engine();
+		fog.reset(new Fog(0.5f, glm::vec3(0.1f, 0.1f, 0.1f)));
 
 		getCamera()->setFront(sceneLoader.getCameraFront());
 		getCamera()->setPosition(sceneLoader.getCameraPosition());
@@ -112,6 +114,11 @@ namespace GK
 	{
 		if (surfaceInstance)
 			surfaceInstance->changeTexScale(modifier);
+	}
+
+	std::shared_ptr<Fog> GK3DScene::getFog()
+	{
+		return fog;
 	}
 
 	void GK3DScene::toggleSurfaceTexture()

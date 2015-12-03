@@ -11,6 +11,7 @@ namespace GK
 	class DrawableInstance;
 	class PointLightInstance;
 	class SurfaceInstance;
+	struct Fog;
 
 	class GK3DScene : public Scene
 	{
@@ -19,6 +20,7 @@ namespace GK
 		std::shared_ptr<PointLightInstance> damagedLamp;
 		std::shared_ptr<SpotLightInstance> flashLight;
 		std::shared_ptr<SurfaceInstance> surfaceInstance;
+		std::shared_ptr<Fog> fog;
 		bool cameraSpotLightOn;
 
 		GLfloat damagedLightTicks;
@@ -34,6 +36,7 @@ namespace GK
 		void toggleSurfaceMarksTexture();
 		void moveSurfaceTex(glm::vec2 offset);
 		void changeSurfaceScale(float modifier);
+		std::shared_ptr<Fog> getFog();
 	};
 }
 

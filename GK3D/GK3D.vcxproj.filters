@@ -81,6 +81,9 @@
     <ClCompile Include="SurfaceShader.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Fog.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Common.h">
@@ -144,6 +147,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="SurfaceShader.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Fog.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

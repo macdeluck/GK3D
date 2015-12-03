@@ -84,6 +84,7 @@
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="Common.cpp" />
     <ClCompile Include="Drawable.cpp" />
+    <ClCompile Include="Fog.cpp" />
     <ClCompile Include="GK3DApplication.cpp" />
     <ClCompile Include="GK3DScene.cpp" />
     <ClCompile Include="GK3DWindow.cpp" />
@@ -108,6 +109,7 @@
     <ClInclude Include="Camera.h" />
     <ClInclude Include="Common.h" />
     <ClInclude Include="Drawable.h" />
+    <ClInclude Include="Fog.h" />
     <ClInclude Include="GK3DApplication.h" />
     <ClInclude Include="GK3DScene.h" />
     <ClInclude Include="GK3DWindow.h" />

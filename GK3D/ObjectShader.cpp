@@ -3,6 +3,8 @@
 #include "SpotLightInstance.h"
 #include "Scene.h"
 #include "Camera.h"
+#include "Fog.h"
+#include "GK3DScene.h"
 
 namespace GK
 {
@@ -62,6 +64,11 @@ namespace GK
 		glUniformMatrix4fv(getUniformLocation("model"), 1, GL_FALSE, glm::value_ptr(model));
 		glm::vec3 cameraPosition = camera->getPosition();
 		glUniform3f(getUniformLocation("viewPos"), cameraPosition.x, cameraPosition.y, cameraPosition.z);
+
+		// fog
+		std::shared_ptr<GK3DScene> gkscene = std::dynamic_pointer_cast<GK3DScene>(scene);
+		glUniform1f(getUniformLocation("fog.density"), gkscene->getFog()->density);
+		glUniform3f(getUniformLocation("fog.color"), gkscene->getFog()->color.r, gkscene->getFog()->color.g, gkscene->getFog()->color.b);
 
 		// material
 		std::shared_ptr<Material> material = drawableInstance->material;

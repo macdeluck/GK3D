@@ -3,6 +3,8 @@
 #include "Scene.h"
 #include "Camera.h"
 #include <cmath>
+#include "Fog.h"
+#include "GK3DScene.h"
 
 namespace GK
 {
@@ -26,6 +28,11 @@ namespace GK
 	void LightShader::prepareForRender(std::shared_ptr<DrawableInstance> drawableInstance, std::shared_ptr<Scene> scene)
 	{
 		std::shared_ptr<Camera> camera = scene->getCamera();
+
+		// fog
+		std::shared_ptr<GK3DScene> gkscene = std::dynamic_pointer_cast<GK3DScene>(scene);
+		glUniform1f(getUniformLocation("fog.density"), gkscene->getFog()->density);
+		glUniform3f(getUniformLocation("fog.color"), gkscene->getFog()->color.r, gkscene->getFog()->color.g, gkscene->getFog()->color.b);
 
 		// projection
 		glm::mat4 projection;
