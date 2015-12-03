@@ -38,10 +38,10 @@ namespace GK
 		return new Material(ambient, diffuse, specular, mtl.shininess);
 	}
 
-	Image* loadImage(std::string basename, std::string filename)
+	Image* ModelLoader::loadImage(std::string dirname, std::string filename)
 	{
 		Image* result = new Image();
-		result->loadFile(basename + filename);
+		result->loadFile(dirname + filename);
 		return result;
 	}
 

@@ -5,6 +5,7 @@
 #include "ModelLoader.h"
 #include "ObjectShader.h"
 #include "LightShader.h"
+#include "Image.h"
 
 #include <random>
 
@@ -239,6 +240,7 @@ namespace GK
 
 	void GK3DSceneLoader::buildSurface()
 	{
+		std::shared_ptr<Image> texImage = std::shared_ptr<Image>(ModelLoader().loadImage("assets/", "grass.png"));
 		std::vector<Vertex> vertices = {
 			{ 1.0f, 0.0f, -1.0f, 0.0f, 1.0f, 0.0f, 1.0f, 0.0f },
 			{ 1.0f, 0.0f, 1.0f, 0.0f, 1.0f, 0.0f, 1.0f, 1.0f },
@@ -246,12 +248,14 @@ namespace GK
 			{ -1.0f, 0.0f, 1.0f, 0.0f, 1.0f, 0.0f, 0.0f, 1.0f }
 		};
 		std::vector<GLuint> indices = { 1, 2, 0, 1, 2, 3 };
+		Material* material = new Material(
+			glm::vec3(0.1f, 0.2, 0.1f),
+			glm::vec3(0.2f, 0.5f, 0.2f),
+			glm::vec3(0.0f, 0.0f, 0.0f));
+		material->diffuseTex = Texture(texImage);
 		std::shared_ptr<DrawableInstance> surfaceInstance = std::shared_ptr<DrawableInstance>(new DrawableInstance(
 			shaders[SHADER_OBJECT],
-			std::shared_ptr<Material>(new Material(
-				glm::vec3(0.1f, 0.2, 0.1f),
-				glm::vec3(0.2f, 0.5f, 0.2f),
-				glm::vec3(0.0f, 0.0f, 0.0f))),
+			std::shared_ptr<Material>(material),
 			glm::vec3(0.0f, -0.005f, 0.0f),
 			glm::vec3(3.0f, 3.0f, 3.0f)));
 		drawables->push_back(std::shared_ptr<Drawable>(
