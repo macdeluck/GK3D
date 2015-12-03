@@ -9,12 +9,16 @@
 
 namespace GK
 {
+	SurfaceVertexShader::SurfaceVertexShader()
+		: Shader(Shader::FromFile("surface_vertex_shader.glsl"), ShaderType::VertexShader) {}
+	SurfaceVertexShader::~SurfaceVertexShader() {}
+
 	SurfaceFragmentShader::SurfaceFragmentShader()
 		: Shader(Shader::FromFile("surface_fragment_shader.glsl"), ShaderType::FragmentShader) {}
 	SurfaceFragmentShader::~SurfaceFragmentShader() {}
 
 	SurfaceShader::SurfaceShader()
-		: ShaderProgram(std::shared_ptr<ObjectVertexShader>(new ObjectVertexShader()),
+		: ShaderProgram(std::shared_ptr<SurfaceVertexShader>(new SurfaceVertexShader()),
 			std::shared_ptr<SurfaceFragmentShader>(new SurfaceFragmentShader()))
 	{
 	}
@@ -25,7 +29,6 @@ namespace GK
 	{
 		glBindAttribLocation(getProgramId(), 0, "position");
 		glBindAttribLocation(getProgramId(), 1, "normal");
-		glBindAttribLocation(getProgramId(), 2, "texCoord");
 	}
 
 	const int GLSurfacetextureLocationsCount = 10;
@@ -62,6 +65,15 @@ namespace GK
 		glUniformMatrix4fv(getUniformLocation("model"), 1, GL_FALSE, glm::value_ptr(model));
 		glm::vec3 cameraPosition = camera->getPosition();
 		glUniform3f(getUniformLocation("viewPos"), cameraPosition.x, cameraPosition.y, cameraPosition.z);
+
+		// texProjection
+		glm::vec2 texOffset = surfaceInstance->texOffset;
+		glm::vec2 texScale = surfaceInstance->texScale;
+		glm::mat3 texModel = glm::transpose(glm::mat3(
+			glm::vec3(texScale.x, 0.0f, texOffset.x),
+			glm::vec3(0.0f, texScale.y, texOffset.y),
+			glm::vec3(0.0f, 0.0f, 1.0f)));
+		glUniformMatrix3fv(getUniformLocation("texModel"), 1, GL_FALSE, glm::value_ptr(texModel));
 
 		// material
 		std::shared_ptr<Material> material = surfaceInstance->material;

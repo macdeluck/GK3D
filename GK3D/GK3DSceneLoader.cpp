@@ -100,9 +100,9 @@ namespace GK
 	{
 		int currentModel = MODEL_CUBE;
 		const int modelsCount = 1;
-		glm::vec3 modelScale = { 0.1f, 0.1f, 0.1f };
+		glm::vec3 modelScale = { 0.05f, 0.05f, 0.05f };
 		glm::vec3 modelPositions[modelsCount] = {
-			{ 0.5f, 0.5f, 0.0f }
+			{ 0.5f, 0.0f, 0.0f }
 		};
 		glm::vec3 modelsAngles[modelsCount] = {
 			{ 0.0f, 0.0f, 0.0f }
@@ -253,10 +253,10 @@ namespace GK
 		std::shared_ptr<Image> secondTexImage = std::shared_ptr<Image>(ModelLoader().loadImage("assets/", "terrain.png"));
 		std::shared_ptr<Image> leafsTexImage = std::shared_ptr<Image>(ModelLoader().loadImage("assets/", "leafs.png", true));
 		std::vector<Vertex> vertices = {
-			{ 1.0f, 0.0f, -1.0f, 0.0f, 1.0f, 0.0f, 20.0f, 0.0f },
-			{ 1.0f, 0.0f, 1.0f, 0.0f, 1.0f, 0.0f, 20.0f, 20.0f },
+			{ 1.0f, 0.0f, -1.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f },
+			{ 1.0f, 0.0f, 1.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f },
 			{ -1.0f, 0.0f, -1.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f },
-			{ -1.0f, 0.0f, 1.0f, 0.0f, 1.0f, 0.0f, 0.0f, 20.0f }
+			{ -1.0f, 0.0f, 1.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f }
 		};
 		std::vector<GLuint> indices = { 1, 2, 0, 1, 2, 3 };
 		Texture firstTerrainTex = Texture(firstTexImage);
@@ -277,6 +277,8 @@ namespace GK
 			firstTerrainTex,
 			secondTerrainTex,
 			marksTex,
+			glm::vec2(1.0f, 1.0f),
+			glm::vec2(0.0f, 0.0f),
 			std::shared_ptr<Material>(material),
 			positions[0],
 			glm::vec3(3.0f, 3.0f, 3.0f)));

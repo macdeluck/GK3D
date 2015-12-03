@@ -14,13 +14,6 @@ namespace GK
 
 	class GK3DScene : public Scene
 	{
-	public:
-		GK3DScene(int screenWidth, int screenHeight);
-		virtual ~GK3DScene();
-		virtual void update(GLfloat deltaTime) override;
-		void toggleCameraLight();
-		void toggleSurfaceTexture();
-		void toggleSurfaceMarksTexture();
 	private:
 		std::shared_ptr<SpotLightInstance> cameraSpotLight;
 		std::shared_ptr<PointLightInstance> damagedLamp;
@@ -32,6 +25,15 @@ namespace GK
 		int currentDamagedLightMaterial;
 		void damagedLampFlickering(GLfloat deltaTime);
 		std::default_random_engine damagedLightGenerator;
+	public:
+		GK3DScene(int screenWidth, int screenHeight);
+		virtual ~GK3DScene();
+		virtual void update(GLfloat deltaTime) override;
+		void toggleCameraLight();
+		void toggleSurfaceTexture();
+		void toggleSurfaceMarksTexture();
+		void moveSurfaceTex(glm::vec2 offset);
+		void changeSurfaceScale(float modifier);
 	};
 }
 

@@ -27,7 +27,6 @@ namespace GK
 		virtual void onEndFrame() override;
 	private:
 		int currentPolygonMode;
-		void postFrame();
 		void handleKey(Uint32 state, SDL_Keycode key);
 		void handleMouseMotion();
 		void handleMouseWheel(SDL_MouseWheelEvent event);

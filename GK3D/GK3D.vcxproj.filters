@@ -160,5 +160,8 @@
     <None Include="surface_fragment_shader.glsl">
       <Filter>Resource Files</Filter>
     </None>
+    <None Include="surface_vertex_shader.glsl">
+      <Filter>Resource Files</Filter>
+    </None>
   </ItemGroup>
 </Project>

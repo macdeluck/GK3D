@@ -102,6 +102,18 @@ namespace GK
 		}
 	}
 
+	void GK3DScene::moveSurfaceTex(glm::vec2 offset)
+	{
+		if (surfaceInstance)
+			surfaceInstance->moveTex(offset);
+	}
+
+	void GK3DScene::changeSurfaceScale(float modifier)
+	{
+		if (surfaceInstance)
+			surfaceInstance->changeTexScale(modifier);
+	}
+
 	void GK3DScene::toggleSurfaceTexture()
 	{
 		if (surfaceInstance)

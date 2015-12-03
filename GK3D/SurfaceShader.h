@@ -6,6 +6,13 @@
 
 namespace GK
 {
+	class SurfaceVertexShader : public Shader
+	{
+	public:
+		SurfaceVertexShader();
+		virtual ~SurfaceVertexShader();
+	};
+
 	class SurfaceFragmentShader : public Shader
 	{
 	public:

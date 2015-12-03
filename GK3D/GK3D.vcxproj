@@ -43,8 +43,8 @@
     <LibraryPath>$(SolutionDir)..\SDL2\lib\x86\;$(SolutionDir)..\GLEW\lib\Release\Win32\;$(SolutionDir)..\SOIL\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <IncludePath>$(SolutionDir)..\SDL2\include;$(SolutionDir)..\GLEW\include;$(SolutionDir)..\glm;$(IncludePath)</IncludePath>
-    <LibraryPath>$(SolutionDir)..\SDL2\lib\x86\;$(SolutionDir)..\GLEW\lib\Release\Win32\;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(SolutionDir)..\SDL2\include;$(SolutionDir)..\GLEW\include;$(SolutionDir)..\GLM;$(SolutionDir)..\SOIL\include;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)..\SDL2\lib\x86\;$(SolutionDir)..\GLEW\lib\Release\Win32\;$(SolutionDir)..\SOIL\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -74,7 +74,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalDependencies>SDL2.lib;SDL2main.lib;glew32.lib;OpenGL32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>SDL2.lib;SDL2main.lib;glew32.lib;OpenGL32.lib;SOIL.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <SubSystem>Windows</SubSystem>
       <EntryPointSymbol>mainCRTStartup</EntryPointSymbol>
     </Link>
@@ -136,6 +136,7 @@
     <None Include="object_vertex_shader.glsl">
       <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</DeploymentContent>
     </None>
+    <None Include="surface_vertex_shader.glsl" />
   </ItemGroup>
   <ItemGroup>
     <None Include="surface_fragment_shader.glsl">

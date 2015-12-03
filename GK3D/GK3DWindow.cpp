@@ -68,32 +68,28 @@ namespace GK
 		for (std::set<CameraMovementDirection>::iterator it = objectMoves.begin();
 			it != objectMoves.end(); it++)
 		{
-			std::shared_ptr<DrawableInstance> positionedInstance;// = (*(*scene->getDrawables()->rbegin())->getInstances().begin());
-			if (positionedInstance.use_count() > 0)
+			switch (*it)
 			{
-				switch (*it)
-				{
-				case CameraMovementDirection::FORWARD:
-					positionedInstance->position.x += deltaTime * 0.0001f;
-					break;
-				case CameraMovementDirection::BACKWARD:
-					positionedInstance->position.x -= deltaTime * 0.0001f;
-					break;
-				case CameraMovementDirection::LEFT:
-					positionedInstance->position.z += deltaTime * 0.0001f;
-					break;
-				case CameraMovementDirection::RIGHT:
-					positionedInstance->position.z -= deltaTime * 0.0001f;
-					break;
-				case CameraMovementDirection::UP:
-					positionedInstance->position.y += deltaTime * 0.0001f;
-					break;
-				case CameraMovementDirection::DOWN:
-					positionedInstance->position.y -= deltaTime * 0.0001f;
-					break;
-				default:
-					break;
-				}
+			case CameraMovementDirection::FORWARD:
+				std::dynamic_pointer_cast<GK3DScene>(this->scene)->moveSurfaceTex(glm::vec2(deltaTime * 0.0001f, 0.0f));
+				break;
+			case CameraMovementDirection::BACKWARD:
+				std::dynamic_pointer_cast<GK3DScene>(this->scene)->moveSurfaceTex(-glm::vec2(deltaTime * 0.0001f, 0.0f));
+				break;
+			case CameraMovementDirection::LEFT:
+				std::dynamic_pointer_cast<GK3DScene>(this->scene)->moveSurfaceTex(glm::vec2(0.0f, deltaTime * 0.0001f));
+				break;
+			case CameraMovementDirection::RIGHT:
+				std::dynamic_pointer_cast<GK3DScene>(this->scene)->moveSurfaceTex(-glm::vec2(0.0f, deltaTime * 0.0001f));
+				break;
+			case CameraMovementDirection::UP:
+				std::dynamic_pointer_cast<GK3DScene>(this->scene)->changeSurfaceScale(deltaTime * 0.01f);
+				break;
+			case CameraMovementDirection::DOWN:
+				std::dynamic_pointer_cast<GK3DScene>(this->scene)->changeSurfaceScale(-deltaTime * 0.01f);
+				break;
+			default:
+				break;
 			}
 		}
 	}
