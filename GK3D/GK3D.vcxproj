@@ -96,6 +96,7 @@
     <ClCompile Include="GK3DSceneLoader.cpp" />
     <ClCompile Include="Shader.cpp" />
     <ClCompile Include="SpotLightInstance.cpp" />
+    <ClCompile Include="SurfaceInstance.cpp" />
     <ClCompile Include="Timer.cpp" />
     <ClCompile Include="tiny_obj_loader.cpp" />
     <ClCompile Include="Window.cpp" />
@@ -118,6 +119,7 @@
     <ClInclude Include="GK3DSceneLoader.h" />
     <ClInclude Include="Shader.h" />
     <ClInclude Include="SpotLightInstance.h" />
+    <ClInclude Include="SurfaceInstance.h" />
     <ClInclude Include="Timer.h" />
     <ClInclude Include="tiny_obj_loader.h" />
     <ClInclude Include="Window.h" />

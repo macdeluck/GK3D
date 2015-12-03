@@ -20,6 +20,7 @@ namespace GK
 	struct DrawableInstance;
 	struct PointLightInstance;
 	struct SpotLightInstance;
+	struct SurfaceInstance;
 	class ShaderProgram;
 	typedef std::vector<std::shared_ptr<PointLightInstance> > PointLightsArray;
 	typedef std::vector<std::shared_ptr<SpotLightInstance> > SpotLightsArray;
@@ -38,10 +39,12 @@ namespace GK
 		glm::vec3 getCameraPosition();
 		glm::vec3 getCameraFront();
 		std::shared_ptr<PointLightInstance> getDamagedLamp();
+		std::shared_ptr<SurfaceInstance> getSurface();
 	private:
 		std::shared_ptr<PointLightsArray> pointLights;
 		std::shared_ptr<SpotLightsArray> spotLights;
 		std::shared_ptr<DrawablesArray> drawables;
+		std::shared_ptr<SurfaceInstance> surface;
 		glm::vec3 cameraPosition;
 		glm::vec3 cameraFront;
 

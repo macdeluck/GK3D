@@ -8,6 +8,7 @@
 #include "Scene.h"
 #include "ModelLoader.h"
 #include "GK3DSceneLoader.h"
+#include "SurfaceInstance.h"
 
 #include <random>
 
@@ -24,6 +25,8 @@ namespace GK
 		{
 			this->getDrawables()->push_back((*drawables)[i]);
 		}
+
+		surfaceInstance = sceneLoader.getSurface();
 
 		std::shared_ptr<PointLightsArray> pointLights = sceneLoader.getPointLights();
 		for (size_t i = 0; i < pointLights->size(); i++)
@@ -97,5 +100,11 @@ namespace GK
 				damagedLamp->material.reset(new Material());
 			else damagedLamp->material.reset(new Material(lampMaterials[currentDamagedLightMaterial]));
 		}
+	}
+
+	void GK3DScene::toggleSurfaceTexture()
+	{
+		if (surfaceInstance)
+			surfaceInstance->toggleTerrainTex();
 	}
 }

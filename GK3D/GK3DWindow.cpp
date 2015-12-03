@@ -189,6 +189,10 @@ namespace GK
 				glPolygonMode(GL_FRONT_AND_BACK, polygonModes[currentPolygonMode]);
 				currentPolygonMode = 1 - currentPolygonMode;
 			}
+		case SDLK_t:
+			if (type == SDL_KEYUP)
+				std::dynamic_pointer_cast<GK3DScene>(this->scene)->toggleSurfaceTexture();
+			break;
 		case SDLK_LSHIFT:
 			cameraMove = false;
 			if (type == SDL_KEYUP)

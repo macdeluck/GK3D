@@ -2,6 +2,7 @@
 #include "Drawable.h"
 #include "SpotLightInstance.h"
 #include "PointLightInstance.h"
+#include "SurfaceInstance.h"
 #include "ModelLoader.h"
 #include "ObjectShader.h"
 #include "LightShader.h"
@@ -167,6 +168,11 @@ namespace GK
 		return std::shared_ptr<PointLightInstance>(nullptr);
 	}
 
+	std::shared_ptr<SurfaceInstance> GK3DSceneLoader::getSurface()
+	{
+		return surface;
+	}
+
 	void GK3DSceneLoader::createFirs()
 	{
 		std::default_random_engine generator = std::default_random_engine(123);
@@ -240,25 +246,35 @@ namespace GK
 
 	void GK3DSceneLoader::buildSurface()
 	{
-		std::shared_ptr<Image> texImage = std::shared_ptr<Image>(ModelLoader().loadImage("assets/", "grass.png"));
+		std::shared_ptr<Image> firstTexImage = std::shared_ptr<Image>(ModelLoader().loadImage("assets/", "grass.png"));
+		std::shared_ptr<Image> secondTexImage = std::shared_ptr<Image>(ModelLoader().loadImage("assets/", "terrain.png"));
 		std::vector<Vertex> vertices = {
-			{ 1.0f, 0.0f, -1.0f, 0.0f, 1.0f, 0.0f, 1.0f, 0.0f },
-			{ 1.0f, 0.0f, 1.0f, 0.0f, 1.0f, 0.0f, 1.0f, 1.0f },
+			{ 1.0f, 0.0f, -1.0f, 0.0f, 1.0f, 0.0f, 20.0f, 0.0f },
+			{ 1.0f, 0.0f, 1.0f, 0.0f, 1.0f, 0.0f, 20.0f, 20.0f },
 			{ -1.0f, 0.0f, -1.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f },
-			{ -1.0f, 0.0f, 1.0f, 0.0f, 1.0f, 0.0f, 0.0f, 1.0f }
+			{ -1.0f, 0.0f, 1.0f, 0.0f, 1.0f, 0.0f, 0.0f, 20.0f }
 		};
 		std::vector<GLuint> indices = { 1, 2, 0, 1, 2, 3 };
+		Texture firstTerrainTex = Texture(firstTexImage);
+		Texture secondTerrainTex = Texture(secondTexImage);
 		Material* material = new Material(
-			glm::vec3(0.1f, 0.2, 0.1f),
-			glm::vec3(0.2f, 0.5f, 0.2f),
+			glm::vec3(0.2f, 0.2f, 0.2f),
+			glm::vec3(1.0f, 1.0f, 1.0f),
 			glm::vec3(0.0f, 0.0f, 0.0f));
-		material->diffuseTex = Texture(texImage);
-		std::shared_ptr<DrawableInstance> surfaceInstance = std::shared_ptr<DrawableInstance>(new DrawableInstance(
+		material->diffuseTex = firstTerrainTex;
+
+		const size_t surfacesNum = 1;
+		glm::vec3 positions[surfacesNum] =  {
+			glm::vec3(0.0f, -0.005f, 0.0f)
+		};
+		surface = std::shared_ptr<SurfaceInstance>(new SurfaceInstance(
 			shaders[SHADER_OBJECT],
+			firstTerrainTex,
+			secondTerrainTex,
 			std::shared_ptr<Material>(material),
-			glm::vec3(0.0f, -0.005f, 0.0f),
+			positions[0],
 			glm::vec3(3.0f, 3.0f, 3.0f)));
 		drawables->push_back(std::shared_ptr<Drawable>(
-			new Drawable(vertices, indices, { surfaceInstance })));
+			new Drawable(vertices, indices, { surface })));
 	}
 }

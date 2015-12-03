@@ -10,6 +10,7 @@ namespace GK
 	struct SpotLightInstance;
 	struct DrawableInstance;
 	struct PointLightInstance;
+	struct SurfaceInstance;
 
 	class GK3DScene : public Scene
 	{
@@ -18,10 +19,12 @@ namespace GK
 		virtual ~GK3DScene();
 		virtual void update(GLfloat deltaTime) override;
 		void toggleCameraLight();
+		void toggleSurfaceTexture();
 	private:
 		std::shared_ptr<SpotLightInstance> cameraSpotLight;
 		std::shared_ptr<PointLightInstance> damagedLamp;
 		std::shared_ptr<SpotLightInstance> flashLight;
+		std::shared_ptr<SurfaceInstance> surfaceInstance;
 		bool cameraSpotLightOn;
 
 		GLfloat damagedLightTicks;
