@@ -37,7 +37,7 @@ namespace GK
 		ModelLoader();
 		virtual ~ModelLoader();
 		
-		Image * loadImage(std::string dirname, std::string filename);
+		Image * loadImage(std::string dirname, std::string filename, bool loadAlpha = false);
 
 		void loadModel(std::string path, ModelData* modelData);
 	};

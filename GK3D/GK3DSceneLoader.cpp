@@ -248,6 +248,7 @@ namespace GK
 	{
 		std::shared_ptr<Image> firstTexImage = std::shared_ptr<Image>(ModelLoader().loadImage("assets/", "grass.png"));
 		std::shared_ptr<Image> secondTexImage = std::shared_ptr<Image>(ModelLoader().loadImage("assets/", "terrain.png"));
+		std::shared_ptr<Image> leafsTexImage = std::shared_ptr<Image>(ModelLoader().loadImage("assets/", "leafs.png", true));
 		std::vector<Vertex> vertices = {
 			{ 1.0f, 0.0f, -1.0f, 0.0f, 1.0f, 0.0f, 20.0f, 0.0f },
 			{ 1.0f, 0.0f, 1.0f, 0.0f, 1.0f, 0.0f, 20.0f, 20.0f },
