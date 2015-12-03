@@ -47,5 +47,6 @@ namespace GK
 		if (maxval > 0)
 			intensity /= maxval;
 		glUniform3f(getUniformLocation("intensity"), intensity.r, intensity.g, intensity.b);
+		glUniform3f(getUniformLocation("viewPos"), camera->getPosition().x, camera->getPosition().y, camera->getPosition().z);
 	}
 }

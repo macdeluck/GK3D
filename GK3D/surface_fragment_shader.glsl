@@ -138,6 +138,17 @@ vec3 CalcSpotLight(SpotLight light, vec3 normal, vec3 fragPos, vec3 viewDir)
 }
 #endif
 
+vec3 CalcFogImpact(vec3 color)
+{
+	float fogDensity = 0.5;
+	float fogFactor;
+    float dist = length(viewPos - vertexFragPos);
+	vec3 fogColor = vec3(0.1, 0.1, 0.1);
+	fogFactor = 1.0 /exp(dist * fogDensity);
+    fogFactor = clamp(fogFactor, 0.0, 1.0);
+	return (1 - fogFactor) * fogColor +  fogFactor * color;
+}
+
 void main()
 {
     vec3 norm = normalize(vertexNormal);
@@ -157,5 +168,6 @@ void main()
 	float transparency = 1.0;
     if (material.alphaTex.used != 0)
 		transparency = float(texture(material.alphaTex.texture, vertexTexCoord));
+	result = CalcFogImpact(result);
     color = vec4(result, transparency);
 }
