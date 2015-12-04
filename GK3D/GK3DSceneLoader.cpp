@@ -285,19 +285,40 @@ namespace GK
 				new Drawable(modelsData[it->first]->vertices, modelsData[it->first]->indices, it->second)));
 		}
 	}
-
+	
 	void GK3DSceneLoader::buildSurface()
 	{
+		const float surface_scale = 0.1f;
+		const int surface_size = 100;
+		const int vertex_num = (surface_size + 1) * (surface_size + 1);
+		const int indices_num = 6 * surface_size * surface_size;
 		std::shared_ptr<Image> firstTexImage = std::shared_ptr<Image>(ModelLoader().loadImage("assets/", "grass.png"));
 		std::shared_ptr<Image> secondTexImage = std::shared_ptr<Image>(ModelLoader().loadImage("assets/", "terrain.png"));
 		std::shared_ptr<Image> leafsTexImage = std::shared_ptr<Image>(ModelLoader().loadImage("assets/", "leafs.png", true));
-		std::vector<Vertex> vertices = {
-			{ 1.0f, 0.0f, -1.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f },
-			{ 1.0f, 0.0f, 1.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f },
-			{ -1.0f, 0.0f, -1.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f },
-			{ -1.0f, 0.0f, 1.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f }
-		};
-		std::vector<GLuint> indices = { 1, 2, 0, 1, 2, 3 };
+		std::vector<Vertex> vertices = std::vector<Vertex>(vertex_num);
+		int i = 0;
+		for (int x = 0; x < surface_size + 1; x++)
+		{
+			for (int y = 0; y < surface_size + 1; y++)
+			{
+				vertices[i++] = Vertex({x*surface_scale - surface_scale*surface_size/2, 0.0f, y*surface_scale - surface_scale*surface_size / 2, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f});
+			}
+		}
+		std::vector<GLuint> indices = std::vector<GLuint>(indices_num);
+		i = 0;
+		for (int x = 0; x < surface_size; x++)
+		{
+			for (int y = 0; y < surface_size; y++)
+			{
+				indices[i++] = x + y * (surface_size + 1);
+				indices[i++] = x + 1 + y * (surface_size + 1);
+				indices[i++] = x + 1 + (y + 1) * (surface_size + 1);
+				indices[i++] = x + y * (surface_size + 1);
+				indices[i++] = x + (y + 1) * (surface_size + 1);
+				indices[i++] = x + 1 + (y + 1) * (surface_size + 1);
+			}
+		}
+		
 		Texture firstTerrainTex = Texture(firstTexImage);
 		Texture secondTerrainTex = Texture(secondTexImage);
 		Texture marksTex = Texture(leafsTexImage);

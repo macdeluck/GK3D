@@ -13,7 +13,7 @@ namespace GK
 	GK3DWindow::GK3DWindow(int width, int height, std::string title, bool shown, bool resizable)
 		: Window(width, height, title, shown, resizable),
 		cameraMoves(), sprintModifier(1), scene(new GK3DScene(width, height)),
-		currentPolygonMode(0)
+		currentPolygonMode(1)
 	{
 		GLRUN(glClearColor(0.1f, 0.1f, 0.1f, 1.0f));
 		GLRUN(glEnable(GL_BLEND));
@@ -185,10 +185,13 @@ namespace GK
 				GLRUN(glPolygonMode(GL_FRONT_AND_BACK, polygonModes[currentPolygonMode]));
 				currentPolygonMode = 1 - currentPolygonMode;
 			}
+			break;
 		case SDLK_t:
+			cameraMove = false;
 			if (type == SDL_KEYUP)
 				std::dynamic_pointer_cast<GK3DScene>(this->scene)->toggleSurfaceTexture();
 			break;
+			cameraMove = false;
 		case SDLK_y:
 			if (type == SDL_KEYUP)
 				std::dynamic_pointer_cast<GK3DScene>(this->scene)->toggleSurfaceMarksTexture();
