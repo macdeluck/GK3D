@@ -29,13 +29,15 @@ namespace GK
 		GLint success;
 		GLchar infoLog[512];
 		*shaderId = glCreateShader(type());
+		if (shaderId == NULL)
+			throw Exception("Unable to create shader");
 		const GLchar* shaderSource = source.c_str();
-		glShaderSource(*shaderId, 1, &shaderSource, NULL);
-		glCompileShader(*shaderId);
-		glGetShaderiv(*shaderId, GL_COMPILE_STATUS, &success);
+		GLRUN(glShaderSource(*shaderId, 1, &shaderSource, NULL));
+		GLRUN(glCompileShader(*shaderId));
+		GLRUN(glGetShaderiv(*shaderId, GL_COMPILE_STATUS, &success));
 		if (!success)
 		{
-			glGetShaderInfoLog(*shaderId, 512, NULL, infoLog);
+			GLRUN(glGetShaderInfoLog(*shaderId, 512, NULL, infoLog));
 			throw Exception(std::string("Shader compilation failed:\n") + std::string(infoLog));
 		}
 	}
@@ -64,20 +66,22 @@ namespace GK
 		if (fragmentShader->type() != ShaderType::FragmentShader)
 			throw Exception("Passed fragment shader type is not really fragment shader");
 		*programId = glCreateProgram();
+		if (*programId == NULL)
+			throw Exception("Unable to create shader program");
 	}
 
 	void ShaderProgram::compile()
 	{
-		glAttachShader(*programId, *(vertexShader->shaderId));
-		glAttachShader(*programId, *(fragmentShader->shaderId));
+		GLRUN(glAttachShader(*programId, *(vertexShader->shaderId)));
+		GLRUN(glAttachShader(*programId, *(fragmentShader->shaderId)));
 		beforeLink();
-		glLinkProgram(*programId);
+		GLRUN(glLinkProgram(*programId));
 
 		GLint success;
 		GLchar infoLog[512];
-		glGetProgramiv(*programId, GL_LINK_STATUS, &success);
+		GLRUN(glGetProgramiv(*programId, GL_LINK_STATUS, &success));
 		if (!success) {
-			glGetProgramInfoLog(*programId, 512, NULL, infoLog);
+			GLRUN(glGetProgramInfoLog(*programId, 512, NULL, infoLog));
 			throw Exception(std::string("Shader linking failed: ") + std::string(infoLog));
 		}
 		compiled = true;
@@ -93,7 +97,7 @@ namespace GK
 	{
 		if (!compiled)
 			throw Exception("Cannot use shader which was not compiled");
-		glUseProgram(*programId);
+		GLRUN(glUseProgram(*programId));
 	}
 
 	void ShaderProgram::clearTextureUnits()
@@ -138,15 +142,19 @@ namespace GK
 	{
 	}
 
-	void ShaderProgram::bindTexture(std::string uniformName, GLuint textureID)
+	void ShaderProgram::postRender(std::shared_ptr<DrawableInstance> drawable, std::shared_ptr<Scene> scene)
+	{
+	}
+
+	void ShaderProgram::bindTexture(std::string uniformName, GLuint textureID, GLenum textureType)
 	{
 		GLint maxTextureUnits;
-		glGetIntegerv(GL_MAX_TEXTURE_IMAGE_UNITS, &maxTextureUnits);
-		if (currentTextureUnit > maxTextureUnits)
+		GLRUN(glGetIntegerv(GL_MAX_TEXTURE_IMAGE_UNITS, &maxTextureUnits));
+		if (currentTextureUnit > (GLuint)maxTextureUnits)
 			throw Exception("Maximum number of texture units has been exceeded: " + std::to_string(maxTextureUnits));
-		glUniform1i(glGetUniformLocation(getProgramId(), uniformName.c_str()), currentTextureUnit);
-		glActiveTexture(GL_TEXTURE0 + currentTextureUnit);
-		glBindTexture(GL_TEXTURE_2D, textureID);
+		GLRUN(glUniform1i(glGetUniformLocation(getProgramId(), uniformName.c_str()), currentTextureUnit));
+		GLRUN(glActiveTexture(GL_TEXTURE0 + currentTextureUnit));
+		GLRUN(glBindTexture(textureType, textureID));
 		currentTextureUnit++;
 	}
 }

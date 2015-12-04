@@ -1,3 +1,4 @@
+#include "Common.h"
 #include "Drawable.h"
 #include "Scene.h"
 #include "Shader.h"
@@ -46,64 +47,76 @@ namespace GK
 	{
 		{
 			GLuint l_vao, l_vbo, l_ebo;
-			glGenVertexArrays(1, &l_vao);
+			GLRUN(glGenVertexArrays(1, &l_vao));
 			*vao = l_vao;
-			glGenBuffers(1, &l_vbo);
+			GLRUN(glGenBuffers(1, &l_vbo));
 			*vbo = l_vbo;
 			if (indices.size() > 0)
 			{
-				glGenBuffers(1, &l_ebo);
+				GLRUN(glGenBuffers(1, &l_ebo));
 				*ebo = l_ebo;
 			}
 		}
-		glBindVertexArray(*vao);
+		GLRUN(glBindVertexArray(*vao));
 
-		glBindBuffer(GL_ARRAY_BUFFER, *vbo);
+		GLRUN(glBindBuffer(GL_ARRAY_BUFFER, *vbo));
 		std::vector<GLfloat> vertexData = getVertexData();
-		glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat)*vertexData.size(), vertexData.data(), GL_STATIC_DRAW);
+		GLRUN(glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat)*vertexData.size(), vertexData.data(), GL_STATIC_DRAW));
 
-		glVertexAttribPointer(0, Vertex::VERTEX_POSITIONS, GL_FLOAT, GL_FALSE, Vertex::VERTEX_SIZE * sizeof(GLfloat), (GLvoid*)0);
-		glEnableVertexAttribArray(0);
-		glVertexAttribPointer(1, Vertex::VERTEX_NORMALS, GL_FLOAT, GL_FALSE, Vertex::VERTEX_SIZE * sizeof(GLfloat), (GLvoid*)(Vertex::VERTEX_POSITIONS * sizeof(GLfloat)));
-		glEnableVertexAttribArray(1);
-		glVertexAttribPointer(2, Vertex::VERTEX_TEXCOORDS, GL_FLOAT, GL_FALSE, Vertex::VERTEX_SIZE * sizeof(GLfloat), (GLvoid*)((Vertex::VERTEX_POSITIONS + Vertex::VERTEX_NORMALS) * sizeof(GLfloat)));
-		glEnableVertexAttribArray(2);
+		GLRUN(glVertexAttribPointer(0, Vertex::VERTEX_POSITIONS, GL_FLOAT, GL_FALSE, Vertex::VERTEX_SIZE * sizeof(GLfloat), (GLvoid*)0));
+		GLRUN(glEnableVertexAttribArray(0));
+		GLRUN(glVertexAttribPointer(1, Vertex::VERTEX_NORMALS, GL_FLOAT, GL_FALSE, Vertex::VERTEX_SIZE * sizeof(GLfloat), (GLvoid*)(Vertex::VERTEX_POSITIONS * sizeof(GLfloat))));
+		GLRUN(glEnableVertexAttribArray(1));
+		GLRUN(glVertexAttribPointer(2, Vertex::VERTEX_TEXCOORDS, GL_FLOAT, GL_FALSE, Vertex::VERTEX_SIZE * sizeof(GLfloat), (GLvoid*)((Vertex::VERTEX_POSITIONS + Vertex::VERTEX_NORMALS) * sizeof(GLfloat))));
+		GLRUN(glEnableVertexAttribArray(2));
 
 		if (indices.size() > 0)
 		{
-			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, *ebo);
-			glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(GLuint)*indices.size(), indices.data(), GL_STATIC_DRAW);
+			GLRUN(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, *ebo));
+			GLRUN(glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(GLuint)*indices.size(), indices.data(), GL_STATIC_DRAW));
 		}
 
-		glBindBuffer(GL_ARRAY_BUFFER, 0);
+		GLRUN(glBindBuffer(GL_ARRAY_BUFFER, 0));
 
-		glBindVertexArray(0);
+		GLRUN(glBindVertexArray(0));
 	}
 
 	Drawable::~Drawable()
 	{
 		if (vao.unique())
+		{
 			glDeleteVertexArrays(1, &(*vao));
+		}
 		if (vbo.unique())
+		{
 			glDeleteBuffers(1, &(*vbo));
+		}
 		if (indices.size() > 0)
 		{
 			if (ebo.unique())
+			{
 				glDeleteBuffers(1, &(*ebo));
+			}
 		}
 	}
 
 	void Drawable::render(std::shared_ptr<Scene> scene)
 	{
-		glBindVertexArray(*vao);
+		GLRUN(glBindVertexArray(*vao));
 		for (size_t i = 0; i < instances.size(); i++)
 		{
 			instances[i]->shaderProgram->render(instances[i], scene);
 			if (indices.size() > 0)
-				glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, 0);
-			else glDrawArrays(GL_TRIANGLES, 0, vertices.size());
+			{
+				GLRUN(glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, 0));
+			}
+			else
+			{
+				GLRUN(glDrawArrays(GL_TRIANGLES, 0, vertices.size()));
+			}
+			instances[i]->shaderProgram->postRender(instances[i], scene);
 		}
-		glBindVertexArray(0);
+		GLRUN(glBindVertexArray(0));
 	}
 
 	std::vector<std::shared_ptr<DrawableInstance> >  Drawable::getInstances()
@@ -159,17 +172,22 @@ namespace GK
 	Texture::Texture(std::shared_ptr<Image> image)
 		: texture(new GLuint)
 	{
-		glGenTextures(1, &(*texture));
-		glBindTexture(GL_TEXTURE_2D, (*texture));
+		GLRUN(glGenTextures(1, &(*texture)));
+		GLRUN(glBindTexture(GL_TEXTURE_2D, (*texture)));
 		if (image->getImageChannels() == ImageChannels::ImageRGB)
-			glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, image->getWidth(), image->getHeight(), 0, GL_RGB, GL_UNSIGNED_BYTE, image->getData().data());
-		else glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, image->getWidth(), image->getHeight(), 0, GL_RGBA, GL_UNSIGNED_BYTE, image->getData().data());
-		glGenerateMipmap(GL_TEXTURE_2D);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST_MIPMAP_NEAREST);
-		glBindTexture(GL_TEXTURE_2D, 0);
+		{
+			GLRUN(glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, image->getWidth(), image->getHeight(), 0, GL_RGB, GL_UNSIGNED_BYTE, image->getData().data()));
+		}
+		else
+		{
+			GLRUN(glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, image->getWidth(), image->getHeight(), 0, GL_RGBA, GL_UNSIGNED_BYTE, image->getData().data()));
+		}
+		GLRUN(glGenerateMipmap(GL_TEXTURE_2D));
+		GLRUN(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT));
+		GLRUN(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT));
+		GLRUN(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR));
+		GLRUN(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR));
+		GLRUN(glBindTexture(GL_TEXTURE_2D, 0));
 	}
 
 	Texture::~Texture()
@@ -187,6 +205,8 @@ namespace GK
 	{
 		return *texture;
 	}
+
+	const Material Material::Identity = Material(glm::vec3(1.0f, 1.0f, 1.0f), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec3(1.0f, 1.0f, 1.0f), 1.0f);
 
 	const Material Material::WhiteLight = Material(glm::vec3(0.2f, 0.2f, 0.2f), glm::vec3(0.5f, 0.5f, 0.5f), glm::vec3(1.0f, 1.0f, 1.0f), 1.0f);
 	const Material Material::RedLight = Material(glm::vec3(0.2f, 0.0f, 0.0f), glm::vec3(0.5f, 0.0f, 0.0f), glm::vec3(1.0f, 0.0f, 0.0f), 1.0f);

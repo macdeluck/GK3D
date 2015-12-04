@@ -87,6 +87,15 @@
     <ClCompile Include="Texture3D.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Skybox.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SkyboxShader.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Exception.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Common.h">
@@ -161,6 +170,15 @@
     <ClInclude Include="Face3D.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Skybox.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SkyboxShader.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Exception.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="object_fragment_shader.glsl">
@@ -176,6 +194,12 @@
       <Filter>Resource Files</Filter>
     </None>
     <None Include="surface_vertex_shader.glsl">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="skybox_fragment_shader.glsl">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="skybox_vertex_shader.glsl">
       <Filter>Resource Files</Filter>
     </None>
   </ItemGroup>

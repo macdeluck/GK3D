@@ -7,7 +7,10 @@
 #include "ObjectShader.h"
 #include "LightShader.h"
 #include "SurfaceShader.h"
+#include "SkyboxShader.h"
 #include "Image.h"
+#include "Texture3D.h"
+#include "Skybox.h"
 
 #include <random>
 
@@ -32,6 +35,7 @@ namespace GK
 	const int SHADER_OBJECT = 0;
 	const int SHADER_LIGHT = 1;
 	const int SHADER_SURFACE = 2;
+	const int SHADER_SKYBOX = 3;
 
 	const int MODEL_CUBE = 0;
 	const int MODEL_BENCH = 1;
@@ -56,6 +60,7 @@ namespace GK
 		shaders[SHADER_OBJECT] = std::shared_ptr<ShaderProgram>(new ObjectShader());
 		shaders[SHADER_LIGHT] = std::shared_ptr<ShaderProgram>(new LightShader());
 		shaders[SHADER_SURFACE] = std::shared_ptr<ShaderProgram>(new SurfaceShader());
+		shaders[SHADER_SKYBOX] = std::shared_ptr<ShaderProgram>(new SkyboxShader());
 		for (ShadersDic::const_iterator it = shaders.begin(); it != shaders.end(); ++it)
 		{
 			it->second->compile();
@@ -105,13 +110,15 @@ namespace GK
 		createLamps();
 		createFirs();
 		createFlashLight();
+		
+		createSkybox();
 	}
 
 	void GK3DSceneLoader::createCubes()
 	{
 		int currentModel = MODEL_CUBE;
 		const int modelsCount = 1;
-		glm::vec3 modelScale = { 0.05f, 0.05f, 0.05f };
+		glm::vec3 modelScale = { 0.1f, 0.1f, 0.1f };
 		glm::vec3 modelPositions[modelsCount] = {
 			{ 0.5f, 0.0f, 0.0f }
 		};
@@ -187,6 +194,11 @@ namespace GK
 		return surface;
 	}
 
+	std::shared_ptr<SkyBox> GK3DSceneLoader::getSkyBox()
+	{
+		return skyBox;
+	}
+
 	void GK3DSceneLoader::createFirs()
 	{
 		std::default_random_engine generator = std::default_random_engine(123);
@@ -216,6 +228,19 @@ namespace GK
 		glm::vec3 angles[count] = { { -5.0f, 90.0f, 0.0f } };
 		std::shared_ptr<Material> defaultMaterial = std::shared_ptr<Material>(new Material(Material::BlackPlastic));
 		createGenericModel(currentModel, count, scale, positions, angles, defaultMaterial);
+	}
+
+	void GK3DSceneLoader::createSkybox()
+	{
+		int modelType = MODEL_CUBE;
+		const int modelsCount = 1;
+		glm::vec3 modelScale = { 1.0f, 1.0f, 1.0f };
+
+		skyBox = std::shared_ptr<SkyBox>(new SkyBox(
+			shaders[SHADER_SKYBOX],
+			std::shared_ptr<Texture3D>(new Texture3D(faces)),
+			modelScale));
+		instances[modelType].push_back(skyBox);
 	}
 
 	void GK3DSceneLoader::createGenericModel(int modelType, size_t count, glm::vec3 scale, glm::vec3 * positions, glm::vec3 * angles, std::shared_ptr<Material> defaultMaterial,

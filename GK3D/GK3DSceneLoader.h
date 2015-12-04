@@ -23,6 +23,7 @@ namespace GK
 	class SpotLightInstance;
 	class SurfaceInstance;
 	class ShaderProgram;
+	class SkyBox;
 	typedef std::vector<std::shared_ptr<PointLightInstance> > PointLightsArray;
 	typedef std::vector<std::shared_ptr<SpotLightInstance> > SpotLightsArray;
 	typedef std::vector<std::shared_ptr<Drawable> > DrawablesArray;
@@ -41,6 +42,7 @@ namespace GK
 		glm::vec3 getCameraFront();
 		std::shared_ptr<PointLightInstance> getDamagedLamp();
 		std::shared_ptr<SurfaceInstance> getSurface();
+		std::shared_ptr<SkyBox> getSkyBox();
 	private:
 		std::shared_ptr<PointLightsArray> pointLights;
 		std::shared_ptr<SpotLightsArray> spotLights;
@@ -57,6 +59,7 @@ namespace GK
 
 		void loadSkybox();
 		std::map<Face3D, std::shared_ptr<Image> > faces;
+		std::shared_ptr<SkyBox> skyBox;
 
 		void createInstances();
 		void createCubes();
@@ -64,6 +67,9 @@ namespace GK
 		void createLamps();
 		void createFirs();
 		void createFlashLight();
+
+		void createSkybox();
+
 		void createGenericModel(int modelType, size_t count, glm::vec3 scale, glm::vec3* positions, glm::vec3* angles, std::shared_ptr<Material> defaultMaterial,
 			std::function<void(int, std::shared_ptr<DrawableInstance>)> createdInstanceCallback = nullptr);
 		void createLampCallback(int modelType, std::shared_ptr<DrawableInstance> pointLight);

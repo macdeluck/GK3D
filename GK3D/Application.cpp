@@ -1,4 +1,5 @@
 #include "Application.h"
+#include "Exception.h"
 
 namespace GK
 {
@@ -89,9 +90,10 @@ namespace GK
 			_main();
 			this->terminated();
 		}
-		catch (std::exception& exc)
+		catch (Exception& exc)
 		{
 			std::cerr << exc.what() << std::endl;
+			std::cerr << exc.getStackTrace() << std::endl;
 			result = 255;
 		}
 		return result;

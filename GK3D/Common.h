@@ -15,24 +15,15 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/type_ptr.hpp>
 #include <glm/gtc/matrix_transform.hpp>
+#include "Exception.h"
 
-namespace GK
-{
-	class Exception : public std::exception
-	{
-	private:
-		std::string _message;
-
-	public:
-		Exception();
-		Exception(const Exception& otherException);
-		Exception& operator=(const Exception& otherException);
-		Exception(std::string message);
-		virtual ~Exception();
-
-		virtual std::string message() const;
-		virtual const char* what() const;
-	};
+#define GLRUN(expression) { \
+	expression; \
+	GLenum glError = glGetError(); \
+	if (GL_NO_ERROR != glError) \
+	{ \
+	throw Exception("OpenGL error: " + std::string((char*)gluErrorString(glError))); \
+	} \
 }
 
 #endif

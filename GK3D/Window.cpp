@@ -30,14 +30,14 @@ namespace GK
 		{
 			throw Exception(std::string("Error initializing GLEW: ") + std::string((char*)glewGetErrorString(glewError)));
 		}
-
+		while (glGetError() != GL_NO_ERROR) {}
 		if (SDL_GL_SetSwapInterval(1) < 0)
 		{
 			throw Exception(std::string("Warning: Unable to set VSync! SDL Error: " + std::string(SDL_GetError())));
 		}
-		glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
-		glViewport(0, 0, width, height);
-		glEnable(GL_DEPTH_TEST);
+		GLRUN(glClearColor(0.2f, 0.3f, 0.3f, 1.0f));
+		GLRUN(glViewport(0, 0, width, height));
+		GLRUN(glEnable(GL_DEPTH_TEST));
 
 		this->mWindow.reset(pWindow, [=](SDL_Window* pWindow)
 		{
@@ -175,7 +175,7 @@ namespace GK
 	{
 		if (!mWindowState->minimized)
 		{
-			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+			GLRUN(glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT));
 			_gain_gl();
 			onRender();
 			SDL_GL_SwapWindow(&(*mWindow));
@@ -184,7 +184,7 @@ namespace GK
 
 	void Window::_refresh()
 	{
-		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+		GLRUN(glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT));
 		SDL_GL_SwapWindow(&(*mWindow));
 	}
 

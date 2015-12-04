@@ -1,16 +1,18 @@
 #ifndef _GK_FACE3D
 #define _GK_FACE3D
 
+#include "Common.h"
+
 namespace GK
 {
 	enum Face3D
 	{
-		Face3DFront = 5,
-		Face3DBack = 4,
-		Face3DLeft = 1,
-		Face3DRight = 0,
-		Face3DTop = 2,
-		Face3DBottom = 3
+		Face3DFront = GL_TEXTURE_CUBE_MAP_NEGATIVE_Z,
+		Face3DBack = GL_TEXTURE_CUBE_MAP_POSITIVE_Z,
+		Face3DLeft = GL_TEXTURE_CUBE_MAP_NEGATIVE_X,
+		Face3DRight = GL_TEXTURE_CUBE_MAP_POSITIVE_X,
+		Face3DTop = GL_TEXTURE_CUBE_MAP_POSITIVE_Y,
+		Face3DBottom = GL_TEXTURE_CUBE_MAP_NEGATIVE_Y
 	};
 }
 

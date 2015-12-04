@@ -42,9 +42,10 @@ namespace GK
 		void compile();
 		virtual void beforeLink();
 		void render(std::shared_ptr<DrawableInstance> drawable, std::shared_ptr<Scene> scene);
+		virtual void postRender(std::shared_ptr<DrawableInstance> drawable, std::shared_ptr<Scene> scene);
 	protected:
 		virtual void prepareForRender(std::shared_ptr<DrawableInstance> drawable, std::shared_ptr<Scene> scene);
-		void bindTexture(std::string uniformName, GLuint textureID);
+		void bindTexture(std::string uniformName, GLuint textureID, GLenum textureType = GL_TEXTURE_2D);
 		GLuint getUniformLocation(std::string uniformName);
 		GLuint getProgramId();
 	private:

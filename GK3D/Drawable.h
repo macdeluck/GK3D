@@ -57,6 +57,8 @@ namespace GK
 		Texture diffuseTex;
 		Texture alphaTex;
 
+		static const Material Identity;
+
 		static const Material WhiteLight;
 		static const Material RedLight;
 		static const Material GreenLight;
