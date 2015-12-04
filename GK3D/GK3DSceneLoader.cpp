@@ -43,6 +43,7 @@ namespace GK
 	{
 		loadShaders();
 		loadModelsData();
+		loadSkybox();
 		createInstances();
 		buildSurface();
 		buildScene();
@@ -80,6 +81,16 @@ namespace GK
 
 		modelLoader.loadModel("assets/flashlight.obj", &modelData);
 		modelsData[MODEL_FLASHLIGHT] = std::shared_ptr<ModelData>(new ModelData(modelData));
+	}
+
+	void GK3DSceneLoader::loadSkybox()
+	{
+		ModelLoader modelLoader;
+		faces[Face3D::Face3DFront] = std::shared_ptr<Image>(modelLoader.loadImage("assets/night-sky/", "nightsky_front.jpg"));
+		faces[Face3D::Face3DBack] = std::shared_ptr<Image>(modelLoader.loadImage("assets/night-sky/", "nightsky_back.jpg"));
+		faces[Face3D::Face3DLeft] = std::shared_ptr<Image>(modelLoader.loadImage("assets/night-sky/", "nightsky_left.jpg"));
+		faces[Face3D::Face3DRight] = std::shared_ptr<Image>(modelLoader.loadImage("assets/night-sky/", "nightsky_right.jpg"));
+		faces[Face3D::Face3DTop] = std::shared_ptr<Image>(modelLoader.loadImage("assets/night-sky/", "nightsky_top.jpg"));
 	}
 
 	void GK3DSceneLoader::createInstances()

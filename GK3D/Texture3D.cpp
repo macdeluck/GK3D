@@ -8,7 +8,7 @@ namespace GK
 	{
 	}
 
-	Texture3D::Texture3D(std::map<Texture3DFace, std::shared_ptr<Image> > faces)
+	Texture3D::Texture3D(std::map<Face3D, std::shared_ptr<Image> > faces)
 		: texture(new GLuint)
 	{
 		glGenTextures(1, &(*texture));

@@ -8,6 +8,7 @@
 #include <functional>
 
 #include "Common.h"
+#include "Face3D.h"
 
 namespace GK
 {
@@ -53,6 +54,9 @@ namespace GK
 
 		void loadModelsData();
 		std::map<int, std::shared_ptr<ModelData>> modelsData;
+
+		void loadSkybox();
+		std::map<Face3D, std::shared_ptr<Image> > faces;
 
 		void createInstances();
 		void createCubes();
