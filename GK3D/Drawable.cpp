@@ -151,8 +151,6 @@ namespace GK
 		return std::vector<GLfloat>(std::begin(vertexData), std::end(vertexData));
 	}
 
-	std::list<int> Texture::availableLocations = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 };
-
 	Texture::Texture()
 		: texture(nullptr)
 	{
@@ -161,10 +159,6 @@ namespace GK
 	Texture::Texture(std::shared_ptr<Image> image)
 		: texture(new GLuint)
 	{
-		if (availableLocations.empty())
-			throw Exception("No more locations available");
-		location = availableLocations.front();
-		availableLocations.pop_front();
 		glGenTextures(1, &(*texture));
 		glBindTexture(GL_TEXTURE_2D, (*texture));
 		if (image->getImageChannels() == ImageChannels::ImageRGB)
@@ -192,11 +186,6 @@ namespace GK
 	GLuint Texture::getId()
 	{
 		return *texture;
-	}
-
-	GLuint Texture::getLocation()
-	{
-		return location;
 	}
 
 	const Material Material::WhiteLight = Material(glm::vec3(0.2f, 0.2f, 0.2f), glm::vec3(0.5f, 0.5f, 0.5f), glm::vec3(1.0f, 1.0f, 1.0f), 1.0f);

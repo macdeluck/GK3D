@@ -36,8 +36,6 @@ namespace GK
 	struct Texture
 	{
 	private:
-		static std::list<int> availableLocations;
-		int location;
 		std::shared_ptr<GLuint> texture;
 
 	public:
@@ -46,7 +44,6 @@ namespace GK
 		virtual ~Texture();
 		bool empty();
 		GLuint getId();
-		GLuint getLocation();
 
 		friend class Drawable;
 	};

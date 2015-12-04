@@ -44,14 +44,18 @@ namespace GK
 		void render(std::shared_ptr<DrawableInstance> drawable, std::shared_ptr<Scene> scene);
 	protected:
 		virtual void prepareForRender(std::shared_ptr<DrawableInstance> drawable, std::shared_ptr<Scene> scene);
+		void bindTexture(std::string uniformName, GLuint textureID);
 		GLuint getUniformLocation(std::string uniformName);
 		GLuint getProgramId();
 	private:
 		void use();
 		bool compiled;
+		GLuint currentTextureUnit;
 		std::shared_ptr<GLuint> programId;
 		std::shared_ptr<Shader> vertexShader;
 		std::shared_ptr<Shader> fragmentShader;
+
+		void clearTextureUnits();
 	};
 }
 

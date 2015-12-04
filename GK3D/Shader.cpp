@@ -96,6 +96,11 @@ namespace GK
 		glUseProgram(*programId);
 	}
 
+	void ShaderProgram::clearTextureUnits()
+	{
+		currentTextureUnit = 0;
+	}
+
 	std::shared_ptr<Shader> ShaderProgram::getVertexShader()
 	{
 		return vertexShader;
@@ -125,10 +130,23 @@ namespace GK
 	void ShaderProgram::render(std::shared_ptr<DrawableInstance> drawable, std::shared_ptr<Scene> scene)
 	{
 		use();
+		clearTextureUnits();
 		prepareForRender(drawable, scene);
 	}
 
 	void ShaderProgram::prepareForRender(std::shared_ptr<DrawableInstance> drawableInstance, std::shared_ptr<Scene> scene)
 	{
+	}
+
+	void ShaderProgram::bindTexture(std::string uniformName, GLuint textureID)
+	{
+		GLint maxTextureUnits;
+		glGetIntegerv(GL_MAX_TEXTURE_IMAGE_UNITS, &maxTextureUnits);
+		if (currentTextureUnit > maxTextureUnits)
+			throw Exception("Maximum number of texture units has been exceeded: " + std::to_string(maxTextureUnits));
+		glUniform1i(glGetUniformLocation(getProgramId(), uniformName.c_str()), currentTextureUnit);
+		glActiveTexture(GL_TEXTURE0 + currentTextureUnit);
+		glBindTexture(GL_TEXTURE_2D, textureID);
+		currentTextureUnit++;
 	}
 }
