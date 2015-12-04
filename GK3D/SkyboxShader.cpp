@@ -46,7 +46,8 @@ namespace GK
 		glm::mat4 projection;
 		projection = glm::perspective(camera->getZoom(),
 			((float)camera->getScreenWidth()) / camera->getScreenHeight(), 0.1f, 100.0f);
-		GLRUN(glUniformMatrix4fv(getUniformLocation("view"), 1, GL_FALSE, glm::value_ptr(camera->getViewMatrix())));
+		glm::mat4 view = glm::mat4(glm::mat3(camera->getViewMatrix()));
+		GLRUN(glUniformMatrix4fv(getUniformLocation("view"), 1, GL_FALSE, glm::value_ptr(view)));
 		GLRUN(glUniformMatrix4fv(getUniformLocation("projection"), 1, GL_FALSE, glm::value_ptr(projection)));
 		/*glm::mat4 model;
 		model = glm::translate(model, drawableInstance->position);
