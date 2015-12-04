@@ -30,7 +30,7 @@ namespace GK
 		GLRUN(glBindAttribLocation(getProgramId(), 2, "texCoord"));
 	}
 
-	void ObjectShader::prepareForRender(std::shared_ptr<DrawableInstance> drawableInstance, std::shared_ptr<Scene> scene)
+	void ObjectShader::render(std::shared_ptr<DrawableInstance> drawableInstance, std::shared_ptr<Scene> scene)
 	{
 		std::shared_ptr<Camera> camera = scene->getCamera();
 

@@ -21,6 +21,8 @@ namespace GK
 		GK3DSceneLoader sceneLoader;
 		sceneLoader.load();
 
+		if (sceneLoader.getSkyBox())
+			this->getDrawables()->push_back(sceneLoader.getSkyBox());
 		std::shared_ptr<DrawablesArray> drawables = sceneLoader.getDrawables();
 		for (size_t i = 0; i < drawables->size(); i++)
 		{

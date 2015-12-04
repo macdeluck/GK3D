@@ -105,7 +105,8 @@ namespace GK
 		GLRUN(glBindVertexArray(*vao));
 		for (size_t i = 0; i < instances.size(); i++)
 		{
-			instances[i]->shaderProgram->render(instances[i], scene);
+			instances[i]->shaderProgram->preRender(instances[i], scene);
+			instances[i]->shaderProgram->doRender(instances[i], scene);
 			if (indices.size() > 0)
 			{
 				GLRUN(glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, 0));

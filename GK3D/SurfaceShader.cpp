@@ -33,7 +33,7 @@ namespace GK
 		GLRUN(glBindAttribLocation(getProgramId(), 1, "normal"));
 	}
 
-	void SurfaceShader::prepareForRender(std::shared_ptr<DrawableInstance> drawableInstance, std::shared_ptr<Scene> scene)
+	void SurfaceShader::render(std::shared_ptr<DrawableInstance> drawableInstance, std::shared_ptr<Scene> scene)
 	{
 		std::shared_ptr<Camera> camera = scene->getCamera();
 		std::shared_ptr<SurfaceInstance> surfaceInstance = std::dynamic_pointer_cast<SurfaceInstance>(drawableInstance);

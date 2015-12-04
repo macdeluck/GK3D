@@ -26,8 +26,9 @@ namespace GK
 		virtual ~SkyboxShader();
 		virtual void beforeLink() override;
 		virtual void postRender(std::shared_ptr<DrawableInstance> drawable, std::shared_ptr<Scene> scene);
+		virtual void preRender(std::shared_ptr<DrawableInstance> drawable, std::shared_ptr<Scene> scene);
 	protected:
-		virtual void prepareForRender(std::shared_ptr<DrawableInstance> drawableInstance, std::shared_ptr<Scene> scene) override;
+		virtual void render(std::shared_ptr<DrawableInstance> drawableInstance, std::shared_ptr<Scene> scene) override;
 	};
 }
 

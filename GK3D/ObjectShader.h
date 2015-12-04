@@ -26,7 +26,7 @@ namespace GK
 		ObjectShader();
 		virtual ~ObjectShader();
 		virtual void beforeLink() override;
-		virtual void prepareForRender(std::shared_ptr<DrawableInstance> drawableInstance, std::shared_ptr<Scene> scene) override;
+		virtual void render(std::shared_ptr<DrawableInstance> drawableInstance, std::shared_ptr<Scene> scene) override;
 	};
 }
 

@@ -42,7 +42,7 @@ namespace GK
 		glm::vec3 getCameraFront();
 		std::shared_ptr<PointLightInstance> getDamagedLamp();
 		std::shared_ptr<SurfaceInstance> getSurface();
-		std::shared_ptr<SkyBox> getSkyBox();
+		std::shared_ptr<Drawable> getSkyBox();
 	private:
 		std::shared_ptr<PointLightsArray> pointLights;
 		std::shared_ptr<SpotLightsArray> spotLights;
@@ -59,7 +59,8 @@ namespace GK
 
 		void loadSkybox();
 		std::map<Face3D, std::shared_ptr<Image> > faces;
-		std::shared_ptr<SkyBox> skyBox;
+		std::shared_ptr<SkyBox> skyBoxInstance;
+		std::shared_ptr<Drawable> skyBox;
 
 		void createInstances();
 		void createCubes();

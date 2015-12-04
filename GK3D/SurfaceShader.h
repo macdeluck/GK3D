@@ -27,7 +27,7 @@ namespace GK
 		virtual ~SurfaceShader();
 		virtual void beforeLink() override;
 	protected:
-		virtual void prepareForRender(std::shared_ptr<DrawableInstance> drawableInstance, std::shared_ptr<Scene> scene) override;
+		virtual void render(std::shared_ptr<DrawableInstance> drawableInstance, std::shared_ptr<Scene> scene) override;
 	};
 }
 

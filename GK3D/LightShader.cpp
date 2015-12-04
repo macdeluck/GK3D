@@ -25,7 +25,7 @@ namespace GK
 		GLRUN(glBindAttribLocation(getProgramId(), 0, "position"));
 	}
 
-	void LightShader::prepareForRender(std::shared_ptr<DrawableInstance> drawableInstance, std::shared_ptr<Scene> scene)
+	void LightShader::render(std::shared_ptr<DrawableInstance> drawableInstance, std::shared_ptr<Scene> scene)
 	{
 		std::shared_ptr<Camera> camera = scene->getCamera();
 

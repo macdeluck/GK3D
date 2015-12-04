@@ -91,11 +91,12 @@ namespace GK
 	void GK3DSceneLoader::loadSkybox()
 	{
 		ModelLoader modelLoader;
-		faces[Face3D::Face3DFront] = std::shared_ptr<Image>(modelLoader.loadImage("assets/night-sky/", "nightsky_front.jpg"));
-		faces[Face3D::Face3DBack] = std::shared_ptr<Image>(modelLoader.loadImage("assets/night-sky/", "nightsky_back.jpg"));
-		faces[Face3D::Face3DLeft] = std::shared_ptr<Image>(modelLoader.loadImage("assets/night-sky/", "nightsky_left.jpg"));
-		faces[Face3D::Face3DRight] = std::shared_ptr<Image>(modelLoader.loadImage("assets/night-sky/", "nightsky_right.jpg"));
-		faces[Face3D::Face3DTop] = std::shared_ptr<Image>(modelLoader.loadImage("assets/night-sky/", "nightsky_top.jpg"));
+		faces[Face3D::Face3DFront] = std::shared_ptr<Image>(modelLoader.loadImage("assets/skybox/", "front.jpg"));
+		faces[Face3D::Face3DBack] = std::shared_ptr<Image>(modelLoader.loadImage("assets/skybox/", "back.jpg"));
+		faces[Face3D::Face3DLeft] = std::shared_ptr<Image>(modelLoader.loadImage("assets/skybox/", "left.jpg"));
+		faces[Face3D::Face3DRight] = std::shared_ptr<Image>(modelLoader.loadImage("assets/skybox/", "right.jpg"));
+		faces[Face3D::Face3DTop] = std::shared_ptr<Image>(modelLoader.loadImage("assets/skybox/", "top.jpg"));
+		faces[Face3D::Face3DBottom] = std::shared_ptr<Image>(modelLoader.loadImage("assets/skybox/", "bottom.jpg"));
 	}
 
 	void GK3DSceneLoader::createInstances()
@@ -194,7 +195,7 @@ namespace GK
 		return surface;
 	}
 
-	std::shared_ptr<SkyBox> GK3DSceneLoader::getSkyBox()
+	std::shared_ptr<Drawable> GK3DSceneLoader::getSkyBox()
 	{
 		return skyBox;
 	}
@@ -230,17 +231,19 @@ namespace GK
 		createGenericModel(currentModel, count, scale, positions, angles, defaultMaterial);
 	}
 
+	std::vector<Vertex> skyboxVertices();
 	void GK3DSceneLoader::createSkybox()
 	{
 		int modelType = MODEL_CUBE;
 		const int modelsCount = 1;
-		glm::vec3 modelScale = { 1.0f, 1.0f, 1.0f };
+		glm::vec3 modelScale = { 50.0f, 50.0f, 50.0f };
 
-		skyBox = std::shared_ptr<SkyBox>(new SkyBox(
+		skyBoxInstance = std::shared_ptr<SkyBox>(new SkyBox(
 			shaders[SHADER_SKYBOX],
 			std::shared_ptr<Texture3D>(new Texture3D(faces)),
 			modelScale));
-		instances[modelType].push_back(skyBox);
+		skyBox = std::shared_ptr<Drawable>(
+			new Drawable(skyboxVertices(), { skyBoxInstance }));
 	}
 
 	void GK3DSceneLoader::createGenericModel(int modelType, size_t count, glm::vec3 scale, glm::vec3 * positions, glm::vec3 * angles, std::shared_ptr<Material> defaultMaterial,
@@ -320,5 +323,52 @@ namespace GK
 			glm::vec3(3.0f, 3.0f, 3.0f)));
 		drawables->push_back(std::shared_ptr<Drawable>(
 			new Drawable(vertices, indices, { surface })));
+	}
+
+	std::vector<Vertex> skyboxVertices() {
+		std::vector<Vertex> result = {
+			Vertex({ -1.0f,  1.0f, -1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f }),
+			Vertex({ -1.0f, -1.0f, -1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f }),
+			Vertex({ 1.0f, -1.0f, -1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f }),
+			Vertex({ 1.0f, -1.0f, -1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f }),
+			Vertex({ 1.0f,  1.0f, -1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f }),
+			Vertex({ -1.0f,  1.0f, -1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f }),
+
+			Vertex({ -1.0f, -1.0f,  1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f }),
+			Vertex({ -1.0f, -1.0f, -1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f }),
+			Vertex({ -1.0f,  1.0f, -1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f }),
+			Vertex({ -1.0f,  1.0f, -1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f }),
+			Vertex({ -1.0f,  1.0f,  1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f }),
+			Vertex({ -1.0f, -1.0f,  1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f }),
+
+			Vertex({ 1.0f, -1.0f, -1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f }),
+			Vertex({ 1.0f, -1.0f,  1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f }),
+			Vertex({ 1.0f,  1.0f,  1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f }),
+			Vertex({ 1.0f,  1.0f,  1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f }),
+			Vertex({ 1.0f,  1.0f, -1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f }),
+			Vertex({ 1.0f, -1.0f, -1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f }),
+
+			Vertex({ -1.0f, -1.0f,  1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f }),
+			Vertex({ -1.0f,  1.0f,  1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f }),
+			Vertex({ 1.0f,  1.0f,  1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f }),
+			Vertex({ 1.0f,  1.0f,  1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f }),
+			Vertex({ 1.0f, -1.0f,  1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f }),
+			Vertex({ -1.0f, -1.0f,  1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f }),
+
+			Vertex({ -1.0f,  1.0f, -1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f }),
+			Vertex({ 1.0f,  1.0f, -1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f }),
+			Vertex({ 1.0f,  1.0f,  1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f }),
+			Vertex({ 1.0f,  1.0f,  1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f }),
+			Vertex({ -1.0f,  1.0f,  1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f }),
+			Vertex({ -1.0f,  1.0f, -1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f }),
+
+			Vertex({ -1.0f, -1.0f, -1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f }),
+			Vertex({ -1.0f, -1.0f,  1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f }),
+			Vertex({ 1.0f, -1.0f, -1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f }),
+			Vertex({ 1.0f, -1.0f, -1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f }),
+			Vertex({ -1.0f, -1.0f,  1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f }),
+			Vertex({ 1.0f, -1.0f,  1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f})
+		};
+		return result;
 	}
 }

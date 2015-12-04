@@ -133,16 +133,21 @@ namespace GK
 
 	void ShaderProgram::render(std::shared_ptr<DrawableInstance> drawable, std::shared_ptr<Scene> scene)
 	{
-		use();
-		clearTextureUnits();
-		prepareForRender(drawable, scene);
+
 	}
 
-	void ShaderProgram::prepareForRender(std::shared_ptr<DrawableInstance> drawableInstance, std::shared_ptr<Scene> scene)
+	void ShaderProgram::doRender(std::shared_ptr<DrawableInstance> drawable, std::shared_ptr<Scene> scene)
 	{
+		use();
+		clearTextureUnits();
+		render(drawable, scene);
 	}
 
 	void ShaderProgram::postRender(std::shared_ptr<DrawableInstance> drawable, std::shared_ptr<Scene> scene)
+	{
+	}
+
+	void ShaderProgram::preRender(std::shared_ptr<DrawableInstance> drawable, std::shared_ptr<Scene> scene)
 	{
 	}
 
