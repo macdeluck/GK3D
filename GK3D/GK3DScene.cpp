@@ -49,13 +49,13 @@ namespace GK
 			new DirLight(
 				glm::vec3(0.644f, -0.417f, 0.602f),
 				glm::vec3(0.04f, 0.04f, 0.04f),
-				glm::vec3(0.4f, 0.4f, 0.4f),
+				glm::vec3(0.2f, 0.2f, 0.2f),
 				glm::vec3(0.5f, 0.5f, 0.5f)));
 		dirLights[1] = std::shared_ptr<DirLight>(
 			new DirLight(
 				glm::vec3(0.0f, -1.0f, 0.0f),
 				glm::vec3(0.2f, 0.2f, 0.2f),
-				glm::vec3(1.0f, 1.0f, 1.0f),
+				glm::vec3(0.5f, 0.5f, 0.5f),
 				glm::vec3(1.0f, 1.0f, 1.0f)));
 		fogs[0] = std::shared_ptr<Fog>(new Fog(0.5f, glm::vec3(0.1f, 0.1f, 0.1f)));
 		fogs[1] = std::shared_ptr<Fog>(new Fog(0.0f, glm::vec3(0.1f, 0.1f, 0.1f)));

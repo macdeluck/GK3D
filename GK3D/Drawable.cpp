@@ -165,6 +165,11 @@ namespace GK
 		return std::vector<GLfloat>(std::begin(vertexData), std::end(vertexData));
 	}
 
+	GLfloat & Vertex::operator[](int i)
+	{
+		return vertexData[i];
+	}
+
 	Texture::Texture()
 		: texture(nullptr)
 	{

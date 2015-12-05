@@ -29,6 +29,7 @@ namespace GK
 		Vertex(std::initializer_list<GLfloat> initializer);
 
 		std::vector<GLfloat> toVector();
+		GLfloat& operator[](int i);
 	private:
 		GLfloat vertexData[VERTEX_SIZE];
 	};

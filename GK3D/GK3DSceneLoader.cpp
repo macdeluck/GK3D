@@ -290,7 +290,8 @@ namespace GK
 	{
 		return 0.1f*(x*x + y*y);
 	}
-	
+
+	void calculateAndSetNormal(Vertex* vertex1, Vertex* vertex2, Vertex* vertex3);
 	void GK3DSceneLoader::buildSurface()
 	{
 		const float surface_scale = 0.1f;
@@ -319,21 +320,25 @@ namespace GK
 		{
 			for (int y = 0; y < surface_size; y++)
 			{
-				indices[i++] = x + y * (surface_size + 1);
-				indices[i++] = x + 1 + y * (surface_size + 1);
-				indices[i++] = x + 1 + (y + 1) * (surface_size + 1);
-				indices[i++] = x + y * (surface_size + 1);
-				indices[i++] = x + (y + 1) * (surface_size + 1);
-				indices[i++] = x + 1 + (y + 1) * (surface_size + 1);
+				indices[i + 2] = x + y * (surface_size + 1);
+				indices[i + 1] = x + 1 + y * (surface_size + 1);
+				indices[i + 0] = x + 1 + (y + 1) * (surface_size + 1);
+				calculateAndSetNormal(&vertices[indices[i + 2]], &vertices[indices[i + 1]], &vertices[indices[i + 0]]);
+
+				indices[i + 5] = x + y * (surface_size + 1);
+				indices[i + 4] = x + (y + 1) * (surface_size + 1);
+				indices[i + 3] = x + 1 + (y + 1) * (surface_size + 1);
+				calculateAndSetNormal(&vertices[indices[i + 3]], &vertices[indices[i + 4]], &vertices[indices[i + 5]]);
+				i += 6;
 			}
 		}
-		
+
 		Texture firstTerrainTex = Texture(firstTexImage);
 		Texture secondTerrainTex = Texture(secondTexImage);
 		Texture marksTex = Texture(leafsTexImage);
 		Material* material = new Material(
-			glm::vec3(0.3f, 0.3f, 0.3f),
-			glm::vec3(1.0f, 1.0f, 1.0f),
+			glm::vec3(0.2f, 0.2f, 0.2f),
+			glm::vec3(0.8f, 0.8f, 0.8f),
 			glm::vec3(0.0f, 0.0f, 0.0f));
 		material->diffuseTex = firstTerrainTex;
 
@@ -353,6 +358,27 @@ namespace GK
 			glm::vec3(3.0f, 3.0f, 3.0f)));
 		drawables->push_back(std::shared_ptr<Drawable>(
 			new Drawable(vertices, indices, { surface })));
+	}
+
+	void calculateAndSetNormal(Vertex* vertex1,
+		Vertex* vertex2,
+		Vertex* vertex3)
+	{
+		glm::vec3 u = glm::vec3(
+			(*vertex2)[0] - (*vertex1)[0],
+			(*vertex2)[1] - (*vertex1)[1],
+			(*vertex2)[2] - (*vertex1)[2]);
+		glm::vec3 v = glm::vec3(
+			(*vertex3)[0] - (*vertex1)[0],
+			(*vertex3)[1] - (*vertex1)[1],
+			(*vertex3)[2] - (*vertex1)[2]);
+		glm::vec3 normal = glm::normalize(glm::vec3(
+			u.y*v.z - u.z*v.y,
+			u.z*v.x - u.x*v.z,
+			u.x*v.y - u.y*v.x));
+		(*vertex1)[Vertex::VERTEX_POSITIONS + 0] = (*vertex2)[Vertex::VERTEX_POSITIONS + 0] = (*vertex3)[Vertex::VERTEX_POSITIONS + 0] = normal.x;
+		(*vertex1)[Vertex::VERTEX_POSITIONS + 1] = (*vertex2)[Vertex::VERTEX_POSITIONS + 1] = (*vertex3)[Vertex::VERTEX_POSITIONS + 1] = normal.y;
+		(*vertex1)[Vertex::VERTEX_POSITIONS + 2] = (*vertex2)[Vertex::VERTEX_POSITIONS + 2] = (*vertex3)[Vertex::VERTEX_POSITIONS + 2] = normal.z;
 	}
 
 	std::vector<Vertex> skyboxVertices() {
