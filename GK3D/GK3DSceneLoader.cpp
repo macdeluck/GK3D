@@ -285,6 +285,11 @@ namespace GK
 				new Drawable(modelsData[it->first]->vertices, modelsData[it->first]->indices, it->second)));
 		}
 	}
+
+	float quad(float x, float y)
+	{
+		return 0.1f*(x*x + y*y);
+	}
 	
 	void GK3DSceneLoader::buildSurface()
 	{
@@ -296,13 +301,15 @@ namespace GK
 		std::shared_ptr<Image> secondTexImage = std::shared_ptr<Image>(ModelLoader().loadImage("assets/", "terrain.png"));
 		std::shared_ptr<Image> leafsTexImage = std::shared_ptr<Image>(ModelLoader().loadImage("assets/", "leafs.png", true));
 		std::vector<Vertex> vertices = std::vector<Vertex>(vertex_num);
-		std::vector<std::vector<float> > ys = PerlinNoise2D(123, -0.2f, 0.2f, 5).generate(surface_size+1, surface_size+1);
+		std::vector<std::vector<float> > ys = PerlinNoise2D(123, 0.0f, 0.4f, 5).generate(surface_size+1, surface_size+1);
 		int i = 0;
 		for (int x = 0; x < surface_size + 1; x++)
 		{
 			for (int y = 0; y < surface_size + 1; y++)
 			{
-				vertices[i] = Vertex({x*surface_scale - surface_scale*surface_size/2, ys[x][y], y*surface_scale - surface_scale*surface_size / 2, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f});
+				float rx = x*surface_scale - (surface_scale*surface_size / 2.0f);
+				float ry = y*surface_scale - (surface_scale*surface_size / 2.0f);
+				vertices[i] = Vertex({rx, quad(rx, ry) * ys[x][y], ry, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f});
 				i++;
 			}
 		}
