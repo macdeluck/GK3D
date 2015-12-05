@@ -11,8 +11,8 @@
 #include "Image.h"
 #include "Texture3D.h"
 #include "Skybox.h"
-
-#include <random>
+#include "INoise.h"
+#include "RandomNoise.h"
 
 namespace GK
 {
@@ -202,9 +202,7 @@ namespace GK
 
 	void GK3DSceneLoader::createFirs()
 	{
-		std::default_random_engine generator = std::default_random_engine(123);
-		std::uniform_real_distribution<GLfloat> distribution = std::uniform_real_distribution<GLfloat>(-3.0f, 3.0f);
-
+		std::shared_ptr<INoise> noiseGenerator = std::shared_ptr<INoise>(new RandomNoise(123, -3.0f, 3.0f));
 		const int firCount = 50;
 		glm::vec3 firScale = { 0.0005f, 0.0005f, 0.0005f };
 		std::shared_ptr<Material> material;
@@ -214,7 +212,8 @@ namespace GK
 		std::shared_ptr<Material> defaultMaterial = std::shared_ptr<Material>(new Material(Material::GreenRubber));
 		for (size_t i = 0; i < firCount; i++)
 		{
-			positions[i] = glm::vec3(distribution(generator), 0.0f, distribution(generator));
+			std::vector<float> vals = noiseGenerator->generate(2);
+			positions[i] = glm::vec3(vals[0], 0.0f, vals[1]);
 			angles[i] = glm::vec3(1, 1, 1);
 		}
 		createGenericModel(MODEL_FIR, firCount, firScale, positions.data(), angles.data(), defaultMaterial);
@@ -296,12 +295,14 @@ namespace GK
 		std::shared_ptr<Image> secondTexImage = std::shared_ptr<Image>(ModelLoader().loadImage("assets/", "terrain.png"));
 		std::shared_ptr<Image> leafsTexImage = std::shared_ptr<Image>(ModelLoader().loadImage("assets/", "leafs.png", true));
 		std::vector<Vertex> vertices = std::vector<Vertex>(vertex_num);
+		std::vector<float> ys = RandomNoise(123, -0.05f, 0.05f).generate(vertex_num);
 		int i = 0;
 		for (int x = 0; x < surface_size + 1; x++)
 		{
 			for (int y = 0; y < surface_size + 1; y++)
 			{
-				vertices[i++] = Vertex({x*surface_scale - surface_scale*surface_size/2, 0.0f, y*surface_scale - surface_scale*surface_size / 2, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f});
+				vertices[i] = Vertex({x*surface_scale - surface_scale*surface_size/2, ys[i], y*surface_scale - surface_scale*surface_size / 2, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f});
+				i++;
 			}
 		}
 		std::vector<GLuint> indices = std::vector<GLuint>(indices_num);
