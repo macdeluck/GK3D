@@ -9,9 +9,11 @@ namespace GK
 	class Camera;
 	class PointLightInstance;
 	class SpotLightInstance;
+	struct DirLight;
 
 	typedef std::vector<std::shared_ptr<PointLightInstance> > PointLightsArray;
 	typedef std::vector<std::shared_ptr<SpotLightInstance> > SpotLightsArray;
+	typedef std::vector<std::shared_ptr<DirLight> > DirLightsArray;
 
 	class Scene : private std::enable_shared_from_this<Scene>
 	{
@@ -26,9 +28,11 @@ namespace GK
 		std::shared_ptr<Camera> getCamera();
 		std::shared_ptr<PointLightsArray> getPointLights();
 		std::shared_ptr<SpotLightsArray> getSpotLights();
+		std::shared_ptr<DirLightsArray> getDirLights();
 	private:
 		std::shared_ptr<PointLightsArray> lightSources;
 		std::shared_ptr<SpotLightsArray> spotLights;
+		std::shared_ptr<DirLightsArray> dirLights;
 		std::shared_ptr<std::vector<std::shared_ptr<Drawable> > > drawables;
 		std::shared_ptr<Camera> camera;
 	};

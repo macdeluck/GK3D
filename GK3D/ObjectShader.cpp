@@ -5,6 +5,7 @@
 #include "Camera.h"
 #include "Fog.h"
 #include "GK3DScene.h"
+#include "DirLight.h"
 
 namespace GK
 {
@@ -122,6 +123,22 @@ namespace GK
 				(*spotLights)[i]->direction.x, (*spotLights)[i]->direction.y, (*spotLights)[i]->direction.z));
 			GLRUN(glUniform1f(getUniformLocation(sb.str() + std::string("cutOff")), glm::cos(glm::radians((*spotLights)[i]->cutOff))));
 			GLRUN(glUniform1f(getUniformLocation(sb.str() + std::string("outerCutOff")), glm::cos(glm::radians((*spotLights)[i]->outerCutOff))));
+		}
+
+		std::shared_ptr<DirLightsArray> dirLights = scene->getDirLights();
+		GLRUN(glUniform1i(getUniformLocation("dirLightsNum"), (int)dirLights->size()));
+		for (size_t i = 0; i < spotLights->size(); i++)
+		{
+			std::stringstream sb = std::stringstream("");
+			sb << "dirLights[" << i << "].";
+			GLRUN(glUniform3f(getUniformLocation(sb.str() + std::string("ambient")),
+				(*dirLights)[i]->ambient.r, (*dirLights)[i]->ambient.g, (*dirLights)[i]->ambient.b));
+			GLRUN(glUniform3f(getUniformLocation(sb.str() + std::string("diffuse")),
+				(*dirLights)[i]->diffuse.r, (*dirLights)[i]->diffuse.g, (*dirLights)[i]->diffuse.b));
+			GLRUN(glUniform3f(getUniformLocation(sb.str() + std::string("specular")),
+				(*dirLights)[i]->specular.r, (*dirLights)[i]->specular.g, (*dirLights)[i]->specular.b));
+			GLRUN(glUniform3f(getUniformLocation(sb.str() + std::string("direction")),
+				(*dirLights)[i]->direction.x, (*dirLights)[i]->direction.y, (*dirLights)[i]->direction.z));
 		}
 	}
 }

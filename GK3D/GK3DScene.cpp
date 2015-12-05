@@ -10,6 +10,7 @@
 #include "GK3DSceneLoader.h"
 #include "SurfaceInstance.h"
 #include "Fog.h"
+#include "DirLight.h"
 
 #include <random>
 
@@ -42,13 +43,21 @@ namespace GK
 		{
 			this->getSpotLights()->push_back((*spotLights)[i]);
 		}
+
+		this->getDirLights()->push_back(std::shared_ptr<DirLight>(
+			new DirLight(
+				glm::vec3(-0.2f, -1.0f, -0.3f),
+				glm::vec3(0.7f, 0.7f, 0.7f),
+				glm::vec3(0.9f, 0.9f, 0.9f),
+				glm::vec3(0.5f, 0.5f, 0.5f))));
+
 		cameraSpotLight = (*spotLights->begin());
 		cameraSpotLightOn = true;
 		damagedLamp = sceneLoader.getDamagedLamp();
 		damagedLightTicks = 0;
 		currentDamagedLightMaterial = 0;
 		damagedLightGenerator = std::default_random_engine();
-		fog.reset(new Fog(0.5f, glm::vec3(0.1f, 0.1f, 0.1f)));
+		fog.reset(new Fog(0.05f, glm::vec3(0.1f, 0.1f, 0.1f)));
 
 		getCamera()->setFront(sceneLoader.getCameraFront());
 		getCamera()->setPosition(sceneLoader.getCameraPosition());
