@@ -20,7 +20,9 @@ namespace GK
 		std::shared_ptr<PointLightInstance> damagedLamp;
 		std::shared_ptr<SpotLightInstance> flashLight;
 		std::shared_ptr<SurfaceInstance> surfaceInstance;
-		std::shared_ptr<Fog> fog;
+		std::shared_ptr<DirLight> dirLights[2];
+		std::shared_ptr<Fog> fogs[2];
+		int dayTime;
 		bool cameraSpotLightOn;
 
 		GLfloat damagedLightTicks;
@@ -36,6 +38,7 @@ namespace GK
 		void toggleSurfaceMarksTexture();
 		void moveSurfaceTex(glm::vec2 offset);
 		void changeSurfaceScale(float modifier);
+		void toggleDayTime();
 		std::shared_ptr<Fog> getFog();
 	};
 }

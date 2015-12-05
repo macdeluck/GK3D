@@ -277,8 +277,8 @@ namespace GK
 
 	void GK3DSceneLoader::buildScene()
 	{
-		cameraPosition = glm::vec3(0.507f, 0.062f, 0.773f);
-		cameraFront = glm::vec3(-0.313f, 0.303f, -0.900f);
+		cameraPosition = glm::vec3(0.507f, 0.145f, 0.773f);
+		cameraFront = glm::vec3(-0.313f, 0.216f, -0.900f);
 		for (InstancesDic::const_iterator it = instances.begin(); it != instances.end(); ++it)
 		{
 			drawables->push_back(std::shared_ptr<Drawable>(
@@ -332,7 +332,7 @@ namespace GK
 		Texture secondTerrainTex = Texture(secondTexImage);
 		Texture marksTex = Texture(leafsTexImage);
 		Material* material = new Material(
-			glm::vec3(0.2f, 0.2f, 0.2f),
+			glm::vec3(0.3f, 0.3f, 0.3f),
 			glm::vec3(1.0f, 1.0f, 1.0f),
 			glm::vec3(0.0f, 0.0f, 0.0f));
 		material->diffuseTex = firstTerrainTex;

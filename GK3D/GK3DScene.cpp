@@ -44,12 +44,22 @@ namespace GK
 			this->getSpotLights()->push_back((*spotLights)[i]);
 		}
 
-		this->getDirLights()->push_back(std::shared_ptr<DirLight>(
+		dayTime = 0;
+		dirLights[0] = std::shared_ptr<DirLight>(
 			new DirLight(
 				glm::vec3(0.644f, -0.417f, 0.602f),
-				glm::vec3(0.7f, 0.7f, 0.7f),
-				glm::vec3(0.9f, 0.9f, 0.9f),
-				glm::vec3(0.5f, 0.5f, 0.5f))));
+				glm::vec3(0.04f, 0.04f, 0.04f),
+				glm::vec3(0.4f, 0.4f, 0.4f),
+				glm::vec3(0.5f, 0.5f, 0.5f)));
+		dirLights[1] = std::shared_ptr<DirLight>(
+			new DirLight(
+				glm::vec3(0.0f, -1.0f, 0.0f),
+				glm::vec3(0.2f, 0.2f, 0.2f),
+				glm::vec3(1.0f, 1.0f, 1.0f),
+				glm::vec3(1.0f, 1.0f, 1.0f)));
+		fogs[0] = std::shared_ptr<Fog>(new Fog(0.5f, glm::vec3(0.1f, 0.1f, 0.1f)));
+		fogs[1] = std::shared_ptr<Fog>(new Fog(0.0f, glm::vec3(0.1f, 0.1f, 0.1f)));
+		this->getDirLights()->push_back(dirLights[dayTime]);
 
 		cameraSpotLight = (*spotLights->begin());
 		cameraSpotLightOn = true;
@@ -57,7 +67,6 @@ namespace GK
 		damagedLightTicks = 0;
 		currentDamagedLightMaterial = 0;
 		damagedLightGenerator = std::default_random_engine();
-		fog.reset(new Fog(0.05f, glm::vec3(0.1f, 0.1f, 0.1f)));
 
 		getCamera()->setFront(sceneLoader.getCameraFront());
 		getCamera()->setPosition(sceneLoader.getCameraPosition());
@@ -127,9 +136,16 @@ namespace GK
 			surfaceInstance->changeTexScale(modifier);
 	}
 
+	void GK3DScene::toggleDayTime()
+	{
+		dayTime = 1 - dayTime;
+		this->getDirLights()->clear();
+		this->getDirLights()->push_back(dirLights[dayTime]);
+	}
+
 	std::shared_ptr<Fog> GK3DScene::getFog()
 	{
-		return fog;
+		return fogs[dayTime];
 	}
 
 	void GK3DScene::toggleSurfaceTexture()
