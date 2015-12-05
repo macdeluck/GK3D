@@ -159,7 +159,7 @@ namespace GK
 			std::shared_ptr<Material>(new Material(Material::WhiteLight)),
 			1.0f, 0.7f, 1.8f,
 			lightPosition,
-			{ 0.01f, 0.01f, 0.01f },
+			{ 0.02f, 0.02f, 0.02f },
 			pointLight->angleX,
 			pointLight->angleY,
 			pointLight->angleZ));
@@ -203,7 +203,7 @@ namespace GK
 
 	void GK3DSceneLoader::createFirs()
 	{
-		std::shared_ptr<INoise> noiseGenerator = std::shared_ptr<INoise>(new RandomNoise(123, -3.0f, 3.0f));
+		std::shared_ptr<INoise> noiseGenerator = std::shared_ptr<INoise>(new RandomNoise(123, -2.5f, 2.5f));
 		const int firCount = 50;
 		glm::vec3 firScale = { 0.0005f, 0.0005f, 0.0005f };
 		std::shared_ptr<Material> material;
@@ -277,8 +277,8 @@ namespace GK
 
 	void GK3DSceneLoader::buildScene()
 	{
-		cameraPosition = glm::vec3(0.5f, 0.17f, -0.82f);
-		cameraFront = glm::vec3(-0.46f, -0.12f, 0.88f);
+		cameraPosition = glm::vec3(0.507f, 0.062f, 0.773f);
+		cameraFront = glm::vec3(-0.313f, 0.303f, -0.900f);
 		for (InstancesDic::const_iterator it = instances.begin(); it != instances.end(); ++it)
 		{
 			drawables->push_back(std::shared_ptr<Drawable>(

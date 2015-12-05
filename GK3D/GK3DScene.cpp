@@ -46,7 +46,7 @@ namespace GK
 
 		this->getDirLights()->push_back(std::shared_ptr<DirLight>(
 			new DirLight(
-				glm::vec3(-0.2f, -1.0f, -0.3f),
+				glm::vec3(0.644f, -0.417f, 0.602f),
 				glm::vec3(0.7f, 0.7f, 0.7f),
 				glm::vec3(0.9f, 0.9f, 0.9f),
 				glm::vec3(0.5f, 0.5f, 0.5f))));
