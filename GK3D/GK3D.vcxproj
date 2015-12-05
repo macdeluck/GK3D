@@ -94,6 +94,7 @@
     <ClCompile Include="LightShader.cpp" />
     <ClCompile Include="ModelLoader.cpp" />
     <ClCompile Include="PerlinNoise.cpp" />
+    <ClCompile Include="PerlinNoise2D.cpp" />
     <ClCompile Include="PointLightInstance.cpp" />
     <ClCompile Include="ObjectShader.cpp" />
     <ClCompile Include="RandomNoise.cpp" />
@@ -123,6 +124,7 @@
     <ClInclude Include="GK3DScene.h" />
     <ClInclude Include="GK3DWindow.h" />
     <ClInclude Include="PerlinNoise.h" />
+    <ClInclude Include="PerlinNoise2D.h" />
     <ClInclude Include="RandomNoise.h" />
     <ClInclude Include="Image.h" />
     <ClInclude Include="INoise.h" />

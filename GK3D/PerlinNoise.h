@@ -8,11 +8,11 @@ namespace GK
 {
 	class PerlinNoise : public INoise
 	{
-	private:
-		RandomNoise randomNoise;
+	protected:
 		unsigned int depth;
 		float minVal;
 		float maxVal;
+		RandomNoise randomNoise;
 	public:
 		PerlinNoise(unsigned int seed, float minVal, float maxVal, unsigned int depth);
 		virtual ~PerlinNoise();

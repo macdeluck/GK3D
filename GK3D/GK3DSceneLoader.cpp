@@ -13,7 +13,7 @@
 #include "Skybox.h"
 #include "INoise.h"
 #include "RandomNoise.h"
-#include "PerlinNoise.h"
+#include "PerlinNoise2D.h"
 
 namespace GK
 {
@@ -296,13 +296,13 @@ namespace GK
 		std::shared_ptr<Image> secondTexImage = std::shared_ptr<Image>(ModelLoader().loadImage("assets/", "terrain.png"));
 		std::shared_ptr<Image> leafsTexImage = std::shared_ptr<Image>(ModelLoader().loadImage("assets/", "leafs.png", true));
 		std::vector<Vertex> vertices = std::vector<Vertex>(vertex_num);
-		std::vector<float> ys = PerlinNoise(123, -0.2f, 0.2f, 5).generate(vertex_num);
+		std::vector<std::vector<float> > ys = PerlinNoise2D(123, -0.2f, 0.2f, 5).generate(surface_size+1, surface_size+1);
 		int i = 0;
 		for (int x = 0; x < surface_size + 1; x++)
 		{
 			for (int y = 0; y < surface_size + 1; y++)
 			{
-				vertices[i] = Vertex({x*surface_scale - surface_scale*surface_size/2, ys[i], y*surface_scale - surface_scale*surface_size / 2, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f});
+				vertices[i] = Vertex({x*surface_scale - surface_scale*surface_size/2, ys[x][y], y*surface_scale - surface_scale*surface_size / 2, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f});
 				i++;
 			}
 		}
