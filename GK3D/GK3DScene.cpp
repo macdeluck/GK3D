@@ -11,6 +11,7 @@
 #include "SurfaceInstance.h"
 #include "Fog.h"
 #include "DirLight.h"
+#include "Skybox.h"
 
 #include <random>
 
@@ -23,7 +24,11 @@ namespace GK
 		sceneLoader.load();
 
 		if (sceneLoader.getSkyBox())
+		{
 			this->getDrawables()->push_back(sceneLoader.getSkyBox());
+			if (sceneLoader.getSkyBox()->getInstances().size() > 0)
+				this->setSkyBox(std::dynamic_pointer_cast<SkyBox>(*sceneLoader.getSkyBox()->getInstances().begin()));
+		}
 		std::shared_ptr<DrawablesArray> drawables = sceneLoader.getDrawables();
 		for (size_t i = 0; i < drawables->size(); i++)
 		{

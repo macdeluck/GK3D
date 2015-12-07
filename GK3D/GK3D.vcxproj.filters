@@ -108,6 +108,9 @@
     <ClCompile Include="PerlinNoise2D.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="EnvShader.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Common.h">
@@ -206,6 +209,9 @@
     <ClInclude Include="DirLight.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="EnvShader.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="object_fragment_shader.glsl">
@@ -227,6 +233,12 @@
       <Filter>Resource Files</Filter>
     </None>
     <None Include="skybox_vertex_shader.glsl">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="env_fragment_shader.glsl">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="env_vertex_shader.glsl">
       <Filter>Resource Files</Filter>
     </None>
   </ItemGroup>

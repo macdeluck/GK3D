@@ -9,6 +9,7 @@ namespace GK
 	class Camera;
 	class PointLightInstance;
 	class SpotLightInstance;
+	class SkyBox;
 	struct DirLight;
 
 	typedef std::vector<std::shared_ptr<PointLightInstance> > PointLightsArray;
@@ -29,7 +30,11 @@ namespace GK
 		std::shared_ptr<PointLightsArray> getPointLights();
 		std::shared_ptr<SpotLightsArray> getSpotLights();
 		std::shared_ptr<DirLightsArray> getDirLights();
+		std::shared_ptr<SkyBox> getSkyBox();
+	protected:
+		void setSkyBox(std::shared_ptr<SkyBox> skyBox);
 	private:
+		std::shared_ptr<SkyBox> skyBox;
 		std::shared_ptr<PointLightsArray> lightSources;
 		std::shared_ptr<SpotLightsArray> spotLights;
 		std::shared_ptr<DirLightsArray> dirLights;

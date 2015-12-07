@@ -8,6 +8,7 @@
 #include "LightShader.h"
 #include "SurfaceShader.h"
 #include "SkyboxShader.h"
+#include "EnvShader.h"
 #include "Image.h"
 #include "Texture3D.h"
 #include "Skybox.h"
@@ -37,6 +38,7 @@ namespace GK
 	const int SHADER_LIGHT = 1;
 	const int SHADER_SURFACE = 2;
 	const int SHADER_SKYBOX = 3;
+	const int SHADER_ENV = 4;
 
 	const int MODEL_CUBE = 0;
 	const int MODEL_BENCH = 1;
@@ -63,6 +65,7 @@ namespace GK
 		shaders[SHADER_LIGHT] = std::shared_ptr<ShaderProgram>(new LightShader());
 		shaders[SHADER_SURFACE] = std::shared_ptr<ShaderProgram>(new SurfaceShader());
 		shaders[SHADER_SKYBOX] = std::shared_ptr<ShaderProgram>(new SkyboxShader());
+		shaders[SHADER_ENV] = std::shared_ptr<ShaderProgram>(new EnvShader());
 		for (ShadersDic::const_iterator it = shaders.begin(); it != shaders.end(); ++it)
 		{
 			it->second->compile();
@@ -186,7 +189,7 @@ namespace GK
 			{ 0.0f, 0.0f, 0.0f }
 		};
 		std::shared_ptr<Material> defaultMaterial = std::shared_ptr<Material>(new Material(Material::Silver));
-		createGenericModel(currentType, lampCount, lampScale, lampPositions, lampAngles, defaultMaterial, std::bind(&GK3DSceneLoader::createLampCallback, this, std::placeholders::_1, std::placeholders::_2));
+		createGenericModel(currentType, lampCount, lampScale, lampPositions, lampAngles, defaultMaterial, SHADER_OBJECT, std::bind(&GK3DSceneLoader::createLampCallback, this, std::placeholders::_1, std::placeholders::_2));
 	}
 
 	std::shared_ptr<PointLightInstance> GK3DSceneLoader::getDamagedLamp()
@@ -259,10 +262,10 @@ namespace GK
 		glm::vec3 positions[count] = { { 0.0f, 1.0f, 0.0f } };
 		glm::vec3 angles[count] = { { 0.0f, 0.0f, 0.0f } };
 		std::shared_ptr<Material> defaultMaterial = std::shared_ptr<Material>(new Material(Material::Emerald));
-		createGenericModel(currentModel, count, scale, positions, angles, defaultMaterial);
+		createGenericModel(currentModel, count, scale, positions, angles, defaultMaterial, SHADER_ENV);
 	}
 
-	void GK3DSceneLoader::createGenericModel(int modelType, size_t count, glm::vec3 scale, glm::vec3 * positions, glm::vec3 * angles, std::shared_ptr<Material> defaultMaterial,
+	void GK3DSceneLoader::createGenericModel(int modelType, size_t count, glm::vec3 scale, glm::vec3 * positions, glm::vec3 * angles, std::shared_ptr<Material> defaultMaterial, int shader,
 		std::function<void(int, std::shared_ptr<DrawableInstance>)> createdInstanceCallback)
 	{
 		std::shared_ptr<Material> material;
@@ -276,7 +279,7 @@ namespace GK
 		for (size_t i = 0; i < count; i++)
 		{
 			std::shared_ptr<DrawableInstance> instance = std::shared_ptr<DrawableInstance>(new DrawableInstance(
-				shaders[SHADER_OBJECT],
+				shaders[shader],
 				material,
 				positions[i],
 				scale,

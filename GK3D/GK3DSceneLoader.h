@@ -72,7 +72,7 @@ namespace GK
 		void createSkybox();
 		void createSphere();
 
-		void createGenericModel(int modelType, size_t count, glm::vec3 scale, glm::vec3* positions, glm::vec3* angles, std::shared_ptr<Material> defaultMaterial,
+		void createGenericModel(int modelType, size_t count, glm::vec3 scale, glm::vec3* positions, glm::vec3* angles, std::shared_ptr<Material> defaultMaterial, int shader = 0,
 			std::function<void(int, std::shared_ptr<DrawableInstance>)> createdInstanceCallback = nullptr);
 		void createLampCallback(int modelType, std::shared_ptr<DrawableInstance> pointLight);
 		std::map<int, std::vector<std::shared_ptr<DrawableInstance> > > instances;

@@ -49,4 +49,12 @@ namespace GK
 	{
 		return dirLights;
 	}
+	std::shared_ptr<SkyBox> Scene::getSkyBox()
+	{
+		return skyBox;
+	}
+	void Scene::setSkyBox(std::shared_ptr<SkyBox> skyBox)
+	{
+		this->skyBox = skyBox;
+	}
 }

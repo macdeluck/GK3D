@@ -84,6 +84,7 @@
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="Common.cpp" />
     <ClCompile Include="Drawable.cpp" />
+    <ClCompile Include="EnvShader.cpp" />
     <ClCompile Include="Exception.cpp" />
     <ClCompile Include="Fog.cpp" />
     <ClCompile Include="GK3DApplication.cpp" />
@@ -118,6 +119,7 @@
     <ClInclude Include="Common.h" />
     <ClInclude Include="DirLight.h" />
     <ClInclude Include="Drawable.h" />
+    <ClInclude Include="EnvShader.h" />
     <ClInclude Include="Exception.h" />
     <ClInclude Include="Face3D.h" />
     <ClInclude Include="Fog.h" />
@@ -158,6 +160,8 @@
     </None>
     <None Include="skybox_fragment_shader.glsl" />
     <None Include="skybox_vertex_shader.glsl" />
+    <None Include="env_fragment_shader.glsl" />
+    <None Include="env_vertex_shader.glsl" />
     <None Include="surface_vertex_shader.glsl" />
   </ItemGroup>
   <ItemGroup>
