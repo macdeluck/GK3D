@@ -261,7 +261,7 @@ namespace GK
 		glm::vec3 scale = { 0.1f, 0.1f, 0.1f };
 		glm::vec3 positions[count] = { { 0.0f, 1.0f, 0.0f } };
 		glm::vec3 angles[count] = { { 0.0f, 0.0f, 0.0f } };
-		std::shared_ptr<Material> defaultMaterial = std::shared_ptr<Material>(new Material(Material::Emerald));
+		std::shared_ptr<Material> defaultMaterial = std::shared_ptr<Material>(new Material({ 1.0f, 1.0f, 1.0f }, { 1.0f, 1.0f, 1.0f }, { 0.3f, 0.3f, 0.3f }, 128.0f));
 		createGenericModel(currentModel, count, scale, positions, angles, defaultMaterial, SHADER_ENV);
 	}
 
