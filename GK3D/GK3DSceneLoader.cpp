@@ -43,6 +43,7 @@ namespace GK
 	const int MODEL_LAMP = 2;
 	const int MODEL_FIR = 3;
 	const int MODEL_FLASHLIGHT = 4;
+	const int MODEL_SPHERE = 4;
 
 	void GK3DSceneLoader::load()
 	{
@@ -87,6 +88,9 @@ namespace GK
 
 		modelLoader.loadModel("assets/flashlight.obj", &modelData);
 		modelsData[MODEL_FLASHLIGHT] = std::shared_ptr<ModelData>(new ModelData(modelData));
+
+		modelLoader.loadModel("assets/sphere.obj", &modelData);
+		modelsData[MODEL_SPHERE] = std::shared_ptr<ModelData>(new ModelData(modelData));
 	}
 
 	void GK3DSceneLoader::loadSkybox()
@@ -114,6 +118,7 @@ namespace GK
 		createFlashLight();
 		
 		createSkybox();
+		createSphere();
 	}
 
 	void GK3DSceneLoader::createCubes()
@@ -244,6 +249,17 @@ namespace GK
 			modelScale));
 		skyBox = std::shared_ptr<Drawable>(
 			new Drawable(skyboxVertices(), { skyBoxInstance }));
+	}
+
+	void GK3DSceneLoader::createSphere()
+	{
+		const int currentModel = MODEL_SPHERE;
+		const int count = 1;
+		glm::vec3 scale = { 0.1f, 0.1f, 0.1f };
+		glm::vec3 positions[count] = { { 0.0f, 1.0f, 0.0f } };
+		glm::vec3 angles[count] = { { 0.0f, 0.0f, 0.0f } };
+		std::shared_ptr<Material> defaultMaterial = std::shared_ptr<Material>(new Material(Material::Emerald));
+		createGenericModel(currentModel, count, scale, positions, angles, defaultMaterial);
 	}
 
 	void GK3DSceneLoader::createGenericModel(int modelType, size_t count, glm::vec3 scale, glm::vec3 * positions, glm::vec3 * angles, std::shared_ptr<Material> defaultMaterial,

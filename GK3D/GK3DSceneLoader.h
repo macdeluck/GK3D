@@ -70,6 +70,7 @@ namespace GK
 		void createFlashLight();
 
 		void createSkybox();
+		void createSphere();
 
 		void createGenericModel(int modelType, size_t count, glm::vec3 scale, glm::vec3* positions, glm::vec3* angles, std::shared_ptr<Material> defaultMaterial,
 			std::function<void(int, std::shared_ptr<DrawableInstance>)> createdInstanceCallback = nullptr);
