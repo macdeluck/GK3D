@@ -15,9 +15,6 @@ namespace GK
 		cameraMoves(), sprintModifier(1), scene(new GK3DScene(width, height)),
 		currentPolygonMode(1)
 	{
-		GLRUN(glClearColor(0.1f, 0.1f, 0.1f, 1.0f));
-		GLRUN(glEnable(GL_BLEND));
-		GLRUN(glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA));
 		SDL_SetRelativeMouseMode(SDL_TRUE);
 		fpsTimer.start();
 		deltaTimer.start();

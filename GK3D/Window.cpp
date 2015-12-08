@@ -1,5 +1,6 @@
 #include "Window.h"
 #include "Application.h"
+#include "DefaultRenderer.h"
 
 namespace GK
 {
@@ -35,27 +36,30 @@ namespace GK
 		{
 			throw Exception(std::string("Warning: Unable to set VSync! SDL Error: " + std::string(SDL_GetError())));
 		}
-		GLRUN(glClearColor(0.2f, 0.3f, 0.3f, 1.0f));
-		GLRUN(glViewport(0, 0, width, height));
-		GLRUN(glEnable(GL_DEPTH_TEST));
 
 		this->mWindow.reset(pWindow, [=](SDL_Window* pWindow)
 		{
 			SDL_DestroyWindow(pWindow);
 		});
+
 		this->mWindowState.reset(new WindowState());
 		this->mWindowState->windowID = SDL_GetWindowID(pWindow);
 		this->mWindowState->width = width;
 		this->mWindowState->height = height;
+		this->mWindowState->depth = 32;
 		this->mWindowState->mouseFocus = true;
 		this->mWindowState->keyboardFocus = true;
 		this->mWindowState->fullScreen = false;
 		this->mWindowState->minimized = false;
 		this->mWindowState->shown = false;
+
+		this->mDefaultRenderer = std::shared_ptr<IRenderer>(new DefaultRenderer());
+		this->mDefaultRenderer->load(mWindowState->width, mWindowState->height, mWindowState->depth);
 	}
 
 	Window::Window(const Window& otherWindow)
 	{
+		this->mDefaultRenderer = otherWindow.mDefaultRenderer;
 		this->mWindow = otherWindow.mWindow;
 		this->mWindowState = otherWindow.mWindowState;
 		this->mGLContext = otherWindow.mGLContext;
@@ -63,6 +67,7 @@ namespace GK
 
 	Window& Window::operator=(const Window& otherWindow)
 	{
+		this->mDefaultRenderer = otherWindow.mDefaultRenderer;
 		this->mWindow = otherWindow.mWindow;
 		this->mWindowState = otherWindow.mWindowState;
 		this->mGLContext = otherWindow.mGLContext;
@@ -175,7 +180,7 @@ namespace GK
 	{
 		if (!mWindowState->minimized)
 		{
-			GLRUN(glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT));
+			mDefaultRenderer->clear();
 			_gain_gl();
 			onRender();
 			SDL_GL_SwapWindow(&(*mWindow));
@@ -184,13 +189,13 @@ namespace GK
 
 	void Window::_refresh()
 	{
-		GLRUN(glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT));
+		mDefaultRenderer->clear();
 		SDL_GL_SwapWindow(&(*mWindow));
 	}
 
 	void Window::_resize()
 	{
-		glViewport(0, 0, mWindowState->width, mWindowState->height);
+		this->mDefaultRenderer->load(mWindowState->width, mWindowState->height, mWindowState->depth);
 	}
 
 	int Window::getWidth()
@@ -257,6 +262,11 @@ namespace GK
 	std::weak_ptr<SDL_Window> Window::getWindowHandle()
 	{
 		return mWindow;
+	}
+
+	std::shared_ptr<IRenderer> Window::currentRenderer()
+	{
+		return mDefaultRenderer;
 	}
 
 	void Window::close()

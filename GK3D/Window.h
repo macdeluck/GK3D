@@ -6,6 +6,7 @@
 namespace GK
 {
 	class Application;
+	class IRenderer;
 
 	class Window
 	{
@@ -37,6 +38,7 @@ namespace GK
 		virtual void onRender();
 		virtual void onEndFrame();
 		std::weak_ptr<SDL_Window> getWindowHandle();
+		virtual std::shared_ptr<IRenderer> currentRenderer();
 	private:
 		void _refresh();
 		void _resize();
@@ -47,6 +49,7 @@ namespace GK
 			int windowID;
 			int width;
 			int height;
+			int depth;
 			bool mouseFocus;
 			bool keyboardFocus;
 			bool fullScreen;
@@ -55,6 +58,7 @@ namespace GK
 			bool shown;
 		};
 
+		std::shared_ptr<IRenderer> mDefaultRenderer;
 		std::shared_ptr<WindowState> mWindowState;
 		std::shared_ptr<SDL_Window> mWindow;
 		SDL_GLContext mGLContext;
