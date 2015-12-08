@@ -4,7 +4,7 @@
 namespace GK
 {
 	ScreenVertexShader::ScreenVertexShader()
-		: Shader(Shader::FromFile("screen_fragment_shader.glsl"), ShaderType::VertexShader) {}
+		: Shader(Shader::FromFile("screen_vertex_shader.glsl"), ShaderType::VertexShader) {}
 	ScreenVertexShader::~ScreenVertexShader() {}
 
 	ScreenFragmentShader::ScreenFragmentShader()

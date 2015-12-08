@@ -64,7 +64,7 @@ namespace GK
 		scene->setCamera(oldCam);
 		defaultRenderer()->lightLoad();
 		scene->render();
-		//screenScene->render();
+		screenScene->render();
 	}
 
 	void GK3DWindow::onUpdate()

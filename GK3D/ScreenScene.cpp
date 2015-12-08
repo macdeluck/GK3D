@@ -1,4 +1,5 @@
 #include "ScreenScene.h"
+#include "Shader.h"
 #include "ScreenShader.h"
 #include "Drawable.h"
 
@@ -19,14 +20,16 @@ namespace GK
 		screenShader->compile();
 
 		std::vector<Vertex> vertices = {
-			Vertex({ 0.5f,  0.5f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f }),
-			Vertex({ 0.5f, -0.5f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f }),
-			Vertex({ -0.5f, -0.5f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f }),
-			Vertex({ -0.5f,  0.5f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f })
+			Vertex({ -1.0f,  1.0f, 0.0f, 0.0f, 0.0f, -1.0f, 0.0f, 1.0f }),
+			Vertex({ -1.0f, -1.0f, 0.0f, 0.0f, 0.0f, -1.0f, 0.0f, 0.0f }),
+			Vertex({ 1.0f, -1.0f, 0.0f, 0.0f, 0.0f, -1.0f, 1.0f, 0.0f }),
+
+			Vertex({ -1.0f,  1.0f, 0.0f, 0.0f, 0.0f, -1.0f, 0.0f, 1.0f }),
+			Vertex({ 1.0f, -1.0f, 0.0f, 0.0f, 0.0f, -1.0f, 1.0f, 0.0f }),
+			Vertex({ 1.0f, 1.0f, 0.0f, 0.0f, 0.0f, -1.0f, 1.0f, 1.0f })
 		};
-		std::vector<GLuint> indices = { 0, 1, 3, 1, 2, 3 };
 		auto instance = std::shared_ptr<DrawableInstance>(new DrawableInstance(screenShader, std::shared_ptr<Material>()));
-		screenRect = std::shared_ptr<Drawable>(new Drawable(vertices, indices, { instance }));
+		screenRect = std::shared_ptr<Drawable>(new Drawable(vertices, { instance }));
 		this->getDrawables()->push_back(screenRect);
 	}
 	ScreenScene::~ScreenScene()
