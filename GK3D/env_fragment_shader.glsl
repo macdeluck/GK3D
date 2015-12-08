@@ -163,14 +163,14 @@ void main()
 {
     vec3 I = normalize(vertexFragPos - viewPos);
 
-    /*float ratio = 1.00 / 2.42;
+    float ratio = 1.00 / 1.52;
     vec3 RF = refract(I, normalize(vertexNormal), ratio);
-	vec4 refractColor = 0.2*texture(envTexture, RF);*/
-	vec4 refractColor = vec4(0.0, 0.0, 0.0, 0.0);
+	vec4 refractColor = texture(envTexture, RF);
+	//vec4 refractColor = vec4(0.0, 0.0, 0.0, 0.0);
 
     vec3 RL = reflect(I, normalize(vertexNormal));
 	vec4 reflectColor = texture(envTexture, RL);
-    sphereColor = clamp(refractColor + reflectColor, 0.0, 1.0);
+    sphereColor = mix(refractColor, reflectColor, 0.5);
 
 	vec3 norm = normalize(vertexNormal);
     vec3 viewDir = normalize(viewPos - vertexFragPos);
