@@ -19,6 +19,7 @@ namespace GK
 		virtual ~TextureRenderer();
 
 		void load(int width, int height, int depth);
+		void lightLoad();
 		void clear();
 	};
 }

@@ -180,8 +180,8 @@ namespace GK
 	{
 		if (!mWindowState->minimized)
 		{
-			mDefaultRenderer->clear();
 			_gain_gl();
+			mDefaultRenderer->clear();
 			onRender();
 			SDL_GL_SwapWindow(&(*mWindow));
 		}

@@ -6,6 +6,11 @@ namespace GK
 {
 	void TextureRenderer::load(int width, int height, int depth)
 	{
+		lightLoad();
+	}
+
+	void TextureRenderer::lightLoad()
+	{
 		GLRUN(glBindFramebuffer(GL_FRAMEBUFFER, *frameBuffer));
 	}
 

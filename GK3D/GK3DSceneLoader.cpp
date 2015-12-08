@@ -45,7 +45,7 @@ namespace GK
 	const int MODEL_LAMP = 2;
 	const int MODEL_FIR = 3;
 	const int MODEL_FLASHLIGHT = 4;
-	const int MODEL_SPHERE = 4;
+	const int MODEL_SPHERE = 99999999;
 
 	void GK3DSceneLoader::load()
 	{
@@ -298,7 +298,7 @@ namespace GK
 	{
 		cameraPosition = glm::vec3(0.507f, 0.145f, 0.773f);
 		cameraFront = glm::vec3(-0.313f, 0.216f, -0.900f);
-		for (InstancesDic::const_iterator it = instances.begin(); it != instances.end(); ++it)
+		for (InstancesDic::const_reverse_iterator it = instances.rbegin(); it != instances.rend(); ++it)
 		{
 			drawables->push_back(std::shared_ptr<Drawable>(
 				new Drawable(modelsData[it->first]->vertices, modelsData[it->first]->indices, it->second)));
