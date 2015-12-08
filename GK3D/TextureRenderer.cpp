@@ -14,6 +14,11 @@ namespace GK
 		GLRUN(glBindFramebuffer(GL_FRAMEBUFFER, *frameBuffer));
 	}
 
+	Texture TextureRenderer::getTexture()
+	{
+		return *targetTexture;
+	}
+
 	Texture generateAttachmentTexture(int width, int height)
 	{
 		GLuint textureID;

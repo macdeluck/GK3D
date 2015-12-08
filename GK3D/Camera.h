@@ -17,6 +17,15 @@ namespace GK
 	class Camera
 	{
 	public:
+		static const GLfloat YAW;
+		static const GLfloat PITCH;
+		static const GLfloat SPEED;
+		static const GLfloat SENSITIVTY;
+		static const GLfloat WHEELSENSITIVTY;
+		static const GLfloat ZOOM;
+		static const GLfloat MINFOV;
+		static const GLfloat MAXFOV;
+
 		Camera(int screenWidth, int screenHeight, glm::vec3 position = glm::vec3(0.0f, 0.0f, 0.0f),
 			glm::vec3 up = glm::vec3(0.0f, 1.0f, 0.0f), GLfloat yaw = YAW, GLfloat pitch = PITCH);
 		Camera(int screenWidth, int screenHeight, GLfloat posX, GLfloat posY, GLfloat posZ, GLfloat upX, GLfloat upY, GLfloat upZ, GLfloat yaw, GLfloat pitch);
@@ -51,14 +60,6 @@ namespace GK
 		GLfloat _zoom;
 		int screenWidth;
 		int screenHeight;
-		static const GLfloat YAW;
-		static const GLfloat PITCH;
-		static const GLfloat SPEED;
-		static const GLfloat SENSITIVTY;
-		static const GLfloat WHEELSENSITIVTY;
-		static const GLfloat ZOOM;
-		static const GLfloat MINFOV;
-		static const GLfloat MAXFOV;
 
 		void updateCameraVectors();
 	};

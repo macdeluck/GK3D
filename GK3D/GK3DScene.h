@@ -32,6 +32,7 @@ namespace GK
 	protected:
 		virtual void preRender();
 	public:
+		std::shared_ptr<DrawableInstance> planeRect;
 		GK3DScene(int screenWidth, int screenHeight);
 		virtual ~GK3DScene();
 		virtual void update(GLfloat deltaTime) override;

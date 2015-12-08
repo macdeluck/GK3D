@@ -43,6 +43,7 @@ namespace GK
 		std::shared_ptr<PointLightInstance> getDamagedLamp();
 		std::shared_ptr<SurfaceInstance> getSurface();
 		std::shared_ptr<Drawable> getSkyBox();
+		std::shared_ptr<DrawableInstance> getPlaneRect();
 	private:
 		std::shared_ptr<PointLightsArray> pointLights;
 		std::shared_ptr<SpotLightsArray> spotLights;
@@ -61,6 +62,7 @@ namespace GK
 		std::map<Face3D, std::shared_ptr<Image> > faces;
 		std::shared_ptr<SkyBox> skyBoxInstance;
 		std::shared_ptr<Drawable> skyBox;
+		std::shared_ptr<DrawableInstance> planeRect;
 
 		void createInstances();
 		void createCubes();
@@ -77,6 +79,7 @@ namespace GK
 		void createLampCallback(int modelType, std::shared_ptr<DrawableInstance> pointLight);
 		std::map<int, std::vector<std::shared_ptr<DrawableInstance> > > instances;
 
+		void buildPlaneRect();
 		void buildSurface();
 		void buildScene();
 	};

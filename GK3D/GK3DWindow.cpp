@@ -6,6 +6,7 @@
 #include "ScreenScene.h"
 #include <iomanip>
 #include <cmath>
+#include <SOIL.h>
 
 namespace GK
 {
@@ -52,8 +53,15 @@ namespace GK
 
 	void GK3DWindow::onRender()
 	{
+		auto oldCam = scene->getCamera();
+		auto tmpCam = std::shared_ptr<Camera>(new Camera(oldCam->getScreenWidth(), oldCam->getScreenHeight(), { -0.230, 0.123f, 1.063f }, { 0.0f, 1.0f, 0.0f }, -54.0f));
+		scene->setCamera(tmpCam);
 		textureRenderer->lightLoad();
 		scene->render();
+		Material m = *std::dynamic_pointer_cast<GK3DScene>(this->scene)->planeRect->material;
+		m.diffuseTex = textureRenderer->getTexture();
+		std::dynamic_pointer_cast<GK3DScene>(this->scene)->planeRect->material = std::shared_ptr<Material>(new Material(m));
+		scene->setCamera(oldCam);
 		defaultRenderer()->lightLoad();
 		scene->render();
 		//screenScene->render();

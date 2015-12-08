@@ -55,6 +55,7 @@ namespace GK
 		createInstances();
 		buildSurface();
 		buildScene();
+		buildPlaneRect();
 	}
 
 	typedef std::map<int, std::shared_ptr<ShaderProgram> > ShadersDic;
@@ -209,6 +210,11 @@ namespace GK
 		return skyBox;
 	}
 
+	std::shared_ptr<DrawableInstance> GK3DSceneLoader::getPlaneRect()
+	{
+		return planeRect;
+	}
+
 	void GK3DSceneLoader::createFirs()
 	{
 		std::shared_ptr<INoise> noiseGenerator = std::shared_ptr<INoise>(new RandomNoise(123, -2.5f, 2.5f));
@@ -263,6 +269,33 @@ namespace GK
 		glm::vec3 angles[count] = { { 0.0f, 0.0f, 0.0f } };
 		std::shared_ptr<Material> defaultMaterial = std::shared_ptr<Material>(new Material({ 1.0f, 1.0f, 1.0f }, { 1.0f, 1.0f, 1.0f }, { 0.3f, 0.3f, 0.3f }, 128.0f));
 		createGenericModel(currentModel, count, scale, positions, angles, defaultMaterial, SHADER_ENV);
+	}
+
+	void GK3DSceneLoader::buildPlaneRect()
+	{
+		glm::vec3 scale = { 0.5f, 0.375f, 0.5f };
+		glm::vec3 position = { 0.0f, 0.38f, 2.0f };
+		glm::vec3 angles = { 0.0f, 1.0f, 0.0f };
+		std::shared_ptr<Material> material = std::shared_ptr<Material>(new Material({ 0.2f, 0.2f, 0.2f }, { 0.8f, 0.8f, 0.8f }, { 0.0f, 0.0f, 0.0f }, 1.0f));
+		planeRect = std::shared_ptr<DrawableInstance>(new DrawableInstance(
+			shaders[SHADER_OBJECT],
+			material,
+			position,
+			scale,
+			angles.x,
+			angles.y,
+			angles.z));
+
+		std::vector<Vertex> vertices = {
+			Vertex({ -1.0f,  1.0f, 0.0f, 0.0f, 0.0f, -1.0f, 0.0f, 1.0f }),
+			Vertex({ -1.0f, -1.0f, 0.0f, 0.0f, 0.0f, -1.0f, 0.0f, 0.0f }),
+			Vertex({ 1.0f, -1.0f, 0.0f, 0.0f, 0.0f, -1.0f, 1.0f, 0.0f }),
+
+			Vertex({ -1.0f,  1.0f, 0.0f, 0.0f, 0.0f, -1.0f, 0.0f, 1.0f }),
+			Vertex({ 1.0f, -1.0f, 0.0f, 0.0f, 0.0f, -1.0f, 1.0f, 0.0f }),
+			Vertex({ 1.0f, 1.0f, 0.0f, 0.0f, 0.0f, -1.0f, 1.0f, 1.0f })
+		};
+		drawables->push_back(std::shared_ptr<Drawable>(new Drawable(vertices, { planeRect })));
 	}
 
 	void GK3DSceneLoader::createGenericModel(int modelType, size_t count, glm::vec3 scale, glm::vec3 * positions, glm::vec3 * angles, std::shared_ptr<Material> defaultMaterial, int shader,

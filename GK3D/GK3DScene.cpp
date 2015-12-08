@@ -44,6 +44,7 @@ namespace GK
 			this->getDrawables()->push_back((*drawables)[i]);
 		}
 
+		planeRect = sceneLoader.getPlaneRect();
 		surfaceInstance = sceneLoader.getSurface();
 
 		std::shared_ptr<PointLightsArray> pointLights = sceneLoader.getPointLights();

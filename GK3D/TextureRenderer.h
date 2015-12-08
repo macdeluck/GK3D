@@ -2,12 +2,10 @@
 #define _GK_TEXTURERENDERER
 
 #include "IRenderer.h"
-#include <memory>
+#include "Texture.h"
 
 namespace GK
 {
-	struct Texture;
-
 	class TextureRenderer : public IRenderer
 	{
 	protected:
@@ -20,6 +18,7 @@ namespace GK
 
 		void load(int width, int height, int depth);
 		void lightLoad();
+		Texture getTexture();
 	};
 }
 

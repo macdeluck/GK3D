@@ -38,6 +38,10 @@ namespace GK
 	{
 		return camera;
 	}
+	void Scene::setCamera(std::shared_ptr<Camera> camera)
+	{
+		this->camera = camera;
+	}
 	std::shared_ptr<PointLightsArray> Scene::getPointLights()
 	{
 		return lightSources;
