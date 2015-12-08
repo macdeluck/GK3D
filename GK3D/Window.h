@@ -38,7 +38,7 @@ namespace GK
 		virtual void onRender();
 		virtual void onEndFrame();
 		std::weak_ptr<SDL_Window> getWindowHandle();
-		virtual std::shared_ptr<IRenderer> currentRenderer();
+		virtual std::shared_ptr<IRenderer> defaultRenderer();
 	private:
 		void _refresh();
 		void _resize();

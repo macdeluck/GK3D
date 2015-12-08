@@ -2,6 +2,8 @@
 #include "GK3DScene.h"
 #include "ObjectShader.h"
 #include "LightShader.h"
+#include "TextureRenderer.h"
+#include "ScreenScene.h"
 #include <iomanip>
 #include <cmath>
 
@@ -15,6 +17,9 @@ namespace GK
 		cameraMoves(), sprintModifier(1), scene(new GK3DScene(width, height)),
 		currentPolygonMode(1)
 	{
+		textureRenderer = std::shared_ptr<TextureRenderer>(new TextureRenderer(width, height, 32));
+		screenScene = std::shared_ptr<ScreenScene>(new ScreenScene());
+
 		SDL_SetRelativeMouseMode(SDL_TRUE);
 		fpsTimer.start();
 		deltaTimer.start();
@@ -47,7 +52,11 @@ namespace GK
 
 	void GK3DWindow::onRender()
 	{
+		textureRenderer->lightLoad();
 		scene->render();
+		defaultRenderer()->lightLoad();
+		scene->render();
+		//screenScene->render();
 	}
 
 	void GK3DWindow::onUpdate()

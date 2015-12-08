@@ -5,7 +5,7 @@
 namespace GK
 {
 	Scene::Scene(int screenWidth, int screenHeight)
-		: drawables(new std::vector<std::shared_ptr<Drawable> >(1)),
+		: drawables(new std::vector<std::shared_ptr<Drawable> >(0)),
 		camera(new Camera(screenWidth, screenHeight)),
 		lightSources(new PointLightsArray()), spotLights(new SpotLightsArray()), dirLights(new DirLightsArray())
 	{

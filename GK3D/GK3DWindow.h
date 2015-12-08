@@ -11,6 +11,8 @@
 namespace GK
 {
 	class Scene;
+	class ScreenScene;
+	class TextureRenderer;
 
 	class GK3DWindow : public Window
 	{
@@ -37,6 +39,9 @@ namespace GK
 		std::set<CameraMovementDirection> cameraMoves;
 		std::set<CameraMovementDirection> objectMoves;
 		std::shared_ptr<Scene> scene;
+
+		std::shared_ptr<ScreenScene> screenScene;
+		std::shared_ptr<TextureRenderer> textureRenderer;
 	};
 }
 

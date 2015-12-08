@@ -310,5 +310,11 @@
     <None Include="env_vertex_shader.glsl">
       <Filter>Resource Files</Filter>
     </None>
+    <None Include="screen_fragment_shader.glsl">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="screen_vertex_shader.glsl">
+      <Filter>Resource Files</Filter>
+    </None>
   </ItemGroup>
 </Project>

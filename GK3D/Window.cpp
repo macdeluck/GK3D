@@ -193,7 +193,7 @@ namespace GK
 
 	void Window::_resize()
 	{
-		this->mDefaultRenderer->load(mWindowState->width, mWindowState->height, mWindowState->depth);
+		defaultRenderer()->load(mWindowState->width, mWindowState->height, mWindowState->depth);
 	}
 
 	int Window::getWidth()
@@ -262,7 +262,7 @@ namespace GK
 		return mWindow;
 	}
 
-	std::shared_ptr<IRenderer> Window::currentRenderer()
+	std::shared_ptr<IRenderer> Window::defaultRenderer()
 	{
 		return mDefaultRenderer;
 	}

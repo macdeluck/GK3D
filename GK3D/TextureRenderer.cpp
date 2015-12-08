@@ -16,14 +16,10 @@ namespace GK
 
 	Texture generateAttachmentTexture(int width, int height)
 	{
-		// What enum to use?
-		GLenum attachment_type = GL_DEPTH_COMPONENT;
-
-		//Generate texture ID and load texture data 
 		GLuint textureID;
 		GLRUN(glGenTextures(1, &textureID));
 		GLRUN(glBindTexture(GL_TEXTURE_2D, textureID));
-		GLRUN(glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH24_STENCIL8, width, height, 0, GL_DEPTH_STENCIL, GL_UNSIGNED_INT_24_8, NULL));
+		GLRUN(glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, NULL));
 		GLRUN(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR));
 		GLRUN(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR));
 		GLRUN(glBindTexture(GL_TEXTURE_2D, 0));
@@ -42,9 +38,9 @@ namespace GK
 
 		GLRUN(glGenRenderbuffers(1, &(*renderBuffer)));
 		GLRUN(glBindRenderbuffer(GL_RENDERBUFFER, *renderBuffer));
-		GLRUN(glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, width, height));
+		GLRUN(glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT, width, height));
 		GLRUN(glBindRenderbuffer(GL_RENDERBUFFER, 0));
-		GLRUN(glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, *renderBuffer));
+		GLRUN(glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, *renderBuffer));
 
 		GLenum frameBufferStatus;
 		GLRUNR(glCheckFramebufferStatus(GL_FRAMEBUFFER), frameBufferStatus);

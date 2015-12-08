@@ -8,17 +8,15 @@ namespace GK
 	class Drawable;
 	class ScreenShader;
 
-	class ScreenScene : Scene
+	class ScreenScene : public Scene
 	{
 	private:
 		std::shared_ptr<Drawable> screenRect;
 		std::shared_ptr<ScreenShader> screenShader;
 	protected:
 		virtual void preRender();
-		virtual void postRender();
 	public:
-		virtual void update(GLfloat deltaTime);
-		ScreenScene(int screenWidth, int screenHeight);
+		ScreenScene();
 		virtual ~ScreenScene();
 	};
 }
