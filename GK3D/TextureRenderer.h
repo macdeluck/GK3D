@@ -20,7 +20,6 @@ namespace GK
 
 		void load(int width, int height, int depth);
 		void lightLoad();
-		void clear();
 	};
 }
 

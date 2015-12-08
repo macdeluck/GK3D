@@ -102,6 +102,8 @@
     <ClCompile Include="RandomNoise.cpp" />
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="GK3DSceneLoader.cpp" />
+    <ClCompile Include="ScreenScene.cpp" />
+    <ClCompile Include="ScreenShader.cpp" />
     <ClCompile Include="Shader.cpp" />
     <ClCompile Include="Skybox.cpp" />
     <ClCompile Include="SkyboxShader.cpp" />
@@ -142,6 +144,8 @@
     <ClInclude Include="ObjectShader.h" />
     <ClInclude Include="Scene.h" />
     <ClInclude Include="GK3DSceneLoader.h" />
+    <ClInclude Include="ScreenScene.h" />
+    <ClInclude Include="ScreenShader.h" />
     <ClInclude Include="Shader.h" />
     <ClInclude Include="Skybox.h" />
     <ClInclude Include="SkyboxShader.h" />

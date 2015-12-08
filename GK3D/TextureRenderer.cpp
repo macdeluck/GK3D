@@ -14,11 +14,6 @@ namespace GK
 		GLRUN(glBindFramebuffer(GL_FRAMEBUFFER, *frameBuffer));
 	}
 
-	void TextureRenderer::clear()
-	{
-		GLRUN(glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT));
-	}
-
 	Texture generateAttachmentTexture(int width, int height)
 	{
 		// What enum to use?

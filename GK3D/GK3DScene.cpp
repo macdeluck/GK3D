@@ -22,6 +22,8 @@ namespace GK
 		GLRUN(glEnable(GL_DEPTH_TEST));
 		GLRUN(glEnable(GL_BLEND));
 		GLRUN(glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA));
+		GLRUN(glClearColor(0.2f, 0.2f, 0.2f, 0.2f));
+		GLRUN(glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT));
 	}
 
 	GK3DScene::GK3DScene(int screenWidth, int screenHeight)

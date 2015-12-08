@@ -181,7 +181,6 @@ namespace GK
 		if (!mWindowState->minimized)
 		{
 			_gain_gl();
-			mDefaultRenderer->clear();
 			onRender();
 			SDL_GL_SwapWindow(&(*mWindow));
 		}
@@ -189,7 +188,6 @@ namespace GK
 
 	void Window::_refresh()
 	{
-		mDefaultRenderer->clear();
 		SDL_GL_SwapWindow(&(*mWindow));
 	}
 
