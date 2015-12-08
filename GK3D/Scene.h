@@ -32,6 +32,8 @@ namespace GK
 		std::shared_ptr<DirLightsArray> getDirLights();
 		std::shared_ptr<SkyBox> getSkyBox();
 	protected:
+		virtual void preRender();
+		virtual void postRender();
 		void setSkyBox(std::shared_ptr<SkyBox> skyBox);
 	private:
 		std::shared_ptr<SkyBox> skyBox;

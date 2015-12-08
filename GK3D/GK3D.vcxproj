@@ -108,7 +108,9 @@
     <ClCompile Include="SpotLightInstance.cpp" />
     <ClCompile Include="SurfaceInstance.cpp" />
     <ClCompile Include="SurfaceShader.cpp" />
+    <ClCompile Include="Texture.cpp" />
     <ClCompile Include="Texture3D.cpp" />
+    <ClCompile Include="TextureRenderer.cpp" />
     <ClCompile Include="Timer.cpp" />
     <ClCompile Include="tiny_obj_loader.cpp" />
     <ClCompile Include="Window.cpp" />
@@ -146,7 +148,9 @@
     <ClInclude Include="SpotLightInstance.h" />
     <ClInclude Include="SurfaceInstance.h" />
     <ClInclude Include="SurfaceShader.h" />
+    <ClInclude Include="Texture.h" />
     <ClInclude Include="Texture3D.h" />
+    <ClInclude Include="TextureRenderer.h" />
     <ClInclude Include="Timer.h" />
     <ClInclude Include="tiny_obj_loader.h" />
     <ClInclude Include="Window.h" />

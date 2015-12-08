@@ -22,6 +22,7 @@ namespace GK
 	public:
 
 		Image();
+		Image(int width, int height, ImageChannels channels);
 		Image(std::vector<unsigned char> data, int width, int height, ImageChannels channels);
 		virtual ~Image();
 		void loadFile(std::string path, ImageChannels channels = ImageChannels::ImageRGB);

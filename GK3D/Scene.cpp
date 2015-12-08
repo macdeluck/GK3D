@@ -22,10 +22,12 @@ namespace GK
 
 	void Scene::render()
 	{
+		preRender();
 		for (size_t i = 0; i < drawables->size(); i++)
 		{
 			(*drawables)[i]->render(shared_from_this());
 		}
+		postRender();
 	}
 
 	std::shared_ptr<std::vector<std::shared_ptr<Drawable> > > Scene::getDrawables()
@@ -52,6 +54,12 @@ namespace GK
 	std::shared_ptr<SkyBox> Scene::getSkyBox()
 	{
 		return skyBox;
+	}
+	void Scene::preRender()
+	{
+	}
+	void Scene::postRender()
+	{
 	}
 	void Scene::setSkyBox(std::shared_ptr<SkyBox> skyBox)
 	{

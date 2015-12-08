@@ -17,6 +17,13 @@
 
 namespace GK
 {
+	void GK3DScene::preRender()
+	{
+		GLRUN(glEnable(GL_DEPTH_TEST));
+		GLRUN(glEnable(GL_BLEND));
+		GLRUN(glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA));
+	}
+
 	GK3DScene::GK3DScene(int screenWidth, int screenHeight)
 		: Scene(std::vector<std::shared_ptr<Drawable> >(), Camera(screenWidth, screenHeight, glm::vec3(0, 0, -5)))
 	{

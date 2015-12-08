@@ -2,6 +2,7 @@
 #define _GK_DRAWABLE
 
 #include "Common.h"
+#include "Texture.h"
 #include <list>
 
 namespace GK
@@ -32,21 +33,6 @@ namespace GK
 		GLfloat& operator[](int i);
 	private:
 		GLfloat vertexData[VERTEX_SIZE];
-	};
-
-	struct Texture
-	{
-	private:
-		std::shared_ptr<GLuint> texture;
-
-	public:
-		Texture();
-		Texture(std::shared_ptr<Image> image);
-		virtual ~Texture();
-		bool empty();
-		GLuint getId();
-
-		friend class Drawable;
 	};
 
 	struct Material

@@ -29,6 +29,8 @@ namespace GK
 		int currentDamagedLightMaterial;
 		void damagedLampFlickering(GLfloat deltaTime);
 		std::default_random_engine damagedLightGenerator;
+	protected:
+		virtual void preRender();
 	public:
 		GK3DScene(int screenWidth, int screenHeight);
 		virtual ~GK3DScene();

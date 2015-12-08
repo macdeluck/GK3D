@@ -26,4 +26,13 @@
 	} \
 }
 
+#define GLRUNR(expression, result) { \
+	result = expression; \
+	GLenum glError = glGetError(); \
+	if (GL_NO_ERROR != glError) \
+	{ \
+	throw Exception("OpenGL error: " + std::string((char*)gluErrorString(glError))); \
+	} \
+}
+
 #endif

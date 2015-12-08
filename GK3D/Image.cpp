@@ -10,6 +10,13 @@ namespace GK
 		: data(0), width(0), height(0), channels(channels)
 	{
 	}
+
+	Image::Image(int width, int height, ImageChannels channels)
+		: data(0), width(width), height(height), channels(channels)
+	{
+		int pixSize = channels == ImageChannels::ImageRGB ? 3 : 4;
+	}
+
 	Image::Image(std::vector<unsigned char> data, int width, int height, ImageChannels channels)
 		: data(data.begin(), data.end()), width(width), height(height), channels(channels)
 	{
