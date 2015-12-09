@@ -74,6 +74,7 @@ namespace GK
 		GLRUN(glPolygonMode(GL_FRONT_AND_BACK, GL_FILL));
 		screenScene->screenShader->screenTexture.reset(new Texture(screenRenderer->getTexture()));
 		screenScene->render();
+		minLOffset = 0;
 		GLRUN(glPolygonMode(GL_FRONT_AND_BACK, polygonModes[currentPolygonMode]));
 	}
 
@@ -89,6 +90,7 @@ namespace GK
 		scene->update(deltaTime);
 		scene->getCamera()->setScreenWidth(getWidth());
 		scene->getCamera()->setScreenHeight(getHeight());
+		screenScene->screenShader->modMinL(minLOffset * deltaTime);
 		for (std::set<CameraMovementDirection>::iterator it = objectMoves.begin();
 			it != objectMoves.end(); it++)
 		{
@@ -224,6 +226,14 @@ namespace GK
 			cameraMove = false;
 			if (type == SDL_KEYUP)
 				std::dynamic_pointer_cast<GK3DScene>(this->scene)->toggleDayTime();
+			break;
+		case SDLK_KP_PLUS:
+			cameraMove = false;
+			minLOffset += 1.0f;
+			break;
+		case SDLK_KP_MINUS:
+			cameraMove = false;
+			minLOffset -= 1.0f;
 			break;
 		case SDLK_LSHIFT:
 			cameraMove = false;

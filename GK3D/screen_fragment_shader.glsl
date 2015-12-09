@@ -5,6 +5,7 @@ in vec2 vertexTexCoords;
 out vec4 color;
 
 uniform sampler2D screenTexture;
+uniform float Lthreshold;
 
 float blurWeight(int x, int y, float L)
 {
@@ -19,7 +20,7 @@ void main()
 	vec2 tex_offset = 1.0 / textureSize(screenTexture, 0);
 	float L = 0.3*pixColor.r + 0.59*pixColor.g * 0.11*pixColor.b;
 	vec3 result = vec3(0, 0, 0);
-	if (L > 0.1)
+	if (L > Lthreshold)
 	{
 		float blurNorm = 0;
 		for(int x = -int(floor(degree/2)); x < int(floor(degree/2)); x++)

@@ -16,6 +16,7 @@ namespace GK
 		: ShaderProgram(std::shared_ptr<ScreenVertexShader>(new ScreenVertexShader()),
 			std::shared_ptr<ScreenFragmentShader>(new ScreenFragmentShader()))
 	{
+		Lthreshold = 0.1f;
 	}
 
 	ScreenShader::~ScreenShader() {}
@@ -32,5 +33,13 @@ namespace GK
 		{
 			bindTexture("screenTexture", screenTexture->getId());
 		}
+		GLRUN(glUniform1f(getUniformLocation("Lthreshold"), Lthreshold));
+	}
+	void ScreenShader::modMinL(float delta)
+	{
+		const float minL = 0.01f;
+		Lthreshold += delta * 0.001f;
+		if (Lthreshold < minL) Lthreshold = minL;
+		if (Lthreshold > 1.0f) Lthreshold = 1.0f;
 	}
 }

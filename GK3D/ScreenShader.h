@@ -23,12 +23,15 @@ namespace GK
 
 	class ScreenShader : public ShaderProgram
 	{
+	private:
+		float Lthreshold;
 	public:
 		ScreenShader();
 		virtual ~ScreenShader();
 		virtual void beforeLink() override;
 		virtual void render(std::shared_ptr<DrawableInstance> drawableInstance, std::shared_ptr<Scene> scene) override;
 		std::shared_ptr<Texture> screenTexture;
+		void modMinL(float delta);
 	};
 }
 

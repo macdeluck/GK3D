@@ -42,6 +42,7 @@ namespace GK
 
 		std::shared_ptr<ScreenScene> screenScene;
 		std::shared_ptr<TextureRenderer> textureRenderer;
+		float minLOffset;
 		std::shared_ptr<TextureRenderer> screenRenderer;
 	};
 }
