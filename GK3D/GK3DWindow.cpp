@@ -4,6 +4,7 @@
 #include "LightShader.h"
 #include "TextureRenderer.h"
 #include "ScreenScene.h"
+#include "ScreenShader.h"
 #include <iomanip>
 #include <cmath>
 #include <SOIL.h>
@@ -19,6 +20,7 @@ namespace GK
 		currentPolygonMode(1)
 	{
 		textureRenderer = std::shared_ptr<TextureRenderer>(new TextureRenderer(width, height, 32));
+		screenRenderer = std::shared_ptr<TextureRenderer>(new TextureRenderer(width, height, 32));
 		screenScene = std::shared_ptr<ScreenScene>(new ScreenScene());
 
 		SDL_SetRelativeMouseMode(SDL_TRUE);
@@ -62,9 +64,16 @@ namespace GK
 		m.diffuseTex = textureRenderer->getTexture();
 		std::dynamic_pointer_cast<GK3DScene>(this->scene)->planeRect->material = std::shared_ptr<Material>(new Material(m));
 		scene->setCamera(oldCam);
-		defaultRenderer()->lightLoad();
+
+		screenRenderer->lightLoad();
 		scene->render();
+
+		defaultRenderer()->lightLoad();
+		GLint polygonModes[] = { GL_FILL, GL_LINE };
+		GLRUN(glPolygonMode(GL_FRONT_AND_BACK, GL_FILL));
+		screenScene->screenShader->screenTexture.reset(new Texture(screenRenderer->getTexture()));
 		screenScene->render();
+		GLRUN(glPolygonMode(GL_FRONT_AND_BACK, polygonModes[currentPolygonMode]));
 	}
 
 	void GK3DWindow::onUpdate()

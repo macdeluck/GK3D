@@ -5,6 +5,8 @@
 
 namespace GK
 {
+	struct Texture;
+
 	class ScreenVertexShader : public Shader
 	{
 	public:
@@ -26,6 +28,7 @@ namespace GK
 		virtual ~ScreenShader();
 		virtual void beforeLink() override;
 		virtual void render(std::shared_ptr<DrawableInstance> drawableInstance, std::shared_ptr<Scene> scene) override;
+		std::shared_ptr<Texture> screenTexture;
 	};
 }
 

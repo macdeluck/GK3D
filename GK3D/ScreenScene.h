@@ -12,10 +12,10 @@ namespace GK
 	{
 	private:
 		std::shared_ptr<Drawable> screenRect;
-		std::shared_ptr<ScreenShader> screenShader;
 	protected:
 		virtual void preRender();
 	public:
+		std::shared_ptr<ScreenShader> screenShader;
 		ScreenScene();
 		virtual ~ScreenScene();
 	};
