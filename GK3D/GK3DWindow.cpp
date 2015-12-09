@@ -5,6 +5,7 @@
 #include "TextureRenderer.h"
 #include "ScreenScene.h"
 #include "ScreenShader.h"
+#include "Image.h"
 #include <iomanip>
 #include <cmath>
 #include <SOIL.h>
@@ -17,7 +18,7 @@ namespace GK
 	GK3DWindow::GK3DWindow(int width, int height, std::string title, bool shown, bool resizable)
 		: Window(width, height, title, shown, resizable),
 		cameraMoves(), sprintModifier(1), scene(new GK3DScene(width, height)),
-		currentPolygonMode(1)
+		currentPolygonMode(0)
 	{
 		textureRenderer = std::shared_ptr<TextureRenderer>(new TextureRenderer(width, height, 32));
 		screenRenderer = std::shared_ptr<TextureRenderer>(new TextureRenderer(width, height, 32));

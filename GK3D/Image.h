@@ -3,6 +3,7 @@
 
 #include <string>
 #include <vector>
+#include <memory>
 
 namespace GK
 {
@@ -12,24 +13,30 @@ namespace GK
 		ImageRGBA
 	};
 
+	struct Texture;
+
 	class Image
 	{
 	private:
 		std::vector<unsigned char> data;
-		int width;
-		int height;
+		size_t width;
+		size_t height;
 		ImageChannels channels;
 	public:
 
 		Image();
-		Image(int width, int height, ImageChannels channels);
-		Image(std::vector<unsigned char> data, int width, int height, ImageChannels channels);
+		Image(size_t width, size_t height, ImageChannels channels);
+		Image(std::vector<unsigned char> data, size_t width, size_t height, ImageChannels channels);
 		virtual ~Image();
 		void loadFile(std::string path, ImageChannels channels = ImageChannels::ImageRGB);
-		int getWidth() const;
-		int getHeight() const;
+		void loadTexture(std::shared_ptr<Texture> texture, size_t width, size_t height, ImageChannels channels);
+		size_t getWidth() const;
+		size_t getHeight() const;
 		ImageChannels getImageChannels() const;
 		std::vector<unsigned char> getData();
+		void setData(std::vector<unsigned char> data);
+		size_t pixSize();
+		size_t pixIndex(size_t x, size_t y);
 	};
 }
 

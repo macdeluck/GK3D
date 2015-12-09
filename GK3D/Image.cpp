@@ -1,8 +1,8 @@
 #include <SOIL.h>
-#include <cassert>
 
 #include "Image.h"
 #include "Common.h"
+#include "Texture.h"
 
 namespace GK
 {
@@ -11,17 +11,18 @@ namespace GK
 	{
 	}
 
-	Image::Image(int width, int height, ImageChannels channels)
+	Image::Image(size_t width, size_t height, ImageChannels channels)
 		: data(0), width(width), height(height), channels(channels)
 	{
 		int pixSize = channels == ImageChannels::ImageRGB ? 3 : 4;
 	}
 
-	Image::Image(std::vector<unsigned char> data, int width, int height, ImageChannels channels)
-		: data(data.begin(), data.end()), width(width), height(height), channels(channels)
+	Image::Image(std::vector<unsigned char> data, size_t width, size_t height, ImageChannels channels)
+		: data(data), width(width), height(height), channels(channels)
 	{
 		int pixSize = channels == ImageChannels::ImageRGB ? 3 : 4;
-		assert(data.size() == width * height * pixSize);
+		if (data.size() != width * height * pixSize)
+			throw Exception("Incorrect data length");
 	}
 
 	Image::~Image()
@@ -52,12 +53,24 @@ namespace GK
 		SOIL_free_image_data(image);
 	}
 
-	int Image::getWidth() const
+	void Image::loadTexture(std::shared_ptr<Texture> texture, size_t width, size_t height, ImageChannels channels)
+	{
+		this->width = width;
+		this->height = height;
+		this->channels = channels;
+		GLRUN(glBindTexture(GL_TEXTURE_2D, texture->getId()));
+		int pixSize = channels == ImageChannels::ImageRGB ? 3 : 4;
+		GLenum format = channels == ImageChannels::ImageRGB ? GL_RGB : GL_RGBA;
+		this->data = std::vector<unsigned char>(width * height * pixSize);
+		GLRUN(glGetTexImage(GL_TEXTURE_2D, 0, format, GL_UNSIGNED_BYTE, this->data.data()));
+	}
+
+	size_t Image::getWidth() const
 	{
 		return width;
 	}
 
-	int Image::getHeight() const
+	size_t Image::getHeight() const
 	{
 		return height;
 	}
@@ -70,6 +83,23 @@ namespace GK
 	std::vector<unsigned char> Image::getData()
 	{
 		return data;
+	}
+
+	void Image::setData(std::vector<unsigned char> data)
+	{
+		this->data = data;
+		if (data.size() != width * height * pixSize())
+			throw Exception("Incorrect data length");
+	}
+
+	size_t Image::pixSize()
+	{
+		return channels == ImageChannels::ImageRGB ? 3 : 4;
+	}
+
+	size_t Image::pixIndex(size_t x, size_t y)
+	{
+		return (x + y*width)*pixSize();
 	}
 
 
